@@ -1,7 +1,16 @@
 package eol.engine;
 
+import eol.render.GamePanel;
+
+import javax.swing.SwingUtilities;
+
+import eol.entities.Player;
+
 public class GameLoop implements Runnable {
     private EntityManager entityManager;
+    private InputHandler inputHandler;
+    private GamePanel gamePanel;
+    private Player player;
     /*
      * other objects
      */
@@ -9,10 +18,14 @@ public class GameLoop implements Runnable {
     private final int targetFps = 60;
     private final long targetTime = 1000 / targetFps; //ms per frame
 
-    public GameLoop(EntityManager entityManager) {
+    public GameLoop(EntityManager entityManager, InputHandler inputHandler, GamePanel gamePanel, Player player) {
         this.running = false;
         this.entityManager = entityManager;
+        this.inputHandler = inputHandler;
+        this.gamePanel = gamePanel;
+        this.player = player;
     }
+
 
     public void start() {
         if (!running) {
@@ -40,7 +53,7 @@ public class GameLoop implements Runnable {
             float deltaTime = elaspedTime / 1000.0f;
 
             update(deltaTime);
-            // render();
+            render();
             frameCount++;
 
             // FPS counter
@@ -62,12 +75,20 @@ public class GameLoop implements Runnable {
     }
 
     public void update(float deltaTime) {
+
         /*
          * handle inputs
          * check collisions
          */
 
-         entityManager.updateAll(deltaTime);
+        if (!inputHandler.getKeysPressed().isEmpty()) {
+            System.out.println("Keys pressed: " + inputHandler.getKeysPressed());
+        }
+
+        entityManager.updateAll(deltaTime);
     }
 
+    public void render() {
+        SwingUtilities.invokeLater(() -> gamePanel.repaint());
+    }
 }

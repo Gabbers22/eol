@@ -1,5 +1,11 @@
 package eol.entities;
 
-public class Player {
+import eol.utils.Vector2;
+
+public class Player extends Character {
+
+    public Player(Vector2 position) {
+        super(position);
+    }
     
 }
