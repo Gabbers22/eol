@@ -2,9 +2,12 @@ package eol.engine;
 
 import eol.render.GamePanel;
 
+import java.awt.event.KeyEvent;
+
 import javax.swing.SwingUtilities;
 
-import eol.entities.Player;
+import eol.entities.*;
+import eol.utils.Vector2;
 
 public class GameLoop implements Runnable {
     private EntityManager entityManager;
@@ -14,12 +17,14 @@ public class GameLoop implements Runnable {
     /*
      * other objects
      */
+    private boolean debugMode;
     private boolean running;
     private final int targetFps = 60;
     private final long targetTime = 1000 / targetFps; //ms per frame
 
     public GameLoop(EntityManager entityManager, InputHandler inputHandler, GamePanel gamePanel, Player player) {
         this.running = false;
+        this.debugMode = false;
         this.entityManager = entityManager;
         this.inputHandler = inputHandler;
         this.gamePanel = gamePanel;
@@ -80,15 +85,28 @@ public class GameLoop implements Runnable {
          * handle inputs
          * check collisions
          */
+        Vector2 direction = inputHandler.getDirectionalInput();
+        player.getMovementComponent().move(direction);
 
-        if (!inputHandler.getKeysPressed().isEmpty()) {
-            System.out.println("Keys pressed: " + inputHandler.getKeysPressed());
+
+
+
+        if (inputHandler.isKeyPressed(KeyEvent.VK_P)) {
+            debugMode = !debugMode;
+            gamePanel.setDebugMode(debugMode);
         }
+        
+
 
         entityManager.updateAll(deltaTime);
+        inputHandler.clearKeysPressed();
     }
 
     public void render() {
         SwingUtilities.invokeLater(() -> gamePanel.repaint());
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
     }
 }

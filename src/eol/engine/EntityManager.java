@@ -25,6 +25,8 @@ public class EntityManager {
     }
 
     public void updateAll(float deltaTime) {
-        
+        for (GameEntity e : getEntities()) {
+            e.update(deltaTime);
+        }
     }
 }

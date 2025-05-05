@@ -27,7 +27,9 @@ public class Game {
         inputHandler = new InputHandler();
         renderer = new Renderer(entityManager, spriteManager);
         gamePanel = new GamePanel(renderer);
-        player = new Player(new Vector2(400, 300));
+        gamePanel.addKeyListener(inputHandler);
+        player = new Player(new Vector2(400, 300), new Vector2(-16, -32), 32, 64);
+        entityManager.addEntity(player);
         
         /*
          * initialize other objects
@@ -38,7 +40,7 @@ public class Game {
         frame = new JFrame("Echoes of Lazarus");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        // frame.add(gamePanel);
+        frame.add(gamePanel);
         frame.pack();
         frame.setLocationRelativeTo(null);
     }
