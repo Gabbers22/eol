@@ -8,11 +8,15 @@ public abstract class GameEntity {
     protected Vector2 position;
     protected SpriteManager spriteManager;
     protected String spriteKey;
+    protected Vector2 offset;
     protected int width;
-    protected int height; 
+    protected int height;
 
-    public GameEntity(Vector2 position) {
+    public GameEntity(Vector2 position, Vector2 offset, int width, int height) {
         this.position = position;
+        this.offset = offset;
+        this.width = width;
+        this.height = height;
     }
 
     public Vector2 getPosition() {
@@ -28,7 +32,14 @@ public abstract class GameEntity {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(width, height);
+        return new Rectangle(
+            (int)(position.getX() + offset.getX()),
+            (int)(position.getY() + offset.getY()),
+            width,
+            height
+        );
     }
-    
+
+    public abstract void update(float deltaTime);
+
 }

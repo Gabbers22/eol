@@ -1,5 +1,7 @@
 package eol.ui;
 
+import eol.engine.Game;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,11 +9,19 @@ import java.awt.event.*;
 public class MainMenu {
     
   static JFrame mainMenuFrame; 
-  static JPanel mainMenuPanel, instructionsPanel;
-  static JButton muteSound, newGame, loadGame, instructions, quit, backButton;
+  static JPanel mainMenuPanel, instructionsPanel, characterSelectionPanel;
+  static JButton muteSound, newGame, loadGame, instructions, quit, backButton, knightButton, mageButton;;
   static JLabel instructionsLabel, gameTitle, controlsLabel, gameplayLabel;
 
   public MainMenu(){
+    
+    ImageIcon back = new ImageIcon("assets\\icons\\back.png");
+    ImageIcon mute = new ImageIcon("assets\\icons\\SpeakerMute.png");
+    ImageIcon speaker = new ImageIcon("assets\\icons\\Speaker.png");
+
+    ImageIcon backIcon = new ImageIcon(back.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+    ImageIcon muteIcon = new ImageIcon(mute.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)); 
+    ImageIcon speakerIcon = new ImageIcon(speaker.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 
     gameTitle = new JLabel("Echoes of Lazarus");
     gameTitle.setFont(new Font("Martian Mono", Font.BOLD, 50));
@@ -51,13 +61,14 @@ public class MainMenu {
     quit.setForeground(new Color(32, 33, 36)); 
     quit.setBorderPainted(false);
     
-    muteSound = new JButton("🔊");
+    muteSound = new JButton("");
     muteSound.setFont(new Font("Martian Mono", Font.BOLD, 25)); 
     muteSound.setFocusPainted(false); 
-    muteSound.setBounds(900, 645, 75, 75);
+    muteSound.setBounds(925, 670, 50, 50);
     muteSound.setBackground(Color.WHITE); 
     muteSound.setForeground(new Color(32, 33, 36)); 
     muteSound.setBorderPainted(false);
+    muteSound.setIcon(speakerIcon);
 
     mainMenuPanel = new JPanel();
     mainMenuPanel.setLayout(null);
@@ -79,7 +90,75 @@ public class MainMenu {
     newGame.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
 
-        //run the game code.
+        mainMenuPanel.setVisible(false);
+        mainMenuFrame.setSize(new Dimension(700, 500));
+
+        backButton = new JButton("");
+        backButton.setFont(new Font("Martian Mono", Font.BOLD, 25)); 
+        backButton.setFocusPainted(false); 
+        backButton.setBounds(10, 10, 50, 50);
+        backButton.setBackground(Color.WHITE); 
+        backButton.setForeground(new Color(32, 33, 36)); 
+        backButton.setBorderPainted(false);
+        backButton.setIcon(backIcon);
+
+        knightButton = new JButton("KNIGHT");
+        knightButton.setFont(new Font("Martian Mono", Font.BOLD, 25)); 
+        knightButton.setFocusPainted(false); 
+        knightButton.setBounds(100, 350, 200, 60);
+        knightButton.setBackground(Color.WHITE); 
+        knightButton.setForeground(new Color(32, 33, 36)); 
+        knightButton.setBorderPainted(false);
+
+        mageButton = new JButton("MAGE");
+        mageButton.setFont(new Font("Martian Mono", Font.BOLD, 25)); 
+        mageButton.setFocusPainted(false); 
+        mageButton.setBounds(380, 350, 200, 60);
+        mageButton.setBackground(Color.WHITE); 
+        mageButton.setForeground(new Color(32, 33, 36)); 
+        mageButton.setBorderPainted(false);
+
+        characterSelectionPanel = new JPanel();
+        characterSelectionPanel.setLayout(null);
+        characterSelectionPanel.setBackground(new Color(32, 33, 36));
+        characterSelectionPanel.add(knightButton);
+        characterSelectionPanel.add(mageButton);
+        characterSelectionPanel.add(backButton);
+
+        mainMenuFrame.add(characterSelectionPanel);
+        characterSelectionPanel.setVisible(true);
+
+        backButton.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e){
+
+            characterSelectionPanel.setVisible(false);
+            mainMenuPanel.setVisible(true);
+            mainMenuFrame.setSize(new Dimension(1000, 768));
+
+          }
+        });
+
+        knightButton.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e){
+
+            Game game = new Game();
+            game.startGame();
+            mainMenuFrame.setVisible(false);
+            mainMenuFrame.dispose();
+
+          }
+        });
+
+        mageButton.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e){
+
+            Game game = new Game();
+            game.startGame();
+            mainMenuFrame.setVisible(false);
+            mainMenuFrame.dispose();
+
+          }
+        });
 
       }
     });
@@ -113,14 +192,14 @@ public class MainMenu {
         gameplayLabel.setForeground(Color.WHITE);
         gameplayLabel.setBounds(10, 300, 900, 400);
 
-        backButton = new JButton("🔙");
+        backButton = new JButton("");
         backButton.setFont(new Font("Martian Mono", Font.BOLD, 25)); 
         backButton.setFocusPainted(false); 
-        backButton.setBounds(900, 645, 75, 75);
+        backButton.setBounds(10, 10, 50, 50);
         backButton.setBackground(Color.WHITE); 
         backButton.setForeground(new Color(32, 33, 36)); 
         backButton.setBorderPainted(false);
-
+        backButton.setIcon(backIcon);
         instructionsPanel = new JPanel();
         instructionsPanel.setLayout(null);
         instructionsPanel.setBackground(new Color(32, 33, 36));
@@ -132,13 +211,24 @@ public class MainMenu {
         mainMenuFrame.add(instructionsPanel);
         instructionsPanel.setVisible(true);
 
+        backButton.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e){
+
+            instructionsPanel.setVisible(false);
+            mainMenuPanel.setVisible(true);
+
+          }
+        }); 
+
       }
     });
 
     quit.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
 
-        mainMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainMenuFrame.dispose();
+        System.exit(0);
+        //mainMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       }
     });
@@ -146,7 +236,14 @@ public class MainMenu {
     muteSound.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
 
-        //mute sound.
+        if (muteSound.getIcon().equals(speakerIcon)) {
+          muteSound.setIcon(muteIcon);
+          // mute sound
+        } 
+        else {
+          muteSound.setIcon(speakerIcon);
+          // unmute sound
+        }
 
       }
     });
@@ -154,4 +251,3 @@ public class MainMenu {
   }
 
 }
-

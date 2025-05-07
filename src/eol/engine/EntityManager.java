@@ -1,6 +1,6 @@
 package eol.engine;
 
-import eol.entities.GameEntity;
+import eol.entities.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,23 @@ public class EntityManager {
         return entities;
     }
 
+    public Ground getGround() {
+        for (GameEntity e : entities) {
+            if (e instanceof Ground) return (Ground)e;
+        }
+        return null;
+    }
+
+    public Player getPlayer() {
+        for (GameEntity e : entities) {
+            if (e instanceof Player) return (Player)e;
+        }
+        return null;
+    }
+
     public void updateAll(float deltaTime) {
-        
+        for (GameEntity e : getEntities()) {
+            e.update(deltaTime);
+        }
     }
 }
