@@ -57,12 +57,10 @@ public class InputHandler extends KeyAdapter {
         Vector2 direction = Vector2.zero;
 
         if (isKeyDown(KeyEvent.VK_LEFT)) {
-            direction.add(Vector2.left);
-            System.out.println("add left");
+            direction = direction.add(Vector2.left);
         }
         if (isKeyDown(KeyEvent.VK_RIGHT)) {
-            direction.add(Vector2.right);
-            System.out.println("add right");
+            direction = direction.add(Vector2.right);
         }
         return direction;
     }

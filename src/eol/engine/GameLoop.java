@@ -12,6 +12,7 @@ import eol.utils.Vector2;
 public class GameLoop implements Runnable {
     private EntityManager entityManager;
     private InputHandler inputHandler;
+    private CollisionHandler collisionHandler;
     private GamePanel gamePanel;
     private Player player;
     /*
@@ -22,11 +23,12 @@ public class GameLoop implements Runnable {
     private final int targetFps = 60;
     private final long targetTime = 1000 / targetFps; //ms per frame
 
-    public GameLoop(EntityManager entityManager, InputHandler inputHandler, GamePanel gamePanel, Player player) {
+    public GameLoop(EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, GamePanel gamePanel, Player player) {
         this.running = false;
         this.debugMode = false;
         this.entityManager = entityManager;
         this.inputHandler = inputHandler;
+        this.collisionHandler = collisionHandler;
         this.gamePanel = gamePanel;
         this.player = player;
     }
@@ -88,17 +90,17 @@ public class GameLoop implements Runnable {
         Vector2 direction = inputHandler.getDirectionalInput();
         player.getMovementComponent().move(direction);
 
-
-
+        if (inputHandler.isKeyPressed(KeyEvent.VK_UP)) {
+            player.getMovementComponent().jump();
+        }
 
         if (inputHandler.isKeyPressed(KeyEvent.VK_P)) {
             debugMode = !debugMode;
             gamePanel.setDebugMode(debugMode);
         }
         
-
-
         entityManager.updateAll(deltaTime);
+        collisionHandler.handleCollisions();
         inputHandler.clearKeysPressed();
     }
 

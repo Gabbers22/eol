@@ -3,7 +3,7 @@ package eol.entities;
 import eol.utils.Vector2;
 import eol.components.MovementComponent;
 
-public class Character extends GameEntity {
+public abstract class Character extends GameEntity {
     protected final MovementComponent movement;
 
     public Character(Vector2 position, Vector2 offset, int width, int height) {
@@ -18,4 +18,6 @@ public class Character extends GameEntity {
     public void update(float deltaTime) {
         movement.update(deltaTime);
     }    
+
+    public abstract int getSpeed();
 }

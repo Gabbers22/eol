@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import eol.render.*;
-import eol.entities.Player;
+import eol.entities.*;
 import eol.utils.Vector2;
 
 public class Game {
@@ -13,9 +13,12 @@ public class Game {
     private SpriteManager spriteManager;
     private Renderer renderer;
     private InputHandler inputHandler;
+    private CollisionHandler collisionHandler;
     private GamePanel gamePanel;
     private Player player;
+    private Ground ground;
     private GameLoop gameLoop;
+    private Enemy enemy;
 
     public Game() {
         initializeSystems();
@@ -28,14 +31,23 @@ public class Game {
         renderer = new Renderer(entityManager, spriteManager);
         gamePanel = new GamePanel(renderer);
         gamePanel.addKeyListener(inputHandler);
+        collisionHandler = new CollisionHandler(GamePanel.getPanelWidth(), GamePanel.getPanelHeight(), entityManager);
+
         player = new Player(new Vector2(400, 300), new Vector2(-16, -32), 32, 64);
         entityManager.addEntity(player);
+
+        ground = new Ground(new Vector2(0, 500), new Vector2(0, 0), 800, 100);
+        entityManager.addEntity(ground);
+
+        enemy = new Enemy(new Vector2(200, 300), new Vector2(-16, -32), 32, 64, entityManager);
+        entityManager.addEntity(enemy);
+        
         
         /*
          * initialize other objects
          */
 
-        gameLoop = new GameLoop(entityManager, inputHandler, gamePanel, player);
+        gameLoop = new GameLoop(entityManager, inputHandler, collisionHandler, gamePanel, player);
 
         frame = new JFrame("Echoes of Lazarus");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
