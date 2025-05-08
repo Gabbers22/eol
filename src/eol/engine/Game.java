@@ -18,7 +18,8 @@ public class Game {
     private Player player;
     private Ground ground;
     private GameLoop gameLoop;
-    private Enemy enemy;
+    private MeleeEnemy meleeEnemy;
+    private RangedEnemy rangedEnemy;
 
     public Game() {
         initializeSystems();
@@ -39,8 +40,11 @@ public class Game {
         ground = new Ground(new Vector2(0, 500), new Vector2(0, 0), 800, 100);
         entityManager.addEntity(ground);
 
-        enemy = new Enemy(new Vector2(200, 300), new Vector2(-16, -32), 32, 64, entityManager);
-        entityManager.addEntity(enemy);
+        meleeEnemy = new MeleeEnemy(new Vector2(100, 300), new Vector2(-16, -32), 32, 64, entityManager);
+        entityManager.addEntity(meleeEnemy);
+
+        rangedEnemy = new RangedEnemy(new Vector2(800, 300), new Vector2(-16, -32), 32, 64, entityManager);
+        entityManager.addEntity(rangedEnemy);
         
         
         /*

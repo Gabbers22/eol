@@ -22,6 +22,7 @@ public class Renderer {
     public Renderer(EntityManager entityManager, SpriteManager spriteManager) {
         this.entityManager = entityManager;
         this.spriteManager = spriteManager;
+
     }
 
     public void renderAll(Graphics2D g, boolean debugMode) {
@@ -40,6 +41,7 @@ public class Renderer {
 
     public void drawDebugInfo(Graphics2D g) {
         for (GameEntity e : entityManager.getEntities()) {
+            Vector2 entityPosition = e.getPosition();
             if (e instanceof Player) {
                 g.setColor(playerDebugColor);
             } else if (e instanceof Ground) {
@@ -52,12 +54,19 @@ public class Renderer {
             if (r == null) continue;
 
             g.fill(r);
+
+            if (e instanceof Ground) continue;
+            String name = e.getClass().getSimpleName();
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Monospaced", Font.PLAIN, 12));
+            g.drawString(name, entityPosition.getX() - 20, entityPosition.getY() - 40);
         }
         
         g.setColor(Color.BLACK);
         g.setFont(new Font("Monospaced", Font.PLAIN, 16));
 
         int y = 15;
+        g.drawString("x: " + Math.floor(entityManager.getPlayer().getPosition().getX()) + " y: " + Math.floor(entityManager.getPlayer().getPosition().getY()), 10, y); y += 15;
         g.drawString("x-velocity: " + Math.abs(entityManager.getPlayer().getMovementComponent().getVelocity().getX()), 10, y); y += 15;
         g.drawString("y-velocity: " + Math.abs(entityManager.getPlayer().getMovementComponent().getVelocity().getY()), 10, y); y += 15;
         g.drawString("grounded: " + entityManager.getPlayer().getMovementComponent().isGrounded(), 10, y); y +=15;

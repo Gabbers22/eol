@@ -15,9 +15,9 @@ public class MainMenu {
 
   public MainMenu(){
     
-    ImageIcon back = new ImageIcon("assets\\icons\\back.png");
-    ImageIcon mute = new ImageIcon("assets\\icons\\SpeakerMute.png");
-    ImageIcon speaker = new ImageIcon("assets\\icons\\Speaker.png");
+    ImageIcon back = new ImageIcon("assets/icons/back.png");
+    ImageIcon mute = new ImageIcon("assets/icons/SpeakerMute.png");
+    ImageIcon speaker = new ImageIcon("assets/icons/Speaker.png");
 
     ImageIcon backIcon = new ImageIcon(back.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
     ImageIcon muteIcon = new ImageIcon(mute.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)); 

@@ -35,6 +35,16 @@ public class Vector2 {
         return new Vector2(x * scalar, y * scalar);
     }
 
+    public float magnitude() {
+        return (float) Math.sqrt(x * x + y * y);
+    }
+
+    public Vector2 normalize() {
+        float mag = magnitude();
+        if (mag == 0) return Vector2.zero; // might not work
+        return new Vector2(x/ mag, y/ mag);
+    }
+
     public void print() {
         System.out.println("x: " + x + "y: " + y);
     }

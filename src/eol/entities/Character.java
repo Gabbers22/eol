@@ -1,6 +1,7 @@
 package eol.entities;
 
 import eol.utils.Vector2;
+import eol.components.HealthComponent;
 import eol.components.MovementComponent;
 
 public abstract class Character extends GameEntity {
