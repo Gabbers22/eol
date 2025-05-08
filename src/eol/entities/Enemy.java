@@ -3,7 +3,7 @@ package eol.entities;
 import eol.utils.Vector2;
 import eol.engine.EntityManager;;
 
-public class Enemy extends Character {
+public abstract class Enemy extends Character {
     private Player player;
     private EntityManager entityManager;
     private int speed;
@@ -16,11 +16,10 @@ public class Enemy extends Character {
     }
 
     @Override
-    public void update(float deltaTime)  {
-        Vector2 direction = position.subtract(player.getPosition());
-        movement.move(direction);
-        movement.update(deltaTime);
-    }
+    public abstract void update(float deltaTime);
+    //{
+     //   movement.update(deltaTime);
+    //}
 
     public Vector2 getPosition() {
         return position;
@@ -28,6 +27,11 @@ public class Enemy extends Character {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public void moveToPlayer() {
+        Vector2 direction = position.subtract(player.getPosition()).normalize();
+        movement.move(direction);
     }
     
 }

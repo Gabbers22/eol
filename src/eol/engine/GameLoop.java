@@ -98,6 +98,10 @@ public class GameLoop implements Runnable {
             debugMode = !debugMode;
             gamePanel.setDebugMode(debugMode);
         }
+
+        if (inputHandler.isKeyPressed(KeyEvent.VK_K)) {
+            stop();
+        }
         
         entityManager.updateAll(deltaTime);
         collisionHandler.handleCollisions();
