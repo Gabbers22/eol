@@ -11,6 +11,7 @@ public class MovementComponent {
     private final Character owner;
     private Vector2 velocity = Vector2.zero;
     private boolean grounded = false;
+    private Vector2 lastDirection = Vector2.zero;
 
 
     public MovementComponent(Character owner) {
@@ -33,8 +34,17 @@ public class MovementComponent {
         grounded = g;
     }
 
+    public Vector2 getLastDirection() {
+        return lastDirection;
+    }
+
+    public void setLastDirection(Vector2 d) {
+        lastDirection = d;
+    }
+
     public void move(Vector2 direction) {
-        float speedStat = owner.getSpeed();
+        if (direction.getX() != 0.0f) setLastDirection(direction);
+        float speedStat = owner.getStatsComponent().getSpeed();
         Vector2 acceleration = direction.multiply(baseAcceleration * (speedStat / 4));
 
         velocity = new Vector2(velocity.getX() + acceleration.getX(), velocity.getY()); // apply acceleration
@@ -79,5 +89,4 @@ public class MovementComponent {
             //owner.setPosition(new Vector2(position.getX(), (float)Math.floor(position.getY()) + 0.1f));
         }
     }
-
 }

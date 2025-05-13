@@ -13,11 +13,10 @@ public class MainMenu {
   static JButton muteSound, newGame, loadGame, instructions, quit, backButton, knightButton, mageButton;;
   static JLabel instructionsLabel, gameTitle, controlsLabel, gameplayLabel;
 
-  public MainMenu(){
-    
-    ImageIcon back = new ImageIcon("assets/icons/back.png");
-    ImageIcon mute = new ImageIcon("assets/icons/SpeakerMute.png");
-    ImageIcon speaker = new ImageIcon("assets/icons/Speaker.png");
+  public void show() {
+    ImageIcon back = new ImageIcon(getClass().getResource("/assets/icons/back.png"));
+    ImageIcon mute = new ImageIcon(getClass().getResource("/assets/icons/SpeakerMute.png"));
+    ImageIcon speaker = new ImageIcon(getClass().getResource("/assets/icons/Speaker.png"));
 
     ImageIcon backIcon = new ImageIcon(back.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
     ImageIcon muteIcon = new ImageIcon(mute.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)); 
