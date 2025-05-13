@@ -10,17 +10,17 @@ public abstract class Character extends GameEntity {
     protected final MovementComponent movement;
     protected final StatsComponent stats;
     protected final HealthComponent health;
-    protected final CombatComponent combat;
+    protected CombatComponent combat;
 
     public Character(Vector2 position, Vector2 offset, int width, int height, StatsComponent stats) {
         super(position, offset, width, height);
         this.movement = new MovementComponent(this);
         this.stats = stats;
         this.health = new HealthComponent(stats.getHealth() * 20, this);
-        this.combat = createCombatComponent();
+        //this.combat = createCombatComponent();
     }
 
-    protected abstract CombatComponent createCombatComponent();
+    //protected abstract CombatComponent createCombatComponent();
 
     public MovementComponent getMovementComponent() { return movement; }
     public StatsComponent getStatsComponent() { return stats; }

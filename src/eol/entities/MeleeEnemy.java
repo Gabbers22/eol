@@ -12,10 +12,7 @@ public class MeleeEnemy extends Enemy {
     public MeleeEnemy(Vector2 position, Vector2 offset, int width, int height, EntityManager entityManager, StatsComponent stats) {
         super(position, offset, width, height, entityManager, stats);
         this.health = new HealthComponent(50, this);
-    }
-
-    protected CombatComponent createCombatComponent() {
-        return new CombatComponent(this, 1, 1.0f);
+        this.combat = new CombatComponent(this, 5, 1.0f);
     }
 
     @Override

@@ -12,10 +12,7 @@ public class RangedEnemy extends Enemy {
     public RangedEnemy(Vector2 position, Vector2 offset, int width, int height, EntityManager entityManager, StatsComponent stats) {
         super(position, offset, width, height, entityManager, stats);
         health = new HealthComponent(25, this);
-    }
-
-    protected CombatComponent createCombatComponent() {
-        return new CombatComponent(this, 1, 1.0f);
+        this.combat = new CombatComponent(this, 10, 1.0f);
     }
 
     @Override

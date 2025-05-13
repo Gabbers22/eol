@@ -12,6 +12,7 @@ public class MainMenu {
   static JPanel mainMenuPanel, instructionsPanel, characterSelectionPanel;
   static JButton muteSound, newGame, loadGame, instructions, quit, backButton, knightButton, mageButton;;
   static JLabel instructionsLabel, gameTitle, controlsLabel, gameplayLabel;
+  private String playerType;
 
   public void show() {
     ImageIcon back = new ImageIcon(getClass().getResource("/assets/icons/back.png"));
@@ -140,7 +141,8 @@ public class MainMenu {
         knightButton.addActionListener(new ActionListener(){
           public void actionPerformed(ActionEvent e){
 
-            Game game = new Game();
+            playerType = "melee";
+            Game game = new Game(playerType);
             game.startGame();
             mainMenuFrame.setVisible(false);
             mainMenuFrame.dispose();
@@ -151,7 +153,8 @@ public class MainMenu {
         mageButton.addActionListener(new ActionListener(){
           public void actionPerformed(ActionEvent e){
 
-            Game game = new Game();
+            playerType = "ranged";
+            Game game = new Game(playerType);
             game.startGame();
             mainMenuFrame.setVisible(false);
             mainMenuFrame.dispose();
