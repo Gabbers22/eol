@@ -3,8 +3,12 @@ package eol.engine;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import eol.ui.MainMenu;
 import eol.render.*;
+import eol.components.StatsComponent;
 import eol.entities.*;
+import eol.logic.EntitySpawner;
+import eol.logic.WaveManager;
 import eol.utils.Vector2;
 
 public class Game {
@@ -15,11 +19,12 @@ public class Game {
     private InputHandler inputHandler;
     private CollisionHandler collisionHandler;
     private GamePanel gamePanel;
+    private MainMenu mainMenu;
+    private EntitySpawner entitySpawner;
+    private WaveManager waveManager;
     private Player player;
     private Ground ground;
     private GameLoop gameLoop;
-    private MeleeEnemy meleeEnemy;
-    private RangedEnemy rangedEnemy;
 
     public Game() {
         initializeSystems();
@@ -30,28 +35,35 @@ public class Game {
         spriteManager = new SpriteManager();
         inputHandler = new InputHandler();
         renderer = new Renderer(entityManager, spriteManager);
+        mainMenu = new MainMenu();
         gamePanel = new GamePanel(renderer);
         gamePanel.addKeyListener(inputHandler);
         collisionHandler = new CollisionHandler(GamePanel.getPanelWidth(), GamePanel.getPanelHeight(), entityManager);
 
-        player = new Player(new Vector2(400, 300), new Vector2(-16, -32), 32, 64);
+        player = new Player(new Vector2(400, 300), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 5, 5, 5));
         entityManager.addEntity(player);
 
         ground = new Ground(new Vector2(0, 500), new Vector2(0, 0), 800, 100);
         entityManager.addEntity(ground);
 
-        meleeEnemy = new MeleeEnemy(new Vector2(100, 300), new Vector2(-16, -32), 32, 64, entityManager);
-        entityManager.addEntity(meleeEnemy);
+        /*
+        //meleeEnemy = new MeleeEnemy(new Vector2(100, 300), new Vector2(-16, -32), 32, 64, entityManager);
+        //entityManager.addEntity(meleeEnemy);
 
-        rangedEnemy = new RangedEnemy(new Vector2(800, 300), new Vector2(-16, -32), 32, 64, entityManager);
-        entityManager.addEntity(rangedEnemy);
+        //rangedEnemy = new RangedEnemy(new Vector2(800, 300), new Vector2(-16, -32), 32, 64, entityManager);
+        //entityManager.addEntity(rangedEnemy);
+        */
+
+        entitySpawner = new EntitySpawner(entityManager);
+        waveManager = new WaveManager(entitySpawner);
+
         
         
         /*
          * initialize other objects
          */
 
-        gameLoop = new GameLoop(entityManager, inputHandler, collisionHandler, gamePanel, player);
+        gameLoop = new GameLoop(this, entityManager, inputHandler, collisionHandler, gamePanel, player);
 
         frame = new JFrame("Echoes of Lazarus");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,6 +78,12 @@ public class Game {
             frame.setVisible(true);
             gameLoop.start();
         });
+    }
+
+    public void resetGame() {
+        gameLoop.stop();
+        frame.dispose();
+        mainMenu.show();
     }
 
 }

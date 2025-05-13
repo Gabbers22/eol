@@ -7,9 +7,11 @@ import java.awt.event.KeyEvent;
 import javax.swing.SwingUtilities;
 
 import eol.entities.*;
+import eol.entities.Character;
 import eol.utils.Vector2;
 
 public class GameLoop implements Runnable {
+    private Game game;
     private EntityManager entityManager;
     private InputHandler inputHandler;
     private CollisionHandler collisionHandler;
@@ -23,7 +25,8 @@ public class GameLoop implements Runnable {
     private final int targetFps = 60;
     private final long targetTime = 1000 / targetFps; //ms per frame
 
-    public GameLoop(EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, GamePanel gamePanel, Player player) {
+    public GameLoop(Game game, EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, GamePanel gamePanel, Player player) {
+        this.game = game;
         this.running = false;
         this.debugMode = false;
         this.entityManager = entityManager;
@@ -32,7 +35,6 @@ public class GameLoop implements Runnable {
         this.gamePanel = gamePanel;
         this.player = player;
     }
-
 
     public void start() {
         if (!running) {
@@ -100,10 +102,18 @@ public class GameLoop implements Runnable {
         }
 
         if (inputHandler.isKeyPressed(KeyEvent.VK_K)) {
-            stop();
+            game.resetGame();
         }
         
         entityManager.updateAll(deltaTime);
+
+        for (GameEntity e : entityManager.getEntities()) {
+            if (e instanceof Character) {
+                Character c = (Character)e;
+                c.getCombatComponent().update(deltaTime, inputHandler, entityManager);
+            }
+        }
+
         collisionHandler.handleCollisions();
         inputHandler.clearKeysPressed();
     }

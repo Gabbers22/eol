@@ -1,9 +1,10 @@
 package eol.render;
 
+import eol.components.HealthComponent;
 import eol.engine.EntityManager;
-import eol.entities.GameEntity;
 import eol.utils.Vector2;
 import eol.entities.*;
+import eol.entities.Character;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -43,6 +44,15 @@ public class Renderer {
         for (GameEntity e : entityManager.getEntities()) {
             Vector2 entityPosition = e.getPosition();
             if (e instanceof Player) {
+                g.setColor(new Color(255, 0, 255, 128));
+                Player player = (Player)e;
+                Vector2 dir = player.getMovementComponent().getLastDirection(); 
+                Rectangle hb = new Rectangle(
+                    (int)(e.getPosition().getX() - 32/2 + dir.getX()*32),
+                    (int)(e.getPosition().getY() + 64/2 - 64),
+                    32, 64
+                );
+                g.fill(hb);
                 g.setColor(playerDebugColor);
             } else if (e instanceof Ground) {
                 g.setColor(groundDebugolor);
@@ -60,6 +70,12 @@ public class Renderer {
             g.setColor(Color.BLACK);
             g.setFont(new Font("Monospaced", Font.PLAIN, 12));
             g.drawString(name, entityPosition.getX() - 20, entityPosition.getY() - 40);
+
+            if (e instanceof Character) {
+                Character c = (Character) e;
+                HealthComponent health = c.getHealthComponent();
+                g.drawString(health.getCurrentHealth() + "/" + health.getMaxHealth(), entityPosition.getX() - 20, entityPosition.getY() - 55);
+            }
         }
         
         g.setColor(Color.BLACK);
