@@ -25,12 +25,14 @@ public class Game {
     private Player player;
     private Ground ground;
     private GameLoop gameLoop;
+    private String playerType;
 
-    public Game() {
-        initializeSystems();
+    public Game(String playerType) {
+        this.playerType = playerType;
+        initializeSystems(playerType);
     }
 
-    public void initializeSystems() {
+    public void initializeSystems(String playerType) {
         entityManager = new EntityManager();
         spriteManager = new SpriteManager();
         inputHandler = new InputHandler();
@@ -40,11 +42,11 @@ public class Game {
         gamePanel.addKeyListener(inputHandler);
         collisionHandler = new CollisionHandler(GamePanel.getPanelWidth(), GamePanel.getPanelHeight(), entityManager);
 
-        player = new Player(new Vector2(400, 300), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 5, 5, 5));
-        entityManager.addEntity(player);
+        player = new Player(new Vector2(400, 300), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 5, 5, 5), playerType);
+        entityManager.forceAddEntity(player);
 
         ground = new Ground(new Vector2(0, 500), new Vector2(0, 0), 800, 100);
-        entityManager.addEntity(ground);
+        entityManager.forceAddEntity(ground);
 
         /*
         //meleeEnemy = new MeleeEnemy(new Vector2(100, 300), new Vector2(-16, -32), 32, 64, entityManager);

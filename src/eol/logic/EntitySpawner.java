@@ -3,6 +3,7 @@ package eol.logic;
 import eol.components.StatsComponent;
 import eol.engine.EntityManager;
 import eol.entities.MeleeEnemy;
+import eol.entities.RangedEnemy;
 import eol.utils.Vector2;
 
 public class EntitySpawner {
@@ -18,8 +19,14 @@ public class EntitySpawner {
         entityManager.addEntity(basicEnemy);
     }
 
+    public void spawnRangedEnemy() {
+        RangedEnemy rangedEnemy = new RangedEnemy(enemySpawn, new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 5, 1, 1));
+        entityManager.addEntity(rangedEnemy);
+    }
+
     public void spawnNext() {
         spawnBasicEnemy();
+        spawnRangedEnemy();
     }
     
 }

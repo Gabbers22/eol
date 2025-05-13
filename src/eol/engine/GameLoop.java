@@ -106,13 +106,15 @@ public class GameLoop implements Runnable {
         }
         
         entityManager.updateAll(deltaTime);
-
+        
+        
         for (GameEntity e : entityManager.getEntities()) {
             if (e instanceof Character) {
                 Character c = (Character)e;
                 c.getCombatComponent().update(deltaTime, inputHandler, entityManager);
             }
         }
+        
 
         collisionHandler.handleCollisions();
         inputHandler.clearKeysPressed();
