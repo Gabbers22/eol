@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 
 import eol.entities.*;
 import eol.entities.Character;
+import eol.logic.WaveManager;
 import eol.utils.Vector2;
 
 public class GameLoop implements Runnable {
@@ -15,6 +16,7 @@ public class GameLoop implements Runnable {
     private EntityManager entityManager;
     private InputHandler inputHandler;
     private CollisionHandler collisionHandler;
+    private WaveManager waveManager;
     private GamePanel gamePanel;
     private Player player;
     /*
@@ -25,15 +27,17 @@ public class GameLoop implements Runnable {
     private final int targetFps = 60;
     private final long targetTime = 1000 / targetFps; //ms per frame
 
-    public GameLoop(Game game, EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, GamePanel gamePanel, Player player) {
+    public GameLoop(Game game, EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, WaveManager waveManager, GamePanel gamePanel, Player player) {
         this.game = game;
         this.running = false;
-        this.debugMode = false;
+        this.debugMode = true;
         this.entityManager = entityManager;
         this.inputHandler = inputHandler;
         this.collisionHandler = collisionHandler;
+        this.waveManager = waveManager;
         this.gamePanel = gamePanel;
         this.player = player;
+        gamePanel.setDebugMode(debugMode);
     }
 
     public void start() {
@@ -115,7 +119,7 @@ public class GameLoop implements Runnable {
             }
         }
         
-
+        //waveManager.update(deltaTime);
         collisionHandler.handleCollisions();
         inputHandler.clearKeysPressed();
     }

@@ -3,8 +3,6 @@ package eol.components;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
-import javax.swing.text.html.parser.Entity;
-
 import eol.utils.Vector2;
 import eol.entities.Character;
 import eol.entities.Enemy;
@@ -32,7 +30,7 @@ public class CombatComponent {
         damage = calculateDamage();
         this.baseCooldown = baseCooldown;
         cooldown = calculateCooldown();
-        projectileSpeed = 500.0f;
+        projectileSpeed = 250.0f;
         hitbox = new Rectangle(
             (int)(owner.getPosition().getX() - 32/2 + owner.getMovementComponent().getLastDirection().getX()*32),
             (int)(owner.getPosition().getY() + 64/2 - 64),
@@ -46,7 +44,7 @@ public class CombatComponent {
         damage = calculateDamage();
         this.baseCooldown = baseCooldown;
         cooldown = calculateCooldown();
-        projectileSpeed = 500.0f;
+        projectileSpeed = 250.0f;
         this.playerType = playerType;
         hitbox = new Rectangle(
             (int)(owner.getPosition().getX() - 32/2 + owner.getMovementComponent().getLastDirection().getX()*32),
