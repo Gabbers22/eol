@@ -42,7 +42,7 @@ public class Game {
         gamePanel.addKeyListener(inputHandler);
         collisionHandler = new CollisionHandler(GamePanel.getPanelWidth(), GamePanel.getPanelHeight(), entityManager);
 
-        player = new Player(new Vector2(400, 300), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 5, 5, 5), playerType);
+        player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 5, 5, 5), playerType);
         entityManager.forceAddEntity(player);
 
         ground = new Ground(new Vector2(0, 500), new Vector2(0, 0), 800, 100);
@@ -57,7 +57,7 @@ public class Game {
         */
 
         entitySpawner = new EntitySpawner(entityManager);
-        waveManager = new WaveManager(entitySpawner);
+        waveManager = new WaveManager(entitySpawner, entityManager);
 
         
         
@@ -65,7 +65,7 @@ public class Game {
          * initialize other objects
          */
 
-        gameLoop = new GameLoop(this, entityManager, inputHandler, collisionHandler, gamePanel, player);
+        gameLoop = new GameLoop(this, entityManager, inputHandler, collisionHandler, waveManager, gamePanel, player);
 
         frame = new JFrame("Echoes of Lazarus");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

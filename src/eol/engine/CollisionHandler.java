@@ -1,6 +1,7 @@
 package eol.engine;
 
 import eol.entities.Character;
+import eol.entities.Enemy;
 import eol.entities.Ground;
 import eol.entities.Player;
 import eol.entities.GameEntity;
@@ -61,6 +62,28 @@ public class CollisionHandler {
                 }
 
                 c.setPosition(new Vector2(x, c.getPosition().getY()));
+            }
+
+            
+            if (c instanceof Enemy) {
+                for (Enemy other : entityManager.getEnemies()) {
+                    if (c == other) continue;
+                    if (c.getClass() != other.getClass()) continue;
+
+                    Rectangle b1 = c.getBounds(), b2 = other.getBounds();
+                    if (!b1.intersects(b2)) continue;
+
+                    Vector2 delta = c.getPosition().subtract(other.getPosition());
+                    // if exactly overlapping, pick a default push on X
+                    if (delta.magnitude() == 0) {
+                        delta = new Vector2(1, 0);
+                    }
+                    Vector2 push = delta.normalize().multiply(1f); // 1px separation
+
+                    // move both apart
+                    c.getMovementComponent().move(push.multiply(-1));
+                    other.getMovementComponent().move(push);
+                }
             }
         }
     }

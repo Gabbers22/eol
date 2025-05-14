@@ -11,7 +11,7 @@ public class MovementComponent {
     private final Character owner;
     private Vector2 velocity = Vector2.zero;
     private boolean grounded = false;
-    private Vector2 lastDirection = Vector2.zero;
+    private Vector2 lastDirection = Vector2.right;
 
 
     public MovementComponent(Character owner) {

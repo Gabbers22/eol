@@ -1,10 +1,14 @@
 package eol.ui;
 
+import eol.audio.AudioManager;
 import eol.engine.Game;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class MainMenu {
     
@@ -13,6 +17,7 @@ public class MainMenu {
   static JButton muteSound, newGame, loadGame, instructions, quit, backButton, knightButton, mageButton;;
   static JLabel instructionsLabel, gameTitle, controlsLabel, gameplayLabel;
   private String playerType;
+  private AudioManager audiomanager = new AudioManager();
 
   public void show() {
     ImageIcon back = new ImageIcon(getClass().getResource("/assets/icons/back.png"));
@@ -175,6 +180,17 @@ public class MainMenu {
 
     instructions.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
+
+        try {
+          try {
+            audiomanager.AudioId();
+          } catch (UnsupportedAudioFileException e1) {
+            e1.printStackTrace();
+          }
+          audiomanager.openAudio();
+        } catch (LineUnavailableException | IOException e1) {
+          e1.printStackTrace();
+        }
 
         mainMenuPanel.setVisible(false);
 
