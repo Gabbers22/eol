@@ -17,10 +17,7 @@ public abstract class Character extends GameEntity {
         this.movement = new MovementComponent(this);
         this.stats = stats;
         this.health = new HealthComponent(stats.getHealth() * 20, this);
-        //this.combat = createCombatComponent();
     }
-
-    //protected abstract CombatComponent createCombatComponent();
 
     public MovementComponent getMovementComponent() { return movement; }
     public StatsComponent getStatsComponent() { return stats; }

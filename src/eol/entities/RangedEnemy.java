@@ -12,7 +12,7 @@ public class RangedEnemy extends Enemy {
     public RangedEnemy(Vector2 position, Vector2 offset, int width, int height, EntityManager entityManager, StatsComponent stats) {
         super(position, offset, width, height, entityManager, stats);
         health = new HealthComponent(25, this);
-        this.combat = new CombatComponent(this, 10, 1.0f);
+        this.combat = new CombatComponent(this, 10, 3.0f);
     }
 
     @Override
@@ -20,8 +20,6 @@ public class RangedEnemy extends Enemy {
         // walk to 600 and start shooting
         if (position.getX() > 600) {
             movement.move(Vector2.left);
-        } else {
-            //attack();
         }
         movement.update(deltaTime);
     }

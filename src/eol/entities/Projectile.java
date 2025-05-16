@@ -38,7 +38,6 @@ public class Projectile extends GameEntity {
             return;
         }
 
-
         if (owner instanceof Player) {
             for (Enemy e : entityManager.getEnemies()) {
                 if (getBounds().intersects(e.getBounds())) {
@@ -48,6 +47,12 @@ public class Projectile extends GameEntity {
                 }
             }
         }
+
+        if (owner instanceof SupportAlly && getBounds().intersects(player.getBounds())) {
+            player.getHealthComponent().heal(damage);
+            alive = false;
+            return;
+        }   
 
         //movement
         Vector2 displacement = velocity.multiply(deltaTime);

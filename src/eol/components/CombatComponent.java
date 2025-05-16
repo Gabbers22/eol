@@ -3,6 +3,8 @@ package eol.components;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
+import javax.swing.text.html.parser.Entity;
+
 import eol.utils.Vector2;
 import eol.entities.Character;
 import eol.entities.Enemy;
@@ -11,6 +13,7 @@ import eol.entities.Player;
 import eol.entities.Projectile;
 import eol.entities.MeleeEnemy;
 import eol.entities.RangedEnemy;
+import eol.entities.SupportAlly;
 import eol.engine.InputHandler;
 import eol.engine.EntityManager;
 
@@ -30,12 +33,7 @@ public class CombatComponent {
         damage = calculateDamage();
         this.baseCooldown = baseCooldown;
         cooldown = calculateCooldown();
-        projectileSpeed = 250.0f;
-        hitbox = new Rectangle(
-            (int)(owner.getPosition().getX() - 32/2 + owner.getMovementComponent().getLastDirection().getX()*32),
-            (int)(owner.getPosition().getY() + 64/2 - 64),
-            32, 64
-        );
+        projectileSpeed = 300.0f;
     }
 
     public CombatComponent(Character owner, int baseDamage, float baseCooldown, String playerType) {
@@ -44,29 +42,23 @@ public class CombatComponent {
         damage = calculateDamage();
         this.baseCooldown = baseCooldown;
         cooldown = calculateCooldown();
-        projectileSpeed = 250.0f;
+        projectileSpeed = 300.0f;
         this.playerType = playerType;
-        hitbox = new Rectangle(
-            (int)(owner.getPosition().getX() - 32/2 + owner.getMovementComponent().getLastDirection().getX()*32),
-            (int)(owner.getPosition().getY() + 64/2 - 64),
-            32, 64
-        );
     }
 
     public int calculateDamage() {
         int strength = owner.getStatsComponent().getStrength();
-        return baseDamage * strength;
+        return baseDamage + (5 * strength);
     }
 
     public float calculateCooldown() {
         int dexterity = owner.getStatsComponent().getDexterity();
-        return baseCooldown/dexterity;
+        return baseCooldown - (0.05f * dexterity);
     }
 
     public void update(float deltaTime, InputHandler inputHandler, EntityManager entityManager) {
         cooldown = Math.max(0, cooldown - deltaTime);
 
-        
         if (owner instanceof Player) {
             if (playerType.equals("melee")) {
                 meleePlayerAttack(inputHandler, entityManager);;
@@ -77,20 +69,25 @@ public class CombatComponent {
             meleeEnemyAttack(entityManager);
         } else if (owner instanceof RangedEnemy) {
             rangedEnemyAttack(entityManager);
+        } else if (owner instanceof SupportAlly) {
+            supportAllyAttack(entityManager);
         } else {
             return;
         }
-        
     }
 
     public void meleePlayerAttack(InputHandler inputHandler, EntityManager entityManager) {
         if (!inputHandler.isKeyPressed(KeyEvent.VK_X) || cooldown > 0) return;
-       
-        hitbox = new Rectangle(
-            (int)(owner.getPosition().getX() - 32/2 + owner.getMovementComponent().getLastDirection().getX()*32),
-            (int)(owner.getPosition().getY() + 64/2 - 64),
-            32, 64
-        );
+        Vector2 dir = owner.getMovementComponent().getLastDirection();
+        float px = owner.getPosition().getX();
+        float py = owner.getPosition().getY();
+        int w = 64, h = 64;
+        int halfW = 32/2;
+        int x = (int)(px + (dir.getX() < 0 ? -halfW - w :  halfW));
+        int y = (int)(py + 64/2 - 64);
+
+        hitbox = new Rectangle(x, y, w, h);
+
         for (Enemy e : entityManager.getEnemies()) {
             if (hitbox.intersects(e.getBounds())) {
                 e.getHealthComponent().takeDamage(damage);
@@ -101,9 +98,8 @@ public class CombatComponent {
 
     public void rangedPlayerAttack(InputHandler inputHandler, EntityManager entityManager) {
         if (!inputHandler.isKeyPressed(KeyEvent.VK_X) || cooldown > 0) return;
-        
+   
         Vector2 dir = owner.getMovementComponent().getLastDirection();
-        dir.print();
         Projectile proj = new Projectile(new Vector2(owner.getPosition().getX() + dir.getX()*10, owner.getPosition().getY()), new Vector2(-5, -5), 10, 10, dir.multiply(projectileSpeed), damage, owner, entityManager);
         entityManager.addEntity(proj);
         cooldown = calculateCooldown();
@@ -126,6 +122,33 @@ public class CombatComponent {
         Projectile proj = new Projectile(new Vector2(owner.getPosition().getX() + dir.getX()*10, owner.getPosition().getY()), new Vector2(-5, -5), 10, 10, dir.multiply(projectileSpeed), damage, owner, entityManager);
         entityManager.addEntity(proj);
         cooldown = calculateCooldown();
+    }
+
+    public void supportAllyAttack(EntityManager entityManager) {
+        if (cooldown > 0) return;
+        Player p = entityManager.getPlayer();
+
+        Vector2 dir = owner.getMovementComponent().getLastDirection();
+        float px = owner.getPosition().getX();
+        float py = owner.getPosition().getY();
+        int w = 64, h = 64;
+        int halfW = 32/2;
+        int x = (int)(px + (dir.getX() < 0 ? -halfW - w :  halfW));
+        int y = (int)(py + 64/2 - 64);
+
+        hitbox = new Rectangle(x, y, w, h);
+
+        if (hitbox.intersects(p.getBounds())) {
+            p.getHealthComponent().heal(damage);
+        }
+
+        for (Enemy e : entityManager.getEnemies()) {
+            if (hitbox.intersects(e.getBounds())) {
+                e.getHealthComponent().takeDamage(damage);
+            }
+        }
+        cooldown = calculateCooldown();
+
     }
     
 }

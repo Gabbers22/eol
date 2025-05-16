@@ -13,12 +13,6 @@ public class Player extends Character {
         super(position, offset, width, height, stats);
         this.health = new HealthComponent(100, this);
         this.playerType = playerType;
-        this.combat = new CombatComponent(this, 1, 5.0f, playerType);
+        this.combat = new CombatComponent(this, 5, 0.1f, playerType);
     }
-
-    /*
-    protected CombatComponent createCombatComponent() {
-        return new CombatComponent(this, 1, 1.0f, playerType);
-    }
-    */
 }
