@@ -1,6 +1,7 @@
 package eol.engine;
 
 import eol.render.GamePanel;
+import eol.ui.GameOver;
 
 import java.awt.event.KeyEvent;
 
@@ -22,15 +23,15 @@ public class GameLoop implements Runnable {
     /*
      * other objects
      */
-    private boolean debugMode;
-    private boolean running;
+    private boolean itemPanelShown = false;
+    private int lastWave = 0;
+    private boolean debugMode = true;
+    private boolean running = false;
     private final int targetFps = 60;
     private final long targetTime = 1000 / targetFps; //ms per frame
 
     public GameLoop(Game game, EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, WaveManager waveManager, GamePanel gamePanel, Player player) {
         this.game = game;
-        this.running = false;
-        this.debugMode = true;
         this.entityManager = entityManager;
         this.inputHandler = inputHandler;
         this.collisionHandler = collisionHandler;
@@ -89,10 +90,24 @@ public class GameLoop implements Runnable {
 
     public void update(float deltaTime) {
 
-        /*
-         * handle inputs
-         * check collisions
-         */
+        int currentWave = waveManager.getWave();
+        if (currentWave != lastWave) {
+            lastWave = currentWave;
+            itemPanelShown = false;
+        }
+
+        if (waveManager.hasWaveEnded() && !itemPanelShown) {
+            gamePanel.toggleItemPanel(true);
+            itemPanelShown = true;
+            return;
+        }
+
+        if (gamePanel.showingItems()) {
+            return;
+        }
+
+        waveManager.update(deltaTime);
+
         Vector2 direction = inputHandler.getDirectionalInput();
         player.getMovementComponent().move(direction);
 
@@ -106,7 +121,9 @@ public class GameLoop implements Runnable {
         }
 
         if (inputHandler.isKeyPressed(KeyEvent.VK_K)) {
-            game.resetGame();
+            stop();
+            game.closeGame();
+            game.showMainMenu();
         }
         
         entityManager.updateAll(deltaTime);
@@ -118,8 +135,17 @@ public class GameLoop implements Runnable {
                 c.getCombatComponent().update(deltaTime, inputHandler, entityManager);
             }
         }
-        
-        //waveManager.update(deltaTime);
+
+        if (!player.getHealthComponent().isAlive()) {
+            stop();
+            SwingUtilities.invokeLater(() -> {
+                game.closeGame();
+                GameOver over = new GameOver();
+                over.show();
+            });
+            return;
+        }
+
         collisionHandler.handleCollisions();
         inputHandler.clearKeysPressed();
     }

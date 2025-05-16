@@ -3,54 +3,69 @@ package eol.items;
 import java.util.HashMap;
 
 public class Item {
-    HashMap<String, Integer> statModifiers;
+	
+    HashMap<String, Integer> statModifiers = new HashMap<>();
+
+	// these are the items main competent 
     private  String Id;
 	private  String Name;
 	private  String Rairty;
 
+	// these are the items main constructor  
+
 	public Item(String Id, String Name,String Rairty) {
-        statModifiers = new HashMap<>();
         this.Id = Id;
         this.Name = Name;
         this.Rairty = Rairty;
 	}
-	    
-    public void MyId() {
-	    this.Id = ""; 
-	}
-		
-	public String getId() {
-		return Id;	
-	}
-		
-	public void setId(String Id) {
-		this.Id = Id;
-	}	
-		
-    public void MyName() {
-        this.Name = ""; 
-    }
-			
-	public  String getName() {
-		return Name;	
-	}
-		
-	public void setName(String Name) {
-		this.Name = Name;
-	}	
-
-	public void MyRairty() {
-		this.Rairty = ""; 
-	}
-
-	public  String getRairty() {
-		return Rairty;	
-	}
-		
-	public void setRairty(String Rairty) {
-		this.Rairty = Rairty;
-	}	
 	
-}
+	// these are the items id  
 
+	  public void MyId() {
+	        this.Id = ""; 
+	    }
+		// these are the get items id  
+
+		public  String getId() {
+			return Id;	
+		}
+		// these are the set items id  
+
+		public void setId(String Id) {
+			this.Id = Id;
+		}	
+		// these are the items name  
+
+		  public void MyName() {
+		        this.Name = ""; 
+		    }
+			// these are get items name  
+
+		public  String getName() {
+			return Name;	
+		}
+		// these are set items name  
+
+		public void setName(String Name) {
+			this.Name = Name;
+		}	
+		// these are the items set rarity  
+
+		  public void MyRairty() {
+		        this.Rairty = ""; 
+		    }
+			// these are the items get rarity  
+
+		public  String getRairty() {
+			return Rairty;	
+		}
+		// these are the items set rarity  
+
+		public void setRairty(String Rairty) {
+			this.Rairty = Rairty;
+		}	
+	
+
+
+}
 

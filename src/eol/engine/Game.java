@@ -36,11 +36,6 @@ public class Game {
         entityManager = new EntityManager();
         spriteManager = new SpriteManager();
         inputHandler = new InputHandler();
-        renderer = new Renderer(entityManager, spriteManager);
-        mainMenu = new MainMenu();
-        gamePanel = new GamePanel(renderer);
-        gamePanel.addKeyListener(inputHandler);
-        collisionHandler = new CollisionHandler(GamePanel.getPanelWidth(), GamePanel.getPanelHeight(), entityManager);
 
         player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 5, 5, 5), playerType);
         entityManager.forceAddEntity(player);
@@ -48,18 +43,13 @@ public class Game {
         ground = new Ground(new Vector2(0, 500), new Vector2(0, 0), 800, 100);
         entityManager.forceAddEntity(ground);
 
-        /*
-        //meleeEnemy = new MeleeEnemy(new Vector2(100, 300), new Vector2(-16, -32), 32, 64, entityManager);
-        //entityManager.addEntity(meleeEnemy);
-
-        //rangedEnemy = new RangedEnemy(new Vector2(800, 300), new Vector2(-16, -32), 32, 64, entityManager);
-        //entityManager.addEntity(rangedEnemy);
-        */
-
         entitySpawner = new EntitySpawner(entityManager);
-        waveManager = new WaveManager(entitySpawner, entityManager);
-
-        
+        waveManager = new WaveManager(entitySpawner, entityManager);        
+        renderer = new Renderer(entityManager, spriteManager, waveManager);
+        mainMenu = new MainMenu();
+        gamePanel = new GamePanel(renderer);
+        gamePanel.addKeyListener(inputHandler);
+        collisionHandler = new CollisionHandler(GamePanel.getPanelWidth(), GamePanel.getPanelHeight(), entityManager);
         
         /*
          * initialize other objects
@@ -82,9 +72,11 @@ public class Game {
         });
     }
 
-    public void resetGame() {
-        gameLoop.stop();
+    public void closeGame() {
         frame.dispose();
+    }
+
+    public void showMainMenu() {
         mainMenu.show();
     }
 

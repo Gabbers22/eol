@@ -2,6 +2,7 @@ package eol.logic;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 import eol.components.StatsComponent;
 import eol.engine.EntityManager;
@@ -12,40 +13,162 @@ import eol.utils.Vector2;
 
 public class EntitySpawner {
     private EntityManager entityManager;
-    private Queue<Enemy> spawnQueue = new LinkedList<>();
-    private Vector2 enemySpawn = new Vector2(820, 468);
+    private StatsComponent playerStats;
+    private Queue<EnemyConfig> spawnQueue = new LinkedList<>();
+    private Vector2 enemySpawn = new Vector2(850, 500);
+    private final Random random = new Random();
     private float spawnTimer = 0f;
-    private float spawnInterval = 1.5f;
+    private float spawnInterval = 0.5f;
 
     public EntitySpawner(EntityManager entityManager) {
         this.entityManager = entityManager;
+        playerStats = entityManager.getPlayer().getStatsComponent();
     }
 
-    public void spawnBasicEnemy() {
-        MeleeEnemy basicEnemy = new MeleeEnemy(enemySpawn, new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
-        entityManager.addEntity(basicEnemy);
+    public void prepareWave(int waveNumber) {
+        spawnQueue.clear();
+        int totalEnemies = (int) ((int) 2 + (waveNumber * (Math.floor(playerStats.getDexterity() / 3))));
+        for (int i = 0; i <= totalEnemies; i++) {
+            EnemyType type = selectType(waveNumber, i);
+            StatsComponent baseStats = baseStatsForType(type);
+            StatsComponent adjusted = adjustStats(baseStats);
+            Vector2 offset = offsetForType(type);
+            int w = widthForType(type);
+            int h = heightForType(type);
+            spawnQueue.add(new EnemyConfig(type, offset, w, h, adjusted));
+        }
+        spawnTimer = 0f;
     }
 
-    public void spawnRangedEnemy() {
-        RangedEnemy rangedEnemy = new RangedEnemy(enemySpawn, new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 3, 1, 1));
-        entityManager.addEntity(rangedEnemy);
-    }
-
-    public void spawnNext() {
-        spawnBasicEnemy();
-        spawnRangedEnemy();
+    public boolean waveOver() {
+        return (spawnQueue.isEmpty() && entityManager.getEnemies().isEmpty());
     }
 
     public void update(float deltaTime) {
-        //if (spawnQueue.isEmpty()) return;
+        if (spawnQueue.isEmpty()) return;
         spawnTimer -= deltaTime;
 
         if (spawnTimer <= 0) {
-            //Enemy e = spawnQueue.poll();
+            EnemyConfig cfg = spawnQueue.poll();
             spawnTimer = spawnInterval;
-            spawnRangedEnemy();
+            spawn(cfg);
+            System.out.println("spawned: " + cfg.type + " stats: " + cfg.stats.getHealth() + ", " + cfg.stats.getSpeed() + ", " + cfg.stats.getStrength() + ", " + cfg.stats.getDexterity());
         }
 
+    }
+
+    private void spawn(EnemyConfig cfg) {
+        Enemy e;
+        switch(cfg.type) {
+            case meleeBasic, meleeArmored, meleeKnight, meleeGiant ->
+                e = new MeleeEnemy(enemySpawn, cfg.offset, cfg.width, cfg.height, entityManager, cfg.stats);
+            case rangedBasic ->
+                e = new RangedEnemy(enemySpawn, cfg.offset, cfg.width, cfg.height, entityManager, cfg.stats);
+            default -> {
+                return;
+            }
+        }
+        entityManager.addEntity(e);
+    }
+
+    private EnemyType selectType(int wave, int index) {
+        int speed = playerStats.getSpeed();
+        int strength = playerStats.getStrength();
+        int health = playerStats.getHealth();
+        int dexterity = playerStats.getDexterity();
+
+        if (wave < 3) {
+            return EnemyType.meleeBasic;
+        }
+        if (wave < 5) {
+            return (index % 3 == 0) ? EnemyType.meleeArmored : EnemyType.meleeBasic;
+        }
+        if (wave < 10) {
+            float ratio = (float) speed / (speed + strength);
+            if (random.nextFloat() < ratio) {
+                return (index % 3 == 0) ? EnemyType.meleeArmored : EnemyType.meleeBasic;
+            } else {
+                return EnemyType.rangedBasic;
+            }
+        }
+        if (wave < 15) {
+            float knightChance = (float) health / (health + 5);
+            if (random.nextFloat() < knightChance) {
+                return EnemyType.meleeKnight;
+            }
+
+            float ratio = (float) speed / (speed + strength);
+            if (random.nextFloat() < ratio) {
+                return (index % 3 == 0) ? EnemyType.meleeArmored : EnemyType.meleeBasic;
+            } else {
+                return EnemyType.rangedBasic;
+            }
+        }
+
+        float giantChance = (5f - dexterity) / 5f;
+        if (random.nextFloat() < giantChance) {
+            return EnemyType.meleeGiant;
+        }
+
+        float knightChance = (float) health / (health + 5);
+        if (random.nextFloat() < knightChance) {
+            return EnemyType.meleeKnight;
+        }
+
+        float ratio = (float) speed / (speed + strength);
+        if (random.nextFloat() < ratio) {
+            return (index % 3 == 0) ? EnemyType.meleeArmored : EnemyType.meleeBasic;
+        } else {
+                return EnemyType.rangedBasic;
+        }        
+    }
+
+    private StatsComponent baseStatsForType(EnemyType type) {
+        return switch (type) {
+            case meleeBasic -> new StatsComponent(1, 2, 1, 1);
+            case rangedBasic -> new StatsComponent(1, 2, 1, 1);
+            case meleeArmored -> new StatsComponent(2, 1, 1, 1);
+            case meleeKnight -> new StatsComponent(2, 2, 1, 1);
+            case meleeGiant -> new StatsComponent(5, 1, 1, 1);           
+        };
+    }
+
+    private StatsComponent adjustStats(StatsComponent base) {
+        int health = base.getHealth() + (int)Math.floor(0.5 * playerStats.getHealth());
+        int speed = base.getSpeed() * 2;
+        int strength = base.getStrength() + (int)Math.floor(0.5 * playerStats.getStrength());
+        int dexterity = base.getDexterity() + (int)Math.floor(0.5 * playerStats.getDexterity());
+        return new StatsComponent(health, speed, strength, dexterity);
+    }
+
+    private Vector2 offsetForType(EnemyType type) {
+        return type == EnemyType.meleeGiant ? new Vector2(-64, -128) : new Vector2(-16, -32);
+    }
+
+    private int widthForType(EnemyType type) {
+        return type == EnemyType.meleeGiant ? 128 : 32;
+    }
+
+    private int heightForType(EnemyType type) {
+        return type == EnemyType.meleeGiant ? 256 : 64;
+    }
+
+    private enum EnemyType { meleeBasic, rangedBasic, meleeArmored, meleeKnight, meleeGiant }
+
+    private static class EnemyConfig {
+        final EnemyType type;
+        final Vector2 offset;
+        final int width;
+        final int height;
+        final StatsComponent stats;
+
+        EnemyConfig(EnemyType type, Vector2 offset, int width, int height, StatsComponent stats) {
+            this.type = type;
+            this.offset = offset;
+            this.width = width;
+            this.height = height;
+            this.stats = stats;
+        }
     }
     
 }
