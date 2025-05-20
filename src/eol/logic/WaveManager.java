@@ -33,15 +33,17 @@ public class WaveManager {
             currentWave++;
             spawner.prepareWave(currentWave);
             waveEnded = false;
-            countdown = 3.0f;
+            countdown = 0.1f;
         }
 
-        if (currentWave == 2 && !supportSpawned) {
+        if (currentWave == 5 && !supportSpawned) {
             supportSpawned = true;
             SupportAlly supportAlly = new SupportAlly(new Vector2(200, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
             entityManager.addEntity(supportAlly);
             System.out.println("support ally spawned");
         }
+
+        
     }
 
     public int getWave() {

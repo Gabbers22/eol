@@ -1,6 +1,5 @@
 package eol.entities;
 
-import eol.components.CombatComponent;
 import eol.components.StatsComponent;
 import eol.engine.EntityManager;
 import eol.utils.Vector2;

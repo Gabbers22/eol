@@ -24,7 +24,5 @@ public abstract class Character extends GameEntity {
     public HealthComponent getHealthComponent() { return health; }
     public CombatComponent getCombatComponent() { return combat; }
 
-    public void update(float deltaTime) {
-        movement.update(deltaTime);
-    }    
+    public abstract void update(float deltaTime); 
 }

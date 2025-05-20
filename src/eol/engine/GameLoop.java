@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.SwingUtilities;
 
+import eol.components.StatsComponent;
 import eol.entities.*;
 import eol.entities.Character;
 import eol.logic.WaveManager;
@@ -105,8 +106,13 @@ public class GameLoop implements Runnable {
         if (gamePanel.showingItems()) {
             return;
         }
-
-        waveManager.update(deltaTime);
+        
+        if (waveManager.getWave() < 20) {
+            waveManager.update(deltaTime);
+        } else {
+            Boss boss = new Boss(new Vector2(400, -100), new Vector2(-42.5f, -47), 85, 94, entityManager, new StatsComponent(25, 1, 1, 1));
+            entityManager.addEntity(boss);
+        }
 
         Vector2 direction = inputHandler.getDirectionalInput();
         player.getMovementComponent().move(direction);
@@ -126,13 +132,23 @@ public class GameLoop implements Runnable {
             game.showMainMenu();
         }
         
-        entityManager.updateAll(deltaTime);
-        
+        //entityManager.updateAll(deltaTime);
         
         for (GameEntity e : entityManager.getEntities()) {
             if (e instanceof Character) {
                 Character c = (Character)e;
+                if (c.getCombatComponent() == null) continue;
                 c.getCombatComponent().update(deltaTime, inputHandler, entityManager);
+            }
+        }
+
+        entityManager.updateAll(deltaTime);
+
+         for (GameEntity e : entityManager.getEntities()) {
+            if (e instanceof Character) {
+                Character c = (Character)e;
+                if (c.getCombatComponent() == null) continue;
+                c.getCombatComponent().setJustAttacked(false);;
             }
         }
 

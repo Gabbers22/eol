@@ -23,6 +23,9 @@ public class EntityManager {
 
     public void forceAddEntity(GameEntity entity) {
         entities.add(entity);
+        if (entity instanceof Enemy) {
+            enemies.add((Enemy)entity);
+        }
     }
 
     public void addEntity(GameEntity entity) {
