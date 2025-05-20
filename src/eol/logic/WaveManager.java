@@ -17,7 +17,7 @@ public class WaveManager {
         this.spawner = spawner;
         this.entityManager = entityManager;
         currentWave = 1;
-        countdown = 3.0f;
+        countdown = 0.1f;
         waveEnded = false;
         supportSpawned = false;
         spawner.prepareWave(currentWave);
