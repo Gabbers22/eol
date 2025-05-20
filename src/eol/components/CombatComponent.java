@@ -15,6 +15,7 @@ import eol.entities.MeleeEnemy;
 import eol.entities.RangedEnemy;
 import eol.entities.SupportAlly;
 import eol.engine.InputHandler;
+import eol.audio.AudioManager;
 import eol.engine.EntityManager;
 
 public class CombatComponent {
@@ -26,6 +27,7 @@ public class CombatComponent {
     private float projectileSpeed;
     private Rectangle hitbox;
     private String playerType;
+    private boolean justAttacked = false;
 
     public CombatComponent(Character owner, int baseDamage, float baseCooldown) {
         this.owner = owner;
@@ -56,6 +58,14 @@ public class CombatComponent {
         return baseCooldown - (0.05f * dexterity);
     }
 
+    public boolean getJustAttacked() {
+        return justAttacked;
+    }
+
+    public void setJustAttacked(boolean b) {
+        justAttacked = b;
+    }
+
     public void update(float deltaTime, InputHandler inputHandler, EntityManager entityManager) {
         cooldown = Math.max(0, cooldown - deltaTime);
 
@@ -78,6 +88,7 @@ public class CombatComponent {
 
     public void meleePlayerAttack(InputHandler inputHandler, EntityManager entityManager) {
         if (!inputHandler.isKeyPressed(KeyEvent.VK_X) || cooldown > 0) return;
+        justAttacked = true;
         Vector2 dir = owner.getMovementComponent().getLastDirection();
         float px = owner.getPosition().getX();
         float py = owner.getPosition().getY();
@@ -98,7 +109,8 @@ public class CombatComponent {
 
     public void rangedPlayerAttack(InputHandler inputHandler, EntityManager entityManager) {
         if (!inputHandler.isKeyPressed(KeyEvent.VK_X) || cooldown > 0) return;
-   
+        justAttacked = true;
+        //AudioManager.getInstance().playSfx("shoot");
         Vector2 dir = owner.getMovementComponent().getLastDirection();
         Projectile proj = new Projectile(new Vector2(owner.getPosition().getX() + dir.getX()*10, owner.getPosition().getY()), new Vector2(-5, -5), 10, 10, dir.multiply(projectileSpeed), damage, owner, entityManager);
         entityManager.addEntity(proj);
@@ -110,7 +122,6 @@ public class CombatComponent {
         Player p = entityManager.getPlayer();
         if (owner.getBounds().intersects(p.getBounds())) {
             p.getHealthComponent().takeDamage(damage);
-            System.out.println("hit player");
             cooldown = calculateCooldown();
         }
     }

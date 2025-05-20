@@ -5,15 +5,13 @@ import eol.components.StatsComponent;
 import eol.engine.EntityManager;;
 
 public abstract class Enemy extends Character {
-    private Player player;
-    private EntityManager entityManager;
-    private int speed;
+    protected Player player;
+    protected EntityManager entityManager;
 
     public Enemy(Vector2 position, Vector2 offset, int width, int height, EntityManager entityManager, StatsComponent stats) {
         super(position, offset, width, height, stats);
         this.entityManager = entityManager;
         player = entityManager.getPlayer();
-        this.speed = 1;
     }
 
     public abstract void update(float deltaTime);

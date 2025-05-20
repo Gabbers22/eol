@@ -1,5 +1,6 @@
 package eol.components;
 
+import eol.entities.Boss;
 import eol.entities.Character;
 import eol.utils.Vector2;
 
@@ -12,6 +13,7 @@ public class MovementComponent {
     private Vector2 velocity = Vector2.zero;
     private boolean grounded = false;
     private Vector2 lastDirection = Vector2.right;
+    float time = 0;
 
 
     public MovementComponent(Character owner) {
@@ -59,10 +61,10 @@ public class MovementComponent {
     }
 
     public void jump() {
-        if (grounded) {
+        //if (grounded) {
             velocity = new Vector2(velocity.getX(), -jumpForce);
             grounded = false;
-        }
+        //}
     }
 
     public void applyFriction() {
@@ -77,7 +79,11 @@ public class MovementComponent {
     
     public void update(float deltaTime) {
         if (!grounded) {
-            velocity = new Vector2(velocity.getX(), velocity.getY() + gravity * deltaTime);
+            if (owner instanceof Boss) {
+                velocity = new Vector2(velocity.getX(), velocity.getY() + 200.0f * deltaTime);
+            } else {
+                velocity = new Vector2(velocity.getX(), velocity.getY() + gravity * deltaTime);
+            }
         }
 
         Vector2 displacement = velocity.multiply(deltaTime);
@@ -88,5 +94,13 @@ public class MovementComponent {
             applyFriction();
             //owner.setPosition(new Vector2(position.getX(), (float)Math.floor(position.getY()) + 0.1f));
         }
+    }
+
+    public void bossFloat(float deltaTime) {
+            time += deltaTime;
+            float x = 400 + (float)(Math.sin(time * 0.5f * Math.PI) * 40f); 
+            float y = 125 + (float)(Math.sin(time * 1.0f * Math.PI + (Math.PI / 2)) * 30f);
+            owner.setPosition(new Vector2(x, y));
+            return;
     }
 }

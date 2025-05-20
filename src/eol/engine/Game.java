@@ -5,6 +5,7 @@ import javax.swing.SwingUtilities;
 
 import eol.ui.MainMenu;
 import eol.render.*;
+import eol.audio.AudioManager;
 import eol.components.StatsComponent;
 import eol.entities.*;
 import eol.logic.EntitySpawner;
@@ -34,7 +35,8 @@ public class Game {
 
     public void initializeSystems(String playerType) {
         entityManager = new EntityManager();
-        spriteManager = new SpriteManager();
+        SpriteManager spriteManager = SpriteManager.getInstance();
+        spriteManager.loadAllSprites();
         inputHandler = new InputHandler();
 
         player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 5, 5, 5), playerType);

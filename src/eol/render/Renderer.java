@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,10 @@ public class Renderer {
 
     public void renderAll(Graphics2D g, boolean debugMode) {
         // Loop over every entity and call renderEntity
-
+        List<GameEntity> all = new ArrayList<>(entityManager.getEntities());
+        for (GameEntity e : all) {
+            renderEntity(g, e);
+        }
 
         // Draw debug info
         if (debugMode) {
@@ -42,7 +46,43 @@ public class Renderer {
     }
 
     public void renderEntity(Graphics2D g, GameEntity e) {
-        
+        if (e instanceof Boss) {
+            Boss boss = (Boss)e;
+            BufferedImage frame = boss.getAnimationComponent().getActive().getCurrentFrame();
+            Rectangle bounds = boss.getBounds();
+            g.drawImage(frame, (int)bounds.getX(), (int)bounds.getY(), null);
+        }
+
+        if (e instanceof Player) {
+            Player player = (Player)e;
+            BufferedImage frame = player.getAnimationComponent().getActive().getCurrentFrame();
+            Rectangle bounds = player.getBounds();
+            g.drawImage(frame, (int)bounds.getX(), (int)bounds.getY(), null);
+        }
+
+        if (e instanceof Projectile) {
+            Projectile proj = (Projectile)e;
+            BufferedImage frame = proj.getAnimationComponent().getActive().getCurrentFrame();
+            Rectangle bounds = proj.getBounds();
+
+            // heading angle
+            Vector2 vel = proj.getVelocity();
+            double angle = Math.atan2(vel.getY(), vel.getX()) + Math.PI/2;
+
+            // scaling factors
+            double sx = 0.6;
+            double sy = 0.6;
+
+            Graphics2D g2 = (Graphics2D) g.create();
+            int cx = bounds.x + bounds.width  / 2;
+            int cy = bounds.y + bounds.height / 2;
+
+            g2.translate(cx, cy);
+            g2.rotate(angle);
+            g2.scale(sx, sy);
+            g2.drawImage(frame, -frame.getWidth()  / 2, -frame.getHeight() / 2 + 25, null);
+            g2.dispose();
+        }
     }
 
     public void drawDebugInfo(Graphics2D g) {
