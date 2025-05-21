@@ -2,6 +2,7 @@ package eol.logic;
 
 import eol.components.StatsComponent;
 import eol.engine.EntityManager;
+import eol.entities.Boss;
 import eol.entities.SupportAlly;
 import eol.utils.Vector2;
 
@@ -12,18 +13,29 @@ public class WaveManager {
     private float countdown;
     private boolean waveEnded;
     private boolean supportSpawned; 
+    private boolean bossSpawned;
 
     public WaveManager(EntitySpawner spawner, EntityManager entityManager) {
         this.spawner = spawner;
         this.entityManager = entityManager;
         currentWave = 1;
-        countdown = 0.1f;
+        countdown = 3.0f;
         waveEnded = false;
         supportSpawned = false;
+        bossSpawned = false;
         spawner.prepareWave(currentWave);
     }
 
     public void update(float deltaTime) {
+        if (currentWave == 8) {
+            if (!bossSpawned) {
+                Boss boss = new Boss(new Vector2(400, -100), new Vector2(-42.5f, -47), 85, 94, entityManager, new StatsComponent(25, 1, 1, 1));
+                entityManager.addEntity(boss);
+                bossSpawned = true;
+            }
+            return;
+        }
+
         spawner.update(deltaTime);
         if (!spawner.waveOver()) return;
 
@@ -33,7 +45,7 @@ public class WaveManager {
             currentWave++;
             spawner.prepareWave(currentWave);
             waveEnded = false;
-            countdown = 0.1f;
+            countdown = 3.0f;
         }
 
         if (currentWave == 5 && !supportSpawned) {

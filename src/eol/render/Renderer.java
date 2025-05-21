@@ -95,10 +95,10 @@ public class Renderer {
                 Vector2 dir = character.getMovementComponent().getLastDirection(); 
                 float px = e.getPosition().getX();
                 float py = e.getPosition().getY();
-                int w = 64, h = 64;
+                int w = 64, h = 2;
                 int halfW = 32/2;
                 int x = (int)(px + (dir.getX() < 0 ? -halfW - w :  halfW));
-                int y = (int)(py + 64/2 - 64);
+                int y = (int)(py + 64/2 - 64) + 16;
 
                 Rectangle hb = new Rectangle(x, y, w, h);
                 g.fill(hb);

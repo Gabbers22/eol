@@ -109,13 +109,8 @@ public class GameLoop implements Runnable {
             return;
         }
         
-        if (waveManager.getWave() < 20) {
-            waveManager.update(deltaTime);
-        } else {
-            Boss boss = new Boss(new Vector2(400, -100), new Vector2(-42.5f, -47), 85, 94, entityManager, new StatsComponent(25, 1, 1, 1));
-            entityManager.addEntity(boss);
-        }
-
+        waveManager.update(deltaTime);
+       
         Vector2 direction = inputHandler.getDirectionalInput();
         player.getMovementComponent().move(direction);
 
@@ -134,7 +129,6 @@ public class GameLoop implements Runnable {
             game.showMainMenu();
         }
         
-        //entityManager.updateAll(deltaTime);
         
         for (GameEntity e : entityManager.getEntities()) {
             if (e instanceof Character) {

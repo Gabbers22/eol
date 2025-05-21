@@ -14,30 +14,31 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.util.HashMap;
 import java.util.List;
 
-public class AudioManager  {
-	private static AudioManager instance; 
+public class AudioManager {
+	private static AudioManager instance;
 
-	private HashMap<String, Clip> music = new HashMap<>(); 
+	private HashMap<String, Clip> music = new HashMap<>();
 	private HashMap<String, List<Clip>> sfx = new HashMap<>();
 	private Clip musicPlaying;
 
 	// Private constructor to block other classes from creating a new audiomanager
-	private AudioManager() {}
+	private AudioManager() {
+	}
 
-	/*	
-	 *	Allows for global access. e.x:
-	 * 	AudioManager.getInstance().playMusic("menu")
-	 */ 
-	public AudioManager getInstance() {
+	/*
+	 * Allows for global access. e.x:
+	 * AudioManager.getInstance().playMusic("menu")
+	 */
+	public static synchronized AudioManager getInstance() {
 		if (instance == null) {
-			AudioManager instance = new AudioManager();
+			instance = new AudioManager();
 		}
 		return instance;
 	}
 
 	// loads music, give filename and set hashmap id
 	public void loadMusic(String id, String file) {
-		Clip clip = createClip("assets/music/" + file);
+		Clip clip = createClip("/assets/music/" + file);
 		if (clip != null) {
 			music.put(id, clip);
 		}
@@ -46,7 +47,8 @@ public class AudioManager  {
 	// Plays music given the id
 	public void playMusic(String id) {
 		Clip clip = music.get(id);
-		if (clip == null) return;
+		if (clip == null)
+			return;
 		clip.setFramePosition(0);
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 		clip.start();
@@ -62,10 +64,10 @@ public class AudioManager  {
 
 	// creates a clip given the file path
 	public Clip createClip(String path) {
-		try (InputStream in = getClass().getResourceAsStream(path); 
-			AudioInputStream ais = AudioSystem.getAudioInputStream(in)) {
+		try (InputStream in = getClass().getResourceAsStream(path);
+				AudioInputStream ais = AudioSystem.getAudioInputStream(in)) {
 			Clip clip = AudioSystem.getClip();
-			clip.open(ais);	
+			clip.open(ais);
 			return clip;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,7 +78,7 @@ public class AudioManager  {
 	public void loadAll() {
 		loadMusic("menu", "menu.wav");
 
-		//load more as needed
+		// load more as needed
 	}
-	
+
 }

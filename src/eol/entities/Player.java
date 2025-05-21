@@ -20,9 +20,9 @@ public class Player extends Character {
 
     public Player(Vector2 position, Vector2 offset, int width, int height, StatsComponent stats, String playerType) {
         super(position, offset, width, height, stats);
-        this.health = new HealthComponent(100, this);
+        this.health = new HealthComponent(1000, this);
         this.playerType = playerType;
-        this.combat = new CombatComponent(this, 5, 0.1f, playerType);
+        this.combat = new CombatComponent(this, 10, 0.5f, playerType);
         anims = new AnimationComponent();
         state = State.IDLE;
 
