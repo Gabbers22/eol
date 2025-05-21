@@ -18,7 +18,7 @@ public class EntitySpawner {
     private Vector2 enemySpawn = new Vector2(850, 500);
     private final Random random = new Random();
     private float spawnTimer = 0f;
-    private float spawnInterval = 0.5f;
+    private float spawnInterval = 2.0f;
 
     public EntitySpawner(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -27,7 +27,7 @@ public class EntitySpawner {
 
     public void prepareWave(int waveNumber) {
         spawnQueue.clear();
-        int totalEnemies = (int) ((int) 2 + (waveNumber * (Math.floor(playerStats.getDexterity() / 3))));
+        int totalEnemies = (int) ((int) 2 + (2 % (waveNumber * (Math.floor(playerStats.getDexterity() / 3)))));
         for (int i = 0; i <= totalEnemies; i++) {
             EnemyType type = selectType(waveNumber, i);
             StatsComponent baseStats = baseStatsForType(type);
@@ -125,19 +125,19 @@ public class EntitySpawner {
 
     private StatsComponent baseStatsForType(EnemyType type) {
         return switch (type) {
-            case meleeBasic -> new StatsComponent(1, 2, 1, 1);
-            case rangedBasic -> new StatsComponent(1, 2, 1, 1);
-            case meleeArmored -> new StatsComponent(2, 1, 1, 1);
-            case meleeKnight -> new StatsComponent(2, 2, 1, 1);
-            case meleeGiant -> new StatsComponent(5, 1, 1, 1);           
+            case meleeBasic -> new StatsComponent(1, 3, 1, 1);
+            case rangedBasic -> new StatsComponent(1, 3, 1, 1);
+            case meleeArmored -> new StatsComponent(2, 3, 1, 1);
+            case meleeKnight -> new StatsComponent(2, 3, 1, 1);
+            case meleeGiant -> new StatsComponent(5, 3, 1, 1);           
         };
     }
 
     private StatsComponent adjustStats(StatsComponent base) {
-        int health = base.getHealth() + (int)Math.floor(0.5 * playerStats.getHealth());
-        int speed = base.getSpeed() * 2;
-        int strength = base.getStrength() + (int)Math.floor(0.5 * playerStats.getStrength());
-        int dexterity = base.getDexterity() + (int)Math.floor(0.5 * playerStats.getDexterity());
+        int health = base.getHealth() + (int)Math.floor(0.1 * playerStats.getHealth());
+        int speed = base.getSpeed() * 1;
+        int strength = base.getStrength() + (int)Math.floor(0.1 * playerStats.getStrength());
+        int dexterity = base.getDexterity() + (int)Math.floor(0.1 * playerStats.getDexterity());
         return new StatsComponent(health, speed, strength, dexterity);
     }
 

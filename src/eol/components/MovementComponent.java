@@ -61,10 +61,10 @@ public class MovementComponent {
     }
 
     public void jump() {
-        //if (grounded) {
+        if (grounded) {
             velocity = new Vector2(velocity.getX(), -jumpForce);
             grounded = false;
-        //}
+        }
     }
 
     public void applyFriction() {

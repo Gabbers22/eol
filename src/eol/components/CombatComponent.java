@@ -50,7 +50,7 @@ public class CombatComponent {
 
     public int calculateDamage() {
         int strength = owner.getStatsComponent().getStrength();
-        return baseDamage + (5 * strength);
+        return baseDamage + (2 * strength);
     }
 
     public float calculateCooldown() {

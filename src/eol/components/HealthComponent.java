@@ -1,5 +1,6 @@
 package eol.components;
 
+import eol.entities.Boss;
 import eol.entities.Character;
 
 public class HealthComponent {
@@ -20,6 +21,11 @@ public class HealthComponent {
     }
 
     public void takeDamage(int amount) {
+        if (owner instanceof Boss && currentHealth > 0) {
+            currentHealth = Math.max(1, currentHealth - amount);
+            return;
+        }
+
         currentHealth = Math.max(0, currentHealth - amount);
         if (currentHealth == 0) alive = false;
     }
@@ -35,6 +41,12 @@ public class HealthComponent {
 
     public boolean isAlive() { return alive; }
     public int getCurrentHealth() { return currentHealth; }
+    public void setCurrentHealth(int currentHealth) { 
+        this.currentHealth = currentHealth; 
+        if (this.currentHealth == 0) {
+            alive = false;
+        }
+    }
     public int getMaxHealth() { return maxHealth; }
     
 }

@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 public class GamePanel extends JPanel {
     private static final int panelWidth = 800;
-    private static final int panelHeight = 600; 
+    private static final int panelHeight = 600;
     private Renderer renderer;
     private JPanel itemPanel;
     private boolean debugMode;

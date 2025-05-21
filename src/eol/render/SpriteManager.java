@@ -14,7 +14,7 @@ public class SpriteManager {
 
 	private SpriteManager() {}
 
-	public static SpriteManager getInstance() {
+	public static synchronized SpriteManager getInstance() {
 		if (instance == null) {
 			instance = new SpriteManager();
 		}

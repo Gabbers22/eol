@@ -38,8 +38,9 @@ public class Game {
         SpriteManager spriteManager = SpriteManager.getInstance();
         spriteManager.loadAllSprites();
         inputHandler = new InputHandler();
+        AudioManager.getInstance().stopMusic();
 
-        player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 5, 5, 5), playerType);
+        player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(18, 5, 5, 5), playerType);
         entityManager.forceAddEntity(player);
 
         ground = new Ground(new Vector2(0, 500), new Vector2(0, 0), 800, 100);
