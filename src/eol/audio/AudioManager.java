@@ -3,6 +3,7 @@ package eol.audio;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Scanner;
 import javax.sound.sampled.*;
 
@@ -64,16 +65,23 @@ public class AudioManager {
 
 	// creates a clip given the file path
 	public Clip createClip(String path) {
-		try (InputStream in = getClass().getResourceAsStream(path);
-				AudioInputStream ais = AudioSystem.getAudioInputStream(in)) {
-			Clip clip = AudioSystem.getClip();
-			clip.open(ais);
-			return clip;
+    	try {
+			URL url = getClass().getResource(path);
+			if (url == null) {
+				System.err.println("Audio resource not found: " + path);
+				return null;
+			}
+			try (AudioInputStream ais = AudioSystem.getAudioInputStream(url)) {
+				Clip clip = AudioSystem.getClip();
+				clip.open(ais);
+				return clip;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
+
 
 	public void loadAll() {
 		loadMusic("menu", "menu.wav");

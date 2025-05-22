@@ -68,6 +68,7 @@ public class CollisionHandler {
             if (c instanceof Enemy) {
                 for (Enemy other : entityManager.getEnemies()) {
                     if (c == other) continue;
+                    if (c.getMovementComponent().isPushed() || other.getMovementComponent().isPushed()) continue;
                     if (c.getClass() != other.getClass()) continue;
 
                     Rectangle b1 = c.getBounds(), b2 = other.getBounds();

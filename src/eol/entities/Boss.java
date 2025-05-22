@@ -145,8 +145,8 @@ public class Boss extends Enemy {
     }
 
     private void extremeSpiralShot(float deltaTime, float speed) {
-        angleStep = angleStep - (float)(Math.PI / 4096);
-        if (attackTimer < spiralInterval) return;
+        angleStep = angleStep - (float)(Math.PI / 2000);
+        if (attackTimer < spiralInterval / 2) return;
         attackTimer = 0;
         
         Vector2 origin = new Vector2(getPosition().getX() + 40.0f, getPosition().getY() + 25.0f);

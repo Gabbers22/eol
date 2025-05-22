@@ -8,7 +8,9 @@ import eol.render.*;
 import eol.audio.AudioManager;
 import eol.components.StatsComponent;
 import eol.entities.*;
+import eol.items.ItemRegistry;
 import eol.logic.EntitySpawner;
+import eol.logic.LootManager;
 import eol.logic.WaveManager;
 import eol.utils.Vector2;
 
@@ -21,6 +23,7 @@ public class Game {
     private CollisionHandler collisionHandler;
     private GamePanel gamePanel;
     private MainMenu mainMenu;
+    private LootManager lootManager;
     private EntitySpawner entitySpawner;
     private WaveManager waveManager;
     private Player player;
@@ -35,17 +38,18 @@ public class Game {
 
     public void initializeSystems(String playerType) {
         entityManager = new EntityManager();
-        SpriteManager spriteManager = SpriteManager.getInstance();
+        spriteManager = SpriteManager.getInstance();
         spriteManager.loadAllSprites();
         inputHandler = new InputHandler();
         AudioManager.getInstance().stopMusic();
 
-        player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(18, 5, 5, 5), playerType);
+        player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 5, 5, 5), playerType);
         entityManager.forceAddEntity(player);
 
         ground = new Ground(new Vector2(0, 500), new Vector2(0, 0), 800, 100);
         entityManager.forceAddEntity(ground);
 
+        lootManager = new LootManager();
         entitySpawner = new EntitySpawner(entityManager);
         waveManager = new WaveManager(entitySpawner, entityManager);        
         renderer = new Renderer(entityManager, spriteManager, waveManager);
