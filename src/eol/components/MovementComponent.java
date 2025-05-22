@@ -12,6 +12,8 @@ public class MovementComponent {
     private final Character owner;
     private Vector2 velocity = Vector2.zero;
     private boolean grounded = false;
+    private boolean pushed = false;
+    private float pushTimer = 0f;
     private Vector2 lastDirection = Vector2.right;
     float time = 0;
 
@@ -36,6 +38,10 @@ public class MovementComponent {
         grounded = g;
     }
 
+    public boolean isPushed() {
+        return pushed;
+    }
+
     public Vector2 getLastDirection() {
         return lastDirection;
     }
@@ -45,6 +51,7 @@ public class MovementComponent {
     }
 
     public void move(Vector2 direction) {
+        if (pushed) return;
         if (direction.getX() != 0.0f) setLastDirection(direction);
         float speedStat = owner.getStatsComponent().getSpeed();
         Vector2 acceleration = direction.multiply(baseAcceleration * (speedStat / 4));
@@ -78,6 +85,13 @@ public class MovementComponent {
     }
     
     public void update(float deltaTime) {
+        if (pushTimer > 0f) {
+            pushTimer -= deltaTime;
+            if (pushTimer <= 0f) {
+                pushed = false;
+            }
+        }
+
         if (!grounded) {
             if (owner instanceof Boss) {
                 velocity = new Vector2(velocity.getX(), velocity.getY() + 200.0f * deltaTime);
@@ -90,7 +104,7 @@ public class MovementComponent {
         Vector2 position = owner.getPosition();
         owner.setPosition(position.add(displacement));
 
-        if (grounded) {
+        if (grounded && !pushed) {
             applyFriction();
             //owner.setPosition(new Vector2(position.getX(), (float)Math.floor(position.getY()) + 0.1f));
         }
@@ -102,5 +116,11 @@ public class MovementComponent {
             float y = 125 + (float)(Math.sin(time * 1.0f * Math.PI + (Math.PI / 2)) * 30f);
             owner.setPosition(new Vector2(x, y));
             return;
+    }
+
+    public void push(Vector2 force, float duration) {
+        velocity = force;
+        pushTimer = duration;
+        pushed = true;
     }
 }

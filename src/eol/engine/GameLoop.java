@@ -97,13 +97,13 @@ public class GameLoop implements Runnable {
             itemPanelShown = false;
         }
 
-        /*
+        
         if (waveManager.hasWaveEnded() && !itemPanelShown) {
             gamePanel.toggleItemPanel(true);
             itemPanelShown = true;
             return;
         }
-        */
+        
 
         if (gamePanel.showingItems()) {
             return;

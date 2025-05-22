@@ -1,8 +1,11 @@
 package eol.render;
 
+import eol.items.Item;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
     private static final int panelWidth = 800;
@@ -22,14 +25,17 @@ public class GamePanel extends JPanel {
         requestFocusInWindow();
     }
     
+    // One time setup
     private void setupItemPanel() {
         itemPanel = new JPanel();
         itemPanel.setBackground(new Color(0, 0, 0, 128));
         itemPanel.setPreferredSize(new Dimension(panelWidth, panelHeight));
+
+        // four buttons like this with sprite icons 
         JButton test = new JButton("test");
-        
         test.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                // apply stats
                 showingItems = false;
                 toggleItemPanel(false);
             }
@@ -38,6 +44,11 @@ public class GamePanel extends JPanel {
         itemPanel.add(test);
         add(itemPanel);
         itemPanel.setVisible(false);
+    }
+
+    // set the items for each button
+    public void setItems(ArrayList<Item> items) {
+
     }
 
     public boolean showingItems() {

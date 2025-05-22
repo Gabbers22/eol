@@ -84,6 +84,8 @@ public class EntityManager {
                 if (!hc.isAlive()) remove = true;
             } else if (e instanceof Projectile) {
                 if (!((Projectile) e).isAlive()) remove = true;
+            } else if (e instanceof Trap) {
+                if (!((Trap) e).isAlive()) remove = true;
             }
 
             if (remove) {

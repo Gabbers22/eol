@@ -3,7 +3,12 @@ package eol.items;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
+import eol.components.StatsComponent;
+import eol.entities.Player;
+
 import java.util.ArrayList;
+
 public class ItemRegistry {
 	HashMap<String,Item> items = new HashMap<>();
 	
@@ -21,26 +26,23 @@ public class ItemRegistry {
 	Item obj11 = new Item("011","Black Market Cyber Chip","Legendary");
 	
 	public ItemRegistry() {
-   
-	// map each item to a ID	  
-   items.put(obj1.getId(), obj1);
-   items.put(obj2.getId(), obj2);
-   items.put(obj3.getId(), obj3);
-   items.put(obj4.getId(), obj4);
-   items.put(obj5.getId(), obj5);
-   items.put(obj6.getId(), obj6);
-   items.put(obj7.getId(), obj7);
-   items.put(obj8.getId(), obj8);
-   items.put(obj9.getId(), obj9);
-   items.put(obj10.getId(), obj10);
-   items.put(obj11.getId(), obj11);
-	  }
+   		// map each item to a ID	  
+		items.put(obj1.getId(), obj1);
+		items.put(obj2.getId(), obj2);
+		items.put(obj3.getId(), obj3);
+		items.put(obj4.getId(), obj4);
+		items.put(obj5.getId(), obj5);
+		items.put(obj6.getId(), obj6);
+		items.put(obj7.getId(), obj7);
+		items.put(obj8.getId(), obj8);
+		items.put(obj9.getId(), obj9);
+		items.put(obj10.getId(), obj10);
+		items.put(obj11.getId(), obj11);
+	}
 	 
 	// getter method to retrieve item by id 
 	public Item getItemById(String Id) {
 		return  items.get(Id);
-	
-	
     }
 }
 

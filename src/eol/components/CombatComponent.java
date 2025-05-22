@@ -3,15 +3,16 @@ package eol.components;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
-import javax.swing.text.html.parser.Entity;
 
 import eol.utils.Vector2;
 import eol.entities.Character;
+import eol.entities.DefenseAlly;
 import eol.entities.Enemy;
 import eol.entities.GameEntity;
 import eol.entities.Player;
 import eol.entities.Projectile;
 import eol.entities.MeleeEnemy;
+import eol.entities.OffenseAlly;
 import eol.entities.RangedEnemy;
 import eol.entities.SupportAlly;
 import eol.engine.InputHandler;
@@ -81,6 +82,10 @@ public class CombatComponent {
             rangedEnemyAttack(entityManager);
         } else if (owner instanceof SupportAlly) {
             supportAllyAttack(entityManager);
+        } else if (owner instanceof DefenseAlly){
+            defenseAllyAttack(entityManager);
+        } else if (owner instanceof OffenseAlly) {
+            offenseAllyAttack(entityManager);
         } else {
             return;
         }
@@ -89,15 +94,7 @@ public class CombatComponent {
     public void meleePlayerAttack(InputHandler inputHandler, EntityManager entityManager) {
         if (!inputHandler.isKeyPressed(KeyEvent.VK_X) || cooldown > 0) return;
         justAttacked = true;
-        Vector2 dir = owner.getMovementComponent().getLastDirection();
-        float px = owner.getPosition().getX();
-        float py = owner.getPosition().getY();
-        int w = 64, h = 64;
-        int halfW = 32/2;
-        int x = (int)(px + (dir.getX() < 0 ? -halfW - w :  halfW));
-        int y = (int)(py + 64/2 - 64);
-
-        hitbox = new Rectangle(x, y, w, h);
+        createMeleeHitbox();
 
         for (Enemy e : entityManager.getEnemies()) {
             if (hitbox.intersects(e.getBounds())) {
@@ -139,15 +136,7 @@ public class CombatComponent {
         if (cooldown > 0) return;
         Player p = entityManager.getPlayer();
 
-        Vector2 dir = owner.getMovementComponent().getLastDirection();
-        float px = owner.getPosition().getX();
-        float py = owner.getPosition().getY();
-        int w = 64, h = 64;
-        int halfW = 32/2;
-        int x = (int)(px + (dir.getX() < 0 ? -halfW - w :  halfW));
-        int y = (int)(py + 64/2 - 64);
-
-        hitbox = new Rectangle(x, y, w, h);
+        createMeleeHitbox();
 
         if (hitbox.intersects(p.getBounds())) {
             p.getHealthComponent().heal(damage);
@@ -161,5 +150,42 @@ public class CombatComponent {
         cooldown = calculateCooldown();
 
     }
-    
+
+    public void defenseAllyAttack(EntityManager entityManager) {
+        if (cooldown > 0) return;
+
+        createMeleeHitbox();
+        for (Enemy e : entityManager.getEnemies()) {
+            if (hitbox.intersects(e.getBounds())) {
+                e.getHealthComponent().takeDamage(damage);
+                Vector2 knockbackDir = owner.getMovementComponent().getLastDirection();
+                e.getMovementComponent().push(knockbackDir.multiply(350.0f), 0.25f);
+            }
+        }
+        cooldown = calculateCooldown();
+    }
+
+    public void offenseAllyAttack(EntityManager entityManager) {
+        if (cooldown > 0) return;
+
+        createMeleeHitbox();
+        for (Enemy e : entityManager.getEnemies()) {
+            if (hitbox.intersects(e.getBounds())) {
+                e.getHealthComponent().takeDamage(damage);
+            }
+        }
+        cooldown = calculateCooldown();
+    }
+
+    public void createMeleeHitbox() {
+        Vector2 dir = owner.getMovementComponent().getLastDirection();
+        float px = owner.getPosition().getX();
+        float py = owner.getPosition().getY();
+        int w = 64, h = 64;
+        int halfW = 32/2;
+        int x = (int)(px + (dir.getX() < 0 ? -halfW - w :  halfW));
+        int y = (int)(py + 64/2 - 64);
+
+        hitbox = new Rectangle(x, y, w, h);
+    }
 }

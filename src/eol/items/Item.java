@@ -2,6 +2,8 @@ package eol.items;
 
 import java.util.HashMap;
 
+import eol.components.StatsComponent;
+
 public class Item {
 	
     HashMap<String, Integer> statModifiers = new HashMap<>();
@@ -64,7 +66,7 @@ public class Item {
 		public void setRairty(String Rairty) {
 			this.Rairty = Rairty;
 		}	
-	
+
 
 
 }
