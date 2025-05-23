@@ -11,19 +11,20 @@ import java.util.ArrayList;
 
 public class ItemRegistry {
 	HashMap<String,Item> items = new HashMap<>();
+	HashMap<String, Integer> stats = new HashMap<>(); //temp
 	
 	// define all the items
-	Item obj1 = new Item("001","Adrenaline Injector","Common");
-	Item obj2 = new Item("002","Irradiated Blood Pack","Rare");
-	Item obj3 = new Item("003","Scrap-Forged Plating ","Epic");
-	Item obj4 = new Item("004","Optic Enhancer Implant","Rare");
-	Item obj5 = new Item("005","Mutagenic Serum","Common");
-	Item obj6 = new Item("006","Wanderer's Lucky Charm","Mythic");
-	Item obj7 = new Item("007","Power Core Fragment","Common");
-	Item obj8 = new Item("008","Caffeine-Stim Rig ","Rare");
-	Item obj9 = new Item("009","Neural Sync Collar","Legendary");
-	Item obj10 = new Item("010","Cryo-Vest Lining","Common");
-	Item obj11 = new Item("011","Black Market Cyber Chip","Legendary");
+	Item obj1 = new Item("1","Adrenaline Injector","Common", stats);
+	Item obj2 = new Item("2","Irradiated Blood Pack","Rare", stats);
+	Item obj3 = new Item("3","Scrap-Forged Plating ","Epic", stats);
+	Item obj4 = new Item("4","Optic Enhancer Implant","Rare", stats);
+	Item obj5 = new Item("5","Mutagenic Serum","Common", stats);
+	Item obj6 = new Item("6","Wanderer's Lucky Charm","Mythic", stats);
+	Item obj7 = new Item("7","Power Core Fragment","Common", stats);
+	Item obj8 = new Item("8","Caffeine-Stim Rig ","Rare", stats);
+	Item obj9 = new Item("9","Neural Sync Collar","Legendary", stats);
+	Item obj10 = new Item("10","Cryo-Vest Lining","Common", stats);
+	Item obj11 = new Item("11","Black Market Cyber Chip","Legendary", stats);
 	
 	public ItemRegistry() {
    		// map each item to a ID	  
@@ -42,7 +43,7 @@ public class ItemRegistry {
 	 
 	// getter method to retrieve item by id 
 	public Item getItemById(String Id) {
-		return  items.get(Id);
+		return items.get(Id);
     }
 }
 

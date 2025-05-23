@@ -1,71 +1,60 @@
 package eol.items;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import eol.components.StatsComponent;
 
 public class Item {
-	
     HashMap<String, Integer> statModifiers = new HashMap<>();
+    private String Id;
+	private String Name;
+	private String Rairty;
+ 
 
-	// these are the items main competent 
-    private  String Id;
-	private  String Name;
-	private  String Rairty;
-
-	// these are the items main constructor  
-
-	public Item(String Id, String Name,String Rairty) {
+	public Item(String Id, String Name, String Rairty, HashMap<String, Integer> statModifiers) {
         this.Id = Id;
         this.Name = Name;
         this.Rairty = Rairty;
+		this.statModifiers = statModifiers;
+	}
+
+	public void applyStats(StatsComponent stats) {
+		stats.setHealth(Math.max(1, stats.getHealth() + statModifiers.get("health")));
+		stats.setSpeed(Math.max(1, stats.getSpeed() + statModifiers.get("speed")));
+		stats.setStrength(Math.max(1, stats.getStrength() + statModifiers.get("strength")));
+		stats.setDexterity(Math.max(1, stats.getDexterity() + statModifiers.get("dexterity")));
+	}
+
+	public HashSet<String> getStatLabels() {
+		HashSet<String> statLabels = new HashSet<>();
+
+		if (statModifiers.containsKey("health")) {
+			statLabels.add("Health: " + statModifiers.get("health"));
+		}
+		if (statModifiers.containsKey("speed")) {
+			statLabels.add("Speed: " + statModifiers.get("speed"));
+		}
+		if (statModifiers.containsKey("strength")) {
+			statLabels.add("Strength: " + statModifiers.get("strength"));
+		}
+		if (statModifiers.containsKey("dexterity")) {
+			statLabels.add("Dexterity: " + statModifiers.get("dexterity"));
+		}
+		return statLabels;
 	}
 	
-	// these are the items id  
+	public String getId() {
+		return Id;	
+	}
 
-	  public void MyId() {
-	        this.Id = ""; 
-	    }
-		// these are the get items id  
+	public String getName() {
+		return Name;	
+	}
 
-		public  String getId() {
-			return Id;	
-		}
-		// these are the set items id  
-
-		public void setId(String Id) {
-			this.Id = Id;
-		}	
-		// these are the items name  
-
-		  public void MyName() {
-		        this.Name = ""; 
-		    }
-			// these are get items name  
-
-		public  String getName() {
-			return Name;	
-		}
-		// these are set items name  
-
-		public void setName(String Name) {
-			this.Name = Name;
-		}	
-		// these are the items set rarity  
-
-		  public void MyRairty() {
-		        this.Rairty = ""; 
-		    }
-			// these are the items get rarity  
-
-		public  String getRairty() {
-			return Rairty;	
-		}
-		// these are the items set rarity  
-
-		public void setRairty(String Rairty) {
-			this.Rairty = Rairty;
-		}	
+	public String getRarity() {
+		return Rairty;	
+	}
 
 
 

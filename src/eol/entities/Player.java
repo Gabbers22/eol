@@ -22,7 +22,7 @@ public class Player extends Character {
         super(position, offset, width, height, stats);
         this.health = new HealthComponent(1000, this);
         this.playerType = playerType;
-        this.combat = new CombatComponent(this, 10, 0.5f, playerType);
+        this.combat = new CombatComponent(this, 10, 0.1f, playerType);
         anims = new AnimationComponent();
         state = State.IDLE;
 

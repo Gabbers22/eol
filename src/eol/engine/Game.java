@@ -3,6 +3,7 @@ package eol.engine;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import eol.ui.ItemPanel;
 import eol.ui.MainMenu;
 import eol.render.*;
 import eol.audio.AudioManager;
@@ -10,6 +11,7 @@ import eol.components.StatsComponent;
 import eol.entities.*;
 import eol.items.ItemRegistry;
 import eol.logic.EntitySpawner;
+import eol.logic.GameState;
 import eol.logic.LootManager;
 import eol.logic.WaveManager;
 import eol.utils.Vector2;
@@ -22,7 +24,9 @@ public class Game {
     private InputHandler inputHandler;
     private CollisionHandler collisionHandler;
     private GamePanel gamePanel;
+    private ItemPanel itemPanel;
     private MainMenu mainMenu;
+    private GameState gameState;
     private LootManager lootManager;
     private EntitySpawner entitySpawner;
     private WaveManager waveManager;
@@ -51,10 +55,12 @@ public class Game {
 
         lootManager = new LootManager();
         entitySpawner = new EntitySpawner(entityManager);
-        waveManager = new WaveManager(entitySpawner, entityManager);        
+        waveManager = new WaveManager(entitySpawner, entityManager);   
+        gameState = new GameState(waveManager, player); 
         renderer = new Renderer(entityManager, spriteManager, waveManager);
         mainMenu = new MainMenu();
-        gamePanel = new GamePanel(renderer);
+        itemPanel = new ItemPanel(player);
+        gamePanel = new GamePanel(renderer, itemPanel);
         gamePanel.addKeyListener(inputHandler);
         collisionHandler = new CollisionHandler(GamePanel.getPanelWidth(), GamePanel.getPanelHeight(), entityManager);
         
@@ -62,7 +68,7 @@ public class Game {
          * initialize other objects
          */
 
-        gameLoop = new GameLoop(this, entityManager, inputHandler, collisionHandler, waveManager, gamePanel, player);
+        gameLoop = new GameLoop(this, entityManager, inputHandler, collisionHandler, waveManager, lootManager, gamePanel, itemPanel, player);
 
         frame = new JFrame("Echoes of Lazarus");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

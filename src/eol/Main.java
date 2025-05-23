@@ -2,6 +2,7 @@ package eol;
 
 import eol.audio.AudioManager;
 import eol.engine.Game;
+import eol.logic.LootManager;
 import eol.ui.MainMenu;
 
 public class Main {

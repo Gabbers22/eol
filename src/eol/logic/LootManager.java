@@ -8,35 +8,42 @@ import eol.items.ItemRegistry;
 
 public class LootManager {
   
-  int randomNumber = new Random().nextInt(101);
   int randomItem;
   Random random = new Random();
   HashSet<Item> currentItems = new HashSet<>();
   ItemRegistry itemRegistry = new ItemRegistry();
   
   public void chooseItem() {
+    currentItems.clear();
 
-    for(int counter = 0; counter < 4; counter++){
+    for (int counter = 0; counter < 4; counter++) {
+      int randomNumber = random.nextInt(101);
+      Item item = null;
 
-      if(randomNumber >= 1 && randomNumber <= 50){
-        randomItem = random.nextInt(4) + 1;
-        currentItems.add(itemRegistry.getItemById(String.valueOf(randomItem)));
+      if (randomNumber <= 50) {
+          item = itemRegistry.getItemById(String.valueOf(random.nextInt(4) + 1));
+      } else if (randomNumber <= 75) {
+          item = itemRegistry.getItemById(String.valueOf(random.nextInt(3) + 5));
+      } else if (randomNumber <= 90) {
+          item = itemRegistry.getItemById("8");
+      } else if (randomNumber <= 97) {
+          item = itemRegistry.getItemById(String.valueOf(random.nextInt(2) + 9));
+      } else {
+          item = itemRegistry.getItemById("11");
       }
-      else if(randomNumber >= 51 && randomNumber <= 75){
-        randomItem = random.nextInt(3) + 5;
-        currentItems.add(itemRegistry.getItemById(String.valueOf(randomItem)));
+
+      if (item != null) {
+        currentItems.add(item);
+        System.out.println("added item");
+      } else {
+        System.out.println("not added");
       }
-      else if(randomNumber >= 76 && randomNumber <= 90){
-        currentItems.add(itemRegistry.getItemById(String.valueOf(8)));
-      }
-      else if(randomNumber >= 91 && randomNumber <= 97){
-        randomItem = random.nextInt(2) + 9;
-        currentItems.add(itemRegistry.getItemById(String.valueOf(randomItem)));
-      } 
-      else{
-        currentItems.add(itemRegistry.getItemById(String.valueOf(11)));
-      }
-    } 
+    }
   }
+
+  public HashSet<Item> getItems() {
+    return currentItems;
+  }
+
 }
 

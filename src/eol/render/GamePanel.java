@@ -1,63 +1,24 @@
 package eol.render;
 
-import eol.items.Item;
+import eol.ui.ItemPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
     private static final int panelWidth = 800;
     private static final int panelHeight = 600;
     private Renderer renderer;
-    private JPanel itemPanel;
+    private ItemPanel itemPanel;
     private boolean debugMode;
-    private boolean showingItems;
 
-    public GamePanel(Renderer renderer) {
+    public GamePanel(Renderer renderer, ItemPanel itemPanel) {
         debugMode = false;
-        showingItems = false;
         this.renderer = renderer;
-        setupItemPanel();
+        this.itemPanel = itemPanel;
         setPreferredSize(new Dimension(panelWidth, panelHeight));
         setFocusable(true);
         requestFocusInWindow();
-    }
-    
-    // One time setup
-    private void setupItemPanel() {
-        itemPanel = new JPanel();
-        itemPanel.setBackground(new Color(0, 0, 0, 128));
-        itemPanel.setPreferredSize(new Dimension(panelWidth, panelHeight));
-
-        // four buttons like this with sprite icons 
-        JButton test = new JButton("test");
-        test.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // apply stats
-                showingItems = false;
-                toggleItemPanel(false);
-            }
-        });
-    
-        itemPanel.add(test);
-        add(itemPanel);
-        itemPanel.setVisible(false);
-    }
-
-    // set the items for each button
-    public void setItems(ArrayList<Item> items) {
-
-    }
-
-    public boolean showingItems() {
-        return showingItems;
-    }
-
-    public void toggleItemPanel(boolean b) {
-        itemPanel.setVisible(b);
-        showingItems = b;
     }
 
     public void setDebugMode(boolean debugMode) {
@@ -69,6 +30,7 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         renderer.renderAll(g2d, debugMode);
+        itemPanel.render(g2d);
     }
 
     public static int getPanelWidth() {
