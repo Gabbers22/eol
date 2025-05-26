@@ -16,13 +16,24 @@ public abstract class Character extends GameEntity {
         super(position, offset, width, height);
         this.movement = new MovementComponent(this);
         this.stats = stats;
-        this.health = new HealthComponent(stats.getHealth() * 20, this);
+        this.health = new HealthComponent(this);
     }
 
-    public MovementComponent getMovementComponent() { return movement; }
-    public StatsComponent getStatsComponent() { return stats; }
-    public HealthComponent getHealthComponent() { return health; }
-    public CombatComponent getCombatComponent() { return combat; }
+    public MovementComponent getMovementComponent() {
+        return movement;
+    }
 
-    public abstract void update(float deltaTime); 
+    public StatsComponent getStatsComponent() {
+        return stats;
+    }
+
+    public HealthComponent getHealthComponent() {
+        return health;
+    }
+
+    public CombatComponent getCombatComponent() {
+        return combat;
+    }
+
+    public abstract void update(float deltaTime);
 }

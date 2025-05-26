@@ -7,21 +7,22 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 public class SpriteManager {
-	private static String path = "/assets/sprites/";
-	private static Map<String, BufferedImage> sprites = new HashMap<>();
-	
-	private static SpriteManager instance;
+    private static String path = "/assets/sprites/";
+    private static Map<String, BufferedImage> sprites = new HashMap<>();
 
-	private SpriteManager() {}
+    private static SpriteManager instance;
 
-	public static synchronized SpriteManager getInstance() {
-		if (instance == null) {
-			instance = new SpriteManager();
-		}
-		return instance;
-	}
+    private SpriteManager() {
+    }
 
-	public void loadSprite(String id, String fileName) {
+    public static synchronized SpriteManager getInstance() {
+        if (instance == null) {
+            instance = new SpriteManager();
+        }
+        return instance;
+    }
+
+    public void loadSprite(String id, String fileName) {
         try (InputStream in = getClass().getResourceAsStream(path + fileName)) {
             if (in == null) {
                 System.out.println("Sprite not found: " + fileName);
@@ -42,25 +43,25 @@ public class SpriteManager {
 
     public void loadAllSprites() {
 
-		for(int i = 0; i < 8; i++) {
-  			loadSprite("boss_idle_" + i, "boss_idle_" + i + ".png");
-		}
-        for(int i = 0; i < 3; i++) {
-  			loadSprite("player_idle_" + i, "player_idle_" + i + ".png");
-		}
-        for(int i = 0; i < 3; i++) {
-  			loadSprite("player_walk_" + i, "player_walk_" + i + ".png");
-		}
-        for(int i = 0; i < 3; i++) {
-  			loadSprite("player_jump_" + i, "player_jump_" + i + ".png");
-		}
-        for(int i = 0; i < 3; i++) {
-  			loadSprite("player_attack_" + i, "player_attack_" + i + ".png");
-		}
-        for(int i = 0; i < 6; i++) {
-  			loadSprite("projectile_" + i, "projectile_" + i + ".png");
-		}
+        for (int i = 0; i < 8; i++) {
+            loadSprite("boss_idle_" + i, "boss_idle_" + i + ".png");
+        }
+        for (int i = 0; i < 3; i++) {
+            loadSprite("player_idle_" + i, "player_idle_" + i + ".png");
+        }
+        for (int i = 0; i < 3; i++) {
+            loadSprite("player_walk_" + i, "player_walk_" + i + ".png");
+        }
+        for (int i = 0; i < 3; i++) {
+            loadSprite("player_jump_" + i, "player_jump_" + i + ".png");
+        }
+        for (int i = 0; i < 3; i++) {
+            loadSprite("player_attack_" + i, "player_attack_" + i + ".png");
+        }
+        for (int i = 0; i < 6; i++) {
+            loadSprite("projectile_" + i, "projectile_" + i + ".png");
+        }
         // Add more as needed
     }
-	
+
 }

@@ -47,40 +47,40 @@ public class Renderer {
 
     public void renderEntity(Graphics2D g, GameEntity e) {
         if (e instanceof Boss) {
-            Boss boss = (Boss)e;
+            Boss boss = (Boss) e;
             BufferedImage frame = boss.getAnimationComponent().getActive().getCurrentFrame();
             Rectangle bounds = boss.getBounds();
-            g.drawImage(frame, (int)bounds.getX(), (int)bounds.getY(), null);
+            g.drawImage(frame, (int) bounds.getX(), (int) bounds.getY(), null);
         }
 
         if (e instanceof Player) {
-            Player player = (Player)e;
+            Player player = (Player) e;
             BufferedImage frame = player.getAnimationComponent().getActive().getCurrentFrame();
             Rectangle bounds = player.getBounds();
-            g.drawImage(frame, (int)bounds.getX(), (int)bounds.getY(), null);
+            g.drawImage(frame, (int) bounds.getX(), (int) bounds.getY(), null);
         }
 
         if (e instanceof Projectile) {
-            Projectile proj = (Projectile)e;
+            Projectile proj = (Projectile) e;
             BufferedImage frame = proj.getAnimationComponent().getActive().getCurrentFrame();
             Rectangle bounds = proj.getBounds();
 
             // heading angle
             Vector2 vel = proj.getVelocity();
-            double angle = Math.atan2(vel.getY(), vel.getX()) + Math.PI/2;
+            double angle = Math.atan2(vel.getY(), vel.getX()) + Math.PI / 2;
 
             // scaling factors
             double sx = 0.6;
             double sy = 0.6;
 
             Graphics2D g2 = (Graphics2D) g.create();
-            int cx = bounds.x + bounds.width  / 2;
+            int cx = bounds.x + bounds.width / 2;
             int cy = bounds.y + bounds.height / 2;
 
             g2.translate(cx, cy);
             g2.rotate(angle);
             g2.scale(sx, sy);
-            g2.drawImage(frame, -frame.getWidth()  / 2, -frame.getHeight() / 2 + 25, null);
+            g2.drawImage(frame, -frame.getWidth() / 2, -frame.getHeight() / 2 + 25, null);
             g2.dispose();
         }
     }
@@ -91,17 +91,21 @@ public class Renderer {
             Vector2 entityPosition = e.getPosition();
             if (e instanceof Player || e instanceof Ally) {
                 g.setColor(attackDebugColor);
-                Character character = (Character)e;
-                Vector2 dir = character.getMovementComponent().getLastDirection(); 
+                Character character = (Character) e;
+                Vector2 dir = character.getMovementComponent().getLastDirection();
                 float px = e.getPosition().getX();
                 float py = e.getPosition().getY();
                 int w = 64, h = 2;
-                int halfW = 32/2;
-                int x = (int)(px + (dir.getX() < 0 ? -halfW - w :  halfW));
-                int y = (int)(py + 64/2 - 64) + 16;
+                int halfW = 32 / 2;
+                int x = (int) (px + (dir.getX() < 0 ? -halfW - w : halfW));
+                int y = (int) (py + 64 / 2 - 64) + 16;
 
                 Rectangle hb = new Rectangle(x, y, w, h);
                 g.fill(hb);
+
+                if (e instanceof Player && character.getCombatComponent().getHitbox() != null) {
+                    g.fill(character.getCombatComponent().getHitbox());
+                }
 
                 g.setColor(playerDebugColor);
             } else if (e instanceof Ground) {
@@ -127,20 +131,33 @@ public class Renderer {
                 g.drawString(health.getCurrentHealth() + "/" + health.getMaxHealth(), entityPosition.getX() - 20, entityPosition.getY() - 55);
             }
         }
-        
+
         g.setColor(Color.BLACK);
         g.setFont(new Font("Monospaced", Font.PLAIN, 16));
 
         int y = 15;
-        g.drawString("x: " + Math.floor(entityManager.getPlayer().getPosition().getX()) + " y: " + Math.floor(entityManager.getPlayer().getPosition().getY()), 10, y); y += 15;
-        g.drawString("x-velocity: " + Math.abs(entityManager.getPlayer().getMovementComponent().getVelocity().getX()), 10, y); y += 15;
-        g.drawString("y-velocity: " + Math.abs(entityManager.getPlayer().getMovementComponent().getVelocity().getY()), 10, y); y += 15;
-        g.drawString("grounded: " + entityManager.getPlayer().getMovementComponent().isGrounded(), 10, y); y += 15;
-        g.drawString("enemies: " + entityManager.getEnemies().size(), 10, y); y += 15;
-        g.drawString("wave: " + waveManager.getWave(), 10, y); y += 15;
-        
+        g.drawString("x: " + Math.floor(entityManager.getPlayer().getPosition().getX()) + " y: " + Math.floor(entityManager.getPlayer().getPosition().getY()), 10, y);
+        y += 15;
+        g.drawString("x-velocity: " + Math.abs(entityManager.getPlayer().getMovementComponent().getVelocity().getX()), 10, y);
+        y += 15;
+        g.drawString("y-velocity: " + Math.abs(entityManager.getPlayer().getMovementComponent().getVelocity().getY()), 10, y);
+        y += 15;
+        g.drawString("grounded: " + entityManager.getPlayer().getMovementComponent().isGrounded(), 10, y);
+        y += 15;
+        g.drawString("enemies: " + entityManager.getEnemies().size(), 10, y);
+        y += 15;
+        g.drawString("wave: " + waveManager.getWave(), 10, y);
+        y += 15;
+        g.drawString("health: " + entityManager.getPlayer().getStatsComponent().getHealth(), 10, y);
+        y += 15;
+        g.drawString("speed: " + entityManager.getPlayer().getStatsComponent().getSpeed(), 10, y);
+        y += 15;
+        g.drawString("strength: " + entityManager.getPlayer().getStatsComponent().getStrength(), 10, y);
+        y += 15;
+        g.drawString("dexterity: " + entityManager.getPlayer().getStatsComponent().getDexterity(), 10, y);
+        y += 15;
 
 
     }
-    
+
 }

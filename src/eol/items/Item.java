@@ -4,58 +4,76 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import eol.components.StatsComponent;
+import eol.entities.Player;
 
 public class Item {
     HashMap<String, Integer> statModifiers = new HashMap<>();
     private String Id;
-	private String Name;
-	private String Rairty;
- 
+    private String Name;
+    private String Rarity;
 
-	public Item(String Id, String Name, String Rairty, HashMap<String, Integer> statModifiers) {
+
+    public Item(String Id, String Name, String Rarity, HashMap<String, Integer> statModifiers) {
         this.Id = Id;
         this.Name = Name;
-        this.Rairty = Rairty;
-		this.statModifiers = statModifiers;
-	}
+        this.Rarity = Rarity;
+        this.statModifiers = statModifiers;
+    }
 
-	public void applyStats(StatsComponent stats) {
-		stats.setHealth(Math.max(1, stats.getHealth() + statModifiers.get("health")));
-		stats.setSpeed(Math.max(1, stats.getSpeed() + statModifiers.get("speed")));
-		stats.setStrength(Math.max(1, stats.getStrength() + statModifiers.get("strength")));
-		stats.setDexterity(Math.max(1, stats.getDexterity() + statModifiers.get("dexterity")));
-	}
+    public Item(String Id, String Name, String Rarity) {
+        this.Id = Id;
+        this.Name = Name;
+        this.Rarity = Rarity;
+    }
 
-	public HashSet<String> getStatLabels() {
-		HashSet<String> statLabels = new HashSet<>();
+    public void applyStats(Player player) {
+        StatsComponent stats = player.getStatsComponent();
+        stats.setHealth(Math.max(1, stats.getHealth() + statModifiers.getOrDefault("health", 0)));
+        stats.setSpeed(Math.max(1, stats.getSpeed() + statModifiers.getOrDefault("speed", 0)));
+        stats.setStrength(Math.max(1, stats.getStrength() + statModifiers.getOrDefault("strength", 0)));
+        stats.setDexterity(Math.max(1, stats.getDexterity() + statModifiers.getOrDefault("dexterity", 0)));
+        player.getHealthComponent().calculateMaxHealth();
+    }
 
-		if (statModifiers.containsKey("health")) {
-			statLabels.add("Health: " + statModifiers.get("health"));
-		}
-		if (statModifiers.containsKey("speed")) {
-			statLabels.add("Speed: " + statModifiers.get("speed"));
-		}
-		if (statModifiers.containsKey("strength")) {
-			statLabels.add("Strength: " + statModifiers.get("strength"));
-		}
-		if (statModifiers.containsKey("dexterity")) {
-			statLabels.add("Dexterity: " + statModifiers.get("dexterity"));
-		}
-		return statLabels;
-	}
-	
-	public String getId() {
-		return Id;	
-	}
+    public HashSet<String> getStatLabels() {
+        HashSet<String> statLabels = new HashSet<>();
+        String text;
+        int stat;
 
-	public String getName() {
-		return Name;	
-	}
+        if (statModifiers.containsKey("health")) {
+            stat = statModifiers.get("health");
+            text = (stat < 0) ? ("Health: " + stat) : ("Health: " + "+" + stat);
+            statLabels.add(text);
+        }
+        if (statModifiers.containsKey("speed")) {
+            stat = statModifiers.get("speed");
+            text = (stat < 0) ? ("Speed: " + stat) : ("Speed: " + "+" + stat);
+            statLabels.add(text);
+        }
+        if (statModifiers.containsKey("strength")) {
+            stat = statModifiers.get("strength");
+            text = (stat < 0) ? ("Strength: " + stat) : ("Strength: " + "+" + stat);
+            statLabels.add(text);
+        }
+        if (statModifiers.containsKey("dexterity")) {
+            stat = statModifiers.get("dexterity");
+            text = (stat < 0) ? ("Dexterity: " + stat) : ("Dexterity: " + "+" + stat);
+            statLabels.add(text);
+        }
+        return statLabels;
+    }
 
-	public String getRarity() {
-		return Rairty;	
-	}
+    public String getId() {
+        return Id;
+    }
 
+    public String getName() {
+        return Name;
+    }
+
+    public String getRarity() {
+        return Rarity;
+    }
 
 
 }

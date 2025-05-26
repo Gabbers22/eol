@@ -28,5 +28,5 @@ public class DefenseAlly extends Ally {
         Trap trap = new Trap(position, new Vector2(-24, -4), 12, 8, entityManager, target);
         entityManager.addEntity(trap);
     }
-    
+
 }

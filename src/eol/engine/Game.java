@@ -55,15 +55,15 @@ public class Game {
 
         lootManager = new LootManager();
         entitySpawner = new EntitySpawner(entityManager);
-        waveManager = new WaveManager(entitySpawner, entityManager);   
-        gameState = new GameState(waveManager, player); 
+        waveManager = new WaveManager(entitySpawner, entityManager);
+        gameState = new GameState(waveManager, player);
         renderer = new Renderer(entityManager, spriteManager, waveManager);
         mainMenu = new MainMenu();
         itemPanel = new ItemPanel(player);
         gamePanel = new GamePanel(renderer, itemPanel);
         gamePanel.addKeyListener(inputHandler);
         collisionHandler = new CollisionHandler(GamePanel.getPanelWidth(), GamePanel.getPanelHeight(), entityManager);
-        
+
         /*
          * initialize other objects
          */

@@ -29,5 +29,5 @@ public class SupportAlly extends Ally {
         Projectile heal = new Projectile(owner.getPosition(), new Vector2(-5, -5), 10, 10, dir.multiply(300.0f), 5, this, entityManager);
         entityManager.addEntity(heal);
     }
-    
+
 }

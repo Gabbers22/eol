@@ -24,7 +24,7 @@ public class GamePanel extends JPanel {
     public void setDebugMode(boolean debugMode) {
         this.debugMode = debugMode;
     }
-    
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

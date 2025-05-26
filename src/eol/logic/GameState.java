@@ -57,7 +57,7 @@ public class GameState {
             playerStats = new StatsComponent(health, speed, strength, dexterity);
             waveManager.setWave(wave);
 
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -65,5 +65,5 @@ public class GameState {
     public StatsComponent getPlayerStats() {
         return playerStats;
     }
-    
+
 }

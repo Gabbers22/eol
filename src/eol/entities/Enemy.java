@@ -20,5 +20,5 @@ public abstract class Enemy extends Character {
         Vector2 direction = position.subtract(player.getPosition()).normalize();
         movement.move(direction);
     }
-    
+
 }

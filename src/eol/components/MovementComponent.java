@@ -83,7 +83,7 @@ public class MovementComponent {
             velocity = new Vector2(nv, velocity.getY());
         }
     }
-    
+
     public void update(float deltaTime) {
         if (pushTimer > 0f) {
             pushTimer -= deltaTime;
@@ -111,11 +111,11 @@ public class MovementComponent {
     }
 
     public void bossFloat(float deltaTime) {
-            time += deltaTime;
-            float x = 400 + (float)(Math.sin(time * 0.5f * Math.PI) * 40f); 
-            float y = 125 + (float)(Math.sin(time * 1.0f * Math.PI + (Math.PI / 2)) * 30f);
-            owner.setPosition(new Vector2(x, y));
-            return;
+        time += deltaTime;
+        float x = 400 + (float) (Math.sin(time * 0.5f * Math.PI) * 40f);
+        float y = 125 + (float) (Math.sin(time * 1.0f * Math.PI + (Math.PI / 2)) * 30f);
+        owner.setPosition(new Vector2(x, y));
+        return;
     }
 
     public void push(Vector2 force, float duration) {

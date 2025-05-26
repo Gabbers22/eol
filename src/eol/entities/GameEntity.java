@@ -1,6 +1,7 @@
 package eol.entities;
 
 import java.awt.*;
+
 import eol.utils.Vector2;
 import eol.render.SpriteManager;
 
@@ -33,10 +34,10 @@ public abstract class GameEntity {
 
     public Rectangle getBounds() {
         return new Rectangle(
-            (int)(position.getX() + offset.getX()),
-            (int)(position.getY() + offset.getY()),
-            width,
-            height
+                (int) (position.getX() + offset.getX()),
+                (int) (position.getY() + offset.getY()),
+                width,
+                height
         );
     }
 

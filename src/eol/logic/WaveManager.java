@@ -46,12 +46,8 @@ public class WaveManager {
         }
 
         if (!triggeredWaves.contains(currentWave)) {
-            switch(currentWave) {
+            switch (currentWave) {
                 case 2:
-                    Boss boss = new Boss(new Vector2(400, -100), new Vector2(-42.5f, -47), 85, 94, entityManager, new StatsComponent(25, 1, 1, 1));
-                    entityManager.addEntity(boss);  
-                    bossSpawned = true;
-
                     SupportAlly supportAlly = new SupportAlly(new Vector2(100, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
                     entityManager.addEntity(supportAlly);
 
@@ -60,6 +56,13 @@ public class WaveManager {
 
                     DefenseAlly defenseAlly = new DefenseAlly(new Vector2(300, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
                     entityManager.addEntity(defenseAlly);
+                    break;
+                case 10:
+                    Boss boss = new Boss(new Vector2(400, -100), new Vector2(-42.5f, -47), 85, 94, entityManager, new StatsComponent(25, 1, 1, 1));
+                    entityManager.addEntity(boss);
+                    bossSpawned = true;
+                    System.out.println("spawning boss");
+                    break;
             }
             triggeredWaves.add(currentWave);
         }
@@ -80,5 +83,5 @@ public class WaveManager {
     public void clearWaveEnded() {
         waveEnded = false;
     }
-    
+
 }

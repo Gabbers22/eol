@@ -65,5 +65,5 @@ public class Trap extends GameEntity {
         return alive;
     }
 
-    
+
 }

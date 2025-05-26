@@ -30,7 +30,7 @@ public class Vector2 {
     public Vector2 subtract(Vector2 v) {
         return new Vector2(v.x - x, v.y - y);
     }
-    
+
     public Vector2 multiply(float scalar) {
         return new Vector2(x * scalar, y * scalar);
     }
@@ -42,7 +42,7 @@ public class Vector2 {
     public Vector2 normalize() {
         float mag = magnitude();
         if (mag == 0) return Vector2.zero; // might not work
-        return new Vector2(x/ mag, y/ mag);
+        return new Vector2(x / mag, y / mag);
     }
 
     public void print() {

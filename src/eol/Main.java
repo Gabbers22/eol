@@ -7,7 +7,7 @@ import eol.ui.MainMenu;
 
 public class Main {
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         AudioManager audioManager = AudioManager.getInstance();
         audioManager.loadAll();
         audioManager.playMusic("menu");

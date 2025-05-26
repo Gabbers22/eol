@@ -5,14 +5,12 @@ import eol.entities.Character;
 
 public class HealthComponent {
     private Character owner;
-    private int baseHealth;
     private int healthStat;
     private int maxHealth;
     private int currentHealth;
     private boolean alive;
-    
-    public HealthComponent(int baseHealth, Character owner) {
-        this.baseHealth = baseHealth;
+
+    public HealthComponent(Character owner) {
         this.owner = owner;
         healthStat = owner.getStatsComponent().getHealth();
         calculateMaxHealth();
@@ -36,17 +34,27 @@ public class HealthComponent {
 
     public void calculateMaxHealth() {
         healthStat = owner.getStatsComponent().getHealth();
-        maxHealth = baseHealth * (1 + healthStat / 10);
+        maxHealth = (healthStat * 20) * (1 + healthStat / 10);
+        currentHealth = Math.min(currentHealth, maxHealth);
     }
 
-    public boolean isAlive() { return alive; }
-    public int getCurrentHealth() { return currentHealth; }
-    public void setCurrentHealth(int currentHealth) { 
-        this.currentHealth = currentHealth; 
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
         if (this.currentHealth == 0) {
             alive = false;
         }
     }
-    public int getMaxHealth() { return maxHealth; }
-    
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
 }

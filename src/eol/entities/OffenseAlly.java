@@ -26,5 +26,5 @@ public class OffenseAlly extends Ally {
     public void ability() {
         // apply random item
     }
-    
+
 }

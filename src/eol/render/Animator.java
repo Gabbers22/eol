@@ -19,7 +19,7 @@ public class Animator {
 
     public void update(float deltaTime) {
         if (frames.length <= 1) return;
-    
+
         elapsed += deltaTime;
 
         while (!endReached && elapsed >= frameDuration) {
@@ -59,4 +59,7 @@ public class Animator {
         }
         return false;
     }
+
+    public float getFrameDuration() { return frameDuration; }
+
 }

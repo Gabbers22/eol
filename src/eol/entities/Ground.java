@@ -11,5 +11,5 @@ public class Ground extends GameEntity {
     public void update(float deltaTime) {
 
     }
-    
+
 }

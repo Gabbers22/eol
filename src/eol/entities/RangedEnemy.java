@@ -20,5 +20,5 @@ public class RangedEnemy extends Enemy {
         }
         movement.update(deltaTime);
     }
-    
+
 }

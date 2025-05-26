@@ -31,16 +31,24 @@ public class Projectile extends GameEntity {
         anims = new AnimationComponent();
 
         BufferedImage[] frames = new BufferedImage[6];
-        for(int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             frames[i] = SpriteManager.getInstance().getSprite("projectile_" + i);
         }
 
         anims.addAnimation("shoot", new Animator(frames, 0.1f));
     }
 
-    public boolean isAlive() { return alive; }
-    public AnimationComponent getAnimationComponent() { return anims; }
-    public Vector2 getVelocity() { return velocity; }
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public AnimationComponent getAnimationComponent() {
+        return anims;
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
+    }
 
     public void update(float deltaTime) {
         lifeSpan -= deltaTime;
@@ -48,7 +56,7 @@ public class Projectile extends GameEntity {
             alive = false;
             return;
         }
-        
+
         if (owner instanceof Enemy && getBounds().intersects(player.getBounds())) {
             player.getHealthComponent().takeDamage(damage);
             alive = false;
@@ -70,7 +78,7 @@ public class Projectile extends GameEntity {
             player.getHealthComponent().heal(damage);
             alive = false;
             return;
-        }   
+        }
 
         //movement
         Vector2 displacement = velocity.multiply(deltaTime);

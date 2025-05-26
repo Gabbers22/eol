@@ -1,8 +1,6 @@
 package eol.ui;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,10 +24,10 @@ public class ItemPanel {
         this.items = new ArrayList<>();
         this.selectedIndex = 0;
         this.player = player;
-        this.font = new Font("Arial", Font.PLAIN, 16);
+        this.font = new Font("Martian Mono", Font.BOLD, 32);
     }
 
-    public void showItems(Set<Item> itemSet) {
+    public void showItems(List<Item> itemSet) {
         items.clear();
         items.addAll(itemSet);
         selectedIndex = 0;
@@ -47,7 +45,7 @@ public class ItemPanel {
             selectedIndex = (selectedIndex + 1) % items.size();
         } else if (inputHandler.isKeyPressed(KeyEvent.VK_X)) {
             Item selectedItem = items.get(selectedIndex);
-            selectedItem.applyStats(player.getStatsComponent());
+            selectedItem.applyStats(player);
             visible = false;
         }
         inputHandler.clearKeysPressed();
@@ -62,8 +60,8 @@ public class ItemPanel {
 
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-            int x = 100 + i * 150;
-            int y = 420;
+            int x = 150 + i * 150;
+            int y = 100;
 
             if (i == selectedIndex) {
                 g.setColor(Color.YELLOW);
@@ -76,16 +74,15 @@ public class ItemPanel {
         }
 
         Item selectedItem = items.get(selectedIndex);
-        g.setFont(font);
         g.setColor(Color.WHITE);
-        g.drawString(selectedItem.getName(), 100, 520);
-        g.drawString(selectedItem.getRarity(), 100, 540);
+        drawCenteredString(g, selectedItem.getName(), 400, 220, font);
+        drawCenteredString(g, selectedItem.getRarity(), 400, 260, font);
         HashSet<String> statLabels = selectedItem.getStatLabels();
         Iterator<String> it = statLabels.iterator();
-        int y = 550;
+        int y = 300;
         while (it.hasNext()) {
-            g.drawString(it.next(), 100, y);
-            y += 10;
+            drawCenteredString(g, it.next(), 400, y, font);
+            y += 40;
         }
     }
 
@@ -97,6 +94,13 @@ public class ItemPanel {
         visible = false;
     }
 
+    public static void drawCenteredString(Graphics2D g, String text, int centerX, int centerY, Font font) {
+        FontMetrics metrics = g.getFontMetrics(font);
+        int x = centerX - metrics.stringWidth(text) / 2;
+        int y = centerY - ((metrics.getHeight() - metrics.getAscent()));
+        g.setFont(font);
+        g.drawString(text, x, y);
+    }
 
 
 }
