@@ -20,13 +20,6 @@ public class LootManager {
     private static final List<String> LEGENDARY = List.of("9", "11");
     private static final List<String> MYTHIC = List.of("6");
 
-    /**
-     * 1–50: common (50%)
-     * 51–75: rare (25%)
-     * 76–90: epic (15%)
-     * 91–97: legendary (7%)
-     * 98–100: mythic (3%)
-     */
     public List<Item> chooseItems() {
         List<Item> picks = new ArrayList<>(4);
 
@@ -51,19 +44,43 @@ public class LootManager {
         return picks;
     }
 
+    /**
+     * 1–775: common (77.5%)
+     * 776–925: rare (15%)
+     * 926–975: epic (5%)
+     * 976–995: legendary (2%)
+     * 996–1000: mythic (0.5%)
+     */
+
     public void rollRarity() {
-        int roll = random.nextInt(100) + 1; // 1–100
-        if (roll <= 50) {
+        int roll = random.nextInt(1000) + 1; // 1–1000
+        if (roll <= 775) {
             rarity = COMMON;
-        } else if (roll <= 75) {
+        } else if (roll <= 925) {
             rarity = RARE;
-        } else if (roll <= 90) {
+        } else if (roll <= 975) {
             rarity = EPIC;
-        } else if (roll <= 97) {
+        } else if (roll <= 995) {
             rarity = LEGENDARY;
         } else {
             rarity = MYTHIC;
         }
     }
 
+    /*
+    public void rollRarity() {
+        int roll = random.nextInt(1000) + 1; // 1–1000
+        if (roll <= 1) {
+            rarity = COMMON;
+        } else if (roll <= 3) {
+            rarity = RARE;
+        } else if (roll <= 300) {
+            rarity = EPIC;
+        } else if (roll <= 600) {
+            rarity = LEGENDARY;
+        } else {
+            rarity = MYTHIC;
+        }
+    }
+    */
 }
