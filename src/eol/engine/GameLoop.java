@@ -2,14 +2,19 @@ package eol.engine;
 
 import eol.render.GamePanel;
 import eol.ui.GameOver;
+import eol.ui.ItemPanel;
 
 import java.awt.event.KeyEvent;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 
 import eol.components.StatsComponent;
 import eol.entities.*;
 import eol.entities.Character;
+import eol.items.Item;
+import eol.logic.LootManager;
 import eol.logic.WaveManager;
 import eol.utils.Vector2;
 
@@ -19,7 +24,9 @@ public class GameLoop implements Runnable {
     private InputHandler inputHandler;
     private CollisionHandler collisionHandler;
     private WaveManager waveManager;
+    private LootManager lootManager;
     private GamePanel gamePanel;
+    private ItemPanel itemPanel;
     private Player player;
     /*
      * other objects
@@ -31,13 +38,15 @@ public class GameLoop implements Runnable {
     private final int targetFps = 60;
     private final long targetTime = 1000 / targetFps; //ms per frame
 
-    public GameLoop(Game game, EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, WaveManager waveManager, GamePanel gamePanel, Player player) {
+    public GameLoop(Game game, EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, WaveManager waveManager, LootManager lootManager, GamePanel gamePanel, ItemPanel itemPanel, Player player) {
         this.game = game;
         this.entityManager = entityManager;
         this.inputHandler = inputHandler;
         this.collisionHandler = collisionHandler;
         this.waveManager = waveManager;
+        this.lootManager = lootManager;
         this.gamePanel = gamePanel;
+        this.itemPanel = itemPanel;
         this.player = player;
         gamePanel.setDebugMode(debugMode);
     }
@@ -56,16 +65,16 @@ public class GameLoop implements Runnable {
 
     // GameLoop entry point
     @Override
-    public void run() { 
+    public void run() {
         long lastUpdateTime = System.currentTimeMillis();
         long fpsTimer = System.currentTimeMillis();
         int frameCount = 0;
 
         while (running) {
             long currentTime = System.currentTimeMillis();
-            long elaspedTime = currentTime - lastUpdateTime;
+            long elapsedTime = currentTime - lastUpdateTime;
             lastUpdateTime = currentTime;
-            float deltaTime = elaspedTime / 1000.0f;
+            float deltaTime = elapsedTime / 1000.0f;
 
             update(deltaTime);
             render();
@@ -90,27 +99,27 @@ public class GameLoop implements Runnable {
     }
 
     public void update(float deltaTime) {
-
+        itemPanel.update(inputHandler);
         int currentWave = waveManager.getWave();
         if (currentWave != lastWave) {
             lastWave = currentWave;
             itemPanelShown = false;
         }
 
-        
+
         if (waveManager.hasWaveEnded() && !itemPanelShown) {
-            gamePanel.toggleItemPanel(true);
+            itemPanel.showItems(lootManager.chooseItems());
             itemPanelShown = true;
             return;
         }
-        
 
-        if (gamePanel.showingItems()) {
+
+        if (itemPanel.isVisible()) {
             return;
         }
-        
+
         waveManager.update(deltaTime);
-       
+
         Vector2 direction = inputHandler.getDirectionalInput();
         player.getMovementComponent().move(direction);
 
@@ -128,11 +137,11 @@ public class GameLoop implements Runnable {
             game.closeGame();
             game.showMainMenu();
         }
-        
-        
+
+
         for (GameEntity e : entityManager.getEntities()) {
             if (e instanceof Character) {
-                Character c = (Character)e;
+                Character c = (Character) e;
                 if (c.getCombatComponent() == null) continue;
                 c.getCombatComponent().update(deltaTime, inputHandler, entityManager);
             }
@@ -140,11 +149,12 @@ public class GameLoop implements Runnable {
 
         entityManager.updateAll(deltaTime);
 
-         for (GameEntity e : entityManager.getEntities()) {
+        for (GameEntity e : entityManager.getEntities()) {
             if (e instanceof Character) {
-                Character c = (Character)e;
+                Character c = (Character) e;
                 if (c.getCombatComponent() == null) continue;
-                c.getCombatComponent().setJustAttacked(false);;
+                c.getCombatComponent().setJustAttacked(false);
+                ;
             }
         }
 

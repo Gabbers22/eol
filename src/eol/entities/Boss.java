@@ -11,7 +11,8 @@ import eol.render.SpriteManager;
 import eol.utils.Vector2;
 
 public class Boss extends Enemy {
-    private enum Phase { intro, p1, p2, p3, dead  }
+    private enum Phase {intro, p1, p2, p3, dead}
+
     private Phase phase = Phase.intro;
     private float phaseInterval = 15.0f;
     private float stunInterval = 7.0f;
@@ -31,7 +32,7 @@ public class Boss extends Enemy {
         super(position, offset, width, height, entityManager, stats);
 
         BufferedImage[] idleFrames = new BufferedImage[8];
-        for(int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++) {
             idleFrames[i] = SpriteManager.getInstance().getSprite("boss_idle_" + i);
         }
 
@@ -56,15 +57,25 @@ public class Boss extends Enemy {
             rising = false;
             return;
         }
-        
+
         checkPhaseTransition();
         attackTimer += deltaTime;
-        switch(phase) {
-            case intro: introAnimation(deltaTime); break;
-            case p1: circleShot(deltaTime, 32, 300); break;
-            case p2: spreadShot(deltaTime, 12, 300); break;
-            case p3: spiralShot(deltaTime, 300); break;
-            case dead: deathAnimation(deltaTime); break;
+        switch (phase) {
+            case intro:
+                introAnimation(deltaTime);
+                break;
+            case p1:
+                circleShot(deltaTime, 32, 300);
+                break;
+            case p2:
+                spreadShot(deltaTime, 12, 300);
+                break;
+            case p3:
+                spiralShot(deltaTime, 300);
+                break;
+            case dead:
+                deathAnimation(deltaTime);
+                break;
         }
     }
 
@@ -74,7 +85,7 @@ public class Boss extends Enemy {
     }
 
     private void checkPhaseTransition() {
-        float pct = (float)health.getCurrentHealth() / health.getMaxHealth();
+        float pct = (float) health.getCurrentHealth() / health.getMaxHealth();
         if (health.getCurrentHealth() == 1) phase = Phase.dead;
         else if (pct < 0.33f) phase = Phase.p3;
         else if (pct < 0.66f) phase = Phase.p2;
@@ -89,14 +100,14 @@ public class Boss extends Enemy {
         Vector2 origin = new Vector2(getPosition().getX() + 40.0f, getPosition().getY() + 25.0f);
         Vector2 toPlayer = player.getPosition().subtract(origin).normalize();
 
-        float baseAngle = (float)Math.atan2(toPlayer.getY(), toPlayer.getX());
-        float spreadStep = (float)(Math.PI / 12);
+        float baseAngle = (float) Math.atan2(toPlayer.getY(), toPlayer.getX());
+        float spreadStep = (float) (Math.PI / 12);
         float startAngle = baseAngle - spreadStep * (count - 1) / 2f;
         float spawnDistance = -15f;
 
         for (int i = 0; i < count; i++) {
             float angle = startAngle + spreadStep * i;
-            Vector2 dir = new Vector2((float)Math.cos(angle), (float)Math.sin(angle));
+            Vector2 dir = new Vector2((float) Math.cos(angle), (float) Math.sin(angle));
             Vector2 spawnPos = origin.add(dir.multiply(spawnDistance));
 
             Vector2 vel = dir.multiply(speed);
@@ -112,14 +123,14 @@ public class Boss extends Enemy {
         Vector2 origin = new Vector2(getPosition().getX() + 40.0f, getPosition().getY() + 25.0f);
         Vector2 toPlayer = player.getPosition().subtract(origin).normalize();
 
-        float baseAngle = (float)Math.atan2(toPlayer.getY(), toPlayer.getX());
-        float spreadStep = (float)(Math.PI / 12);
+        float baseAngle = (float) Math.atan2(toPlayer.getY(), toPlayer.getX());
+        float spreadStep = (float) (Math.PI / 12);
         float startAngle = baseAngle - spreadStep * (count - 1) / 2f;
         float spawnDistance = -15f;
 
         for (int i = 0; i < count; i++) {
             float angle = startAngle + spreadStep * i;
-            Vector2 dir = new Vector2((float)Math.cos(angle), (float)Math.sin(angle));
+            Vector2 dir = new Vector2((float) Math.cos(angle), (float) Math.sin(angle));
             Vector2 spawnPos = origin.add(dir.multiply(spawnDistance));
 
             Vector2 vel = dir.multiply(speed);
@@ -131,12 +142,12 @@ public class Boss extends Enemy {
         movement.bossFloat(deltaTime);
         if (attackTimer < spiralInterval + angleStep) return;
         attackTimer = 0;
-        
+
         Vector2 origin = new Vector2(getPosition().getX() + 40.0f, getPosition().getY() + 25.0f);
-        float angleStep = (float)(Math.PI / 12);
+        float angleStep = (float) (Math.PI / 12);
         float spawnDistance = -15f;
         spiralAngle = spiralAngle + angleStep;
-        Vector2 dir = new Vector2((float)Math.cos(spiralAngle), (float)Math.sin(spiralAngle));
+        Vector2 dir = new Vector2((float) Math.cos(spiralAngle), (float) Math.sin(spiralAngle));
 
         Vector2 spawnPos = origin.add(dir.multiply(spawnDistance));
         Vector2 vel = dir.multiply(speed);
@@ -145,14 +156,14 @@ public class Boss extends Enemy {
     }
 
     private void extremeSpiralShot(float deltaTime, float speed) {
-        angleStep = angleStep - (float)(Math.PI / 2000);
+        angleStep = angleStep - (float) (Math.PI / 2000);
         if (attackTimer < spiralInterval / 2) return;
         attackTimer = 0;
-        
+
         Vector2 origin = new Vector2(getPosition().getX() + 40.0f, getPosition().getY() + 25.0f);
         float spawnDistance = -15f;
         spiralAngle = spiralAngle + angleStep;
-        Vector2 dir = new Vector2((float)Math.cos(spiralAngle), (float)Math.sin(spiralAngle));
+        Vector2 dir = new Vector2((float) Math.cos(spiralAngle), (float) Math.sin(spiralAngle));
 
         Vector2 spawnPos = origin.add(dir.multiply(spawnDistance));
         Vector2 vel = dir.multiply(speed);
@@ -170,7 +181,7 @@ public class Boss extends Enemy {
             position = position.add(new Vector2(0f, -3.0f));
             if (position.getY() <= 150f) {
                 stun = false;
-                phaseInterval = 15.0f; 
+                phaseInterval = 15.0f;
             }
         } else {
             movement.update(deltaTime);
@@ -194,5 +205,5 @@ public class Boss extends Enemy {
     public AnimationComponent getAnimationComponent() {
         return anims;
     }
-    
+
 }

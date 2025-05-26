@@ -17,5 +17,5 @@ public class MeleeEnemy extends Enemy {
         moveToPlayer();
         movement.update(deltaTime);
     }
-    
+
 }

@@ -16,7 +16,7 @@ public class CollisionHandler {
     private final EntityManager entityManager;
 
     public CollisionHandler(int screenWidth, int screenHeight, EntityManager entityManager) {
-        this.screenWidth  = screenWidth;
+        this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.entityManager = entityManager;
     }
@@ -64,7 +64,7 @@ public class CollisionHandler {
                 c.setPosition(new Vector2(x, c.getPosition().getY()));
             }
 
-            
+
             if (c instanceof Enemy) {
                 for (Enemy other : entityManager.getEnemies()) {
                     if (c == other) continue;

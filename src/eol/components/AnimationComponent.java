@@ -28,6 +28,8 @@ public class AnimationComponent {
         }
     }
 
+    public Animator get(String key) { return animators.get(key); }
+
     public void update(float deltaTime) {
         active.update(deltaTime);
     }

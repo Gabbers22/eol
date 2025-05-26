@@ -24,7 +24,7 @@ public class EntityManager {
     public void forceAddEntity(GameEntity entity) {
         entities.add(entity);
         if (entity instanceof Enemy) {
-            enemies.add((Enemy)entity);
+            enemies.add((Enemy) entity);
         }
     }
 
@@ -46,14 +46,14 @@ public class EntityManager {
 
     public Ground getGround() {
         for (GameEntity e : entities) {
-            if (e instanceof Ground) return (Ground)e;
+            if (e instanceof Ground) return (Ground) e;
         }
         return null;
     }
 
     public Player getPlayer() {
         for (GameEntity e : entities) {
-            if (e instanceof Player) return (Player)e;
+            if (e instanceof Player) return (Player) e;
         }
         return null;
     }
@@ -63,7 +63,7 @@ public class EntityManager {
             for (GameEntity e : pendingAdd) {
                 entities.add(e);
                 if (e instanceof Enemy) {
-                    enemies.add((Enemy)e);
+                    enemies.add((Enemy) e);
                 }
             }
             pendingAdd.clear();

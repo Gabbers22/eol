@@ -59,11 +59,11 @@ public class EntitySpawner {
 
     private void spawn(EnemyConfig cfg) {
         Enemy e;
-        switch(cfg.type) {
+        switch (cfg.type) {
             case meleeBasic, meleeArmored, meleeKnight, meleeGiant ->
-                e = new MeleeEnemy(enemySpawn, cfg.offset, cfg.width, cfg.height, entityManager, cfg.stats);
+                    e = new MeleeEnemy(enemySpawn, cfg.offset, cfg.width, cfg.height, entityManager, cfg.stats);
             case rangedBasic ->
-                e = new RangedEnemy(enemySpawn, cfg.offset, cfg.width, cfg.height, entityManager, cfg.stats);
+                    e = new RangedEnemy(enemySpawn, cfg.offset, cfg.width, cfg.height, entityManager, cfg.stats);
             default -> {
                 return;
             }
@@ -119,8 +119,8 @@ public class EntitySpawner {
         if (random.nextFloat() < ratio) {
             return (index % 3 == 0) ? EnemyType.meleeArmored : EnemyType.meleeBasic;
         } else {
-                return EnemyType.rangedBasic;
-        }        
+            return EnemyType.rangedBasic;
+        }
     }
 
     private StatsComponent baseStatsForType(EnemyType type) {
@@ -129,15 +129,15 @@ public class EntitySpawner {
             case rangedBasic -> new StatsComponent(1, 3, 1, 1);
             case meleeArmored -> new StatsComponent(2, 3, 1, 1);
             case meleeKnight -> new StatsComponent(2, 3, 1, 1);
-            case meleeGiant -> new StatsComponent(5, 3, 1, 1);           
+            case meleeGiant -> new StatsComponent(5, 3, 1, 1);
         };
     }
 
     private StatsComponent adjustStats(StatsComponent base) {
-        int health = base.getHealth() + (int)Math.floor(0.1 * playerStats.getHealth());
+        int health = base.getHealth() + (int) Math.floor(0.1 * playerStats.getHealth());
         int speed = base.getSpeed() * 1;
-        int strength = base.getStrength() + (int)Math.floor(0.1 * playerStats.getStrength());
-        int dexterity = base.getDexterity() + (int)Math.floor(0.1 * playerStats.getDexterity());
+        int strength = base.getStrength() + (int) Math.floor(0.1 * playerStats.getStrength());
+        int dexterity = base.getDexterity() + (int) Math.floor(0.1 * playerStats.getDexterity());
         return new StatsComponent(health, speed, strength, dexterity);
     }
 
@@ -153,7 +153,7 @@ public class EntitySpawner {
         return type == EnemyType.meleeGiant ? 256 : 64;
     }
 
-    private enum EnemyType { meleeBasic, rangedBasic, meleeArmored, meleeKnight, meleeGiant }
+    private enum EnemyType {meleeBasic, rangedBasic, meleeArmored, meleeKnight, meleeGiant}
 
     private static class EnemyConfig {
         final EnemyType type;
@@ -170,5 +170,5 @@ public class EntitySpawner {
             this.stats = stats;
         }
     }
-    
+
 }

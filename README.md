@@ -2,9 +2,11 @@
 
 #### Git vs GitHub
 
-**Git**: Tool you download on your computer that tracks code changes. Lets you save snapshots of your work, undo mistakes, and manage versions locally.
+**Git**: Tool you download on your computer that tracks code changes. Lets you save snapshots of your work, undo
+mistakes, and manage versions locally.
 
-**GitHub**: Website that hosts Git projects online. Lets teams collaborate by sharing code, reviewing changes, and managing tasks remotely.
+**GitHub**: Website that hosts Git projects online. Lets teams collaborate by sharing code, reviewing changes, and
+managing tasks remotely.
 
 ### 1. Install Git
 
@@ -14,7 +16,8 @@ Set name and email in the terminal using these commands:
 - `git config --global user.name "Name"` (use same username as GitHub)
 - `git config --global user.email "example@email.com"` (use same email as GitHub)
 
-You must also set up an ssh key: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+You must also set up an ssh
+key: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
 
 ### 2. Clone the repo
 
@@ -44,7 +47,8 @@ this allows the project to be edited with eclipse
 
 ### 4. Create a new branch
 
-Branches are versions of the repo. The idea is that the `main` branch is stable and when working on new features/fixes, you create a seperate branch and make changes there.
+Branches are versions of the repo. The idea is that the `main` branch is stable and when working on new features/fixes,
+you create a seperate branch and make changes there.
 
 Before creating a new branch allows make sure you are branching off main:
 
@@ -76,15 +80,17 @@ Push changes using this command:
 
 This adds your branch along with any commits to GitHub, where it can then be merged with the main branch
 
-### 7. Create a pull request 
+### 7. Create a pull request
 
 A pull request is a request to merge a feature branch onto the main branch
 
-Go to the repo on GitHub and create a new pull request and wait for someone to approve it/approve it yourself. Delete the feature branch after merging with main
+Go to the repo on GitHub and create a new pull request and wait for someone to approve it/approve it yourself. Delete
+the feature branch after merging with main
 
 ### 8. Clean up
 
-After merging with main, clean up by switching back to main branch, updating the main branch locally, and deleting the feature branch locally
+After merging with main, clean up by switching back to main branch, updating the main branch locally, and deleting the
+feature branch locally
 
 - `git checkout main` (switches to main branch)
 - `git pull origin main` (updates your local main branch from GitHub)

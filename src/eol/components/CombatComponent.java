@@ -20,9 +20,12 @@ import eol.audio.AudioManager;
 import eol.engine.EntityManager;
 
 public class CombatComponent {
+    private enum AttackPhase { NONE, STARTUP, ACTIVE, RECOVERY }
+    private AttackPhase attackPhase = AttackPhase.NONE;
+    private float attackTimer = 0f;
+    private float startupTime, activeTime, recoveryTime;
     private Character owner;
     private int baseDamage;
-    private int damage;
     private float baseCooldown;
     private float cooldown;
     private float projectileSpeed;
@@ -30,10 +33,10 @@ public class CombatComponent {
     private String playerType;
     private boolean justAttacked = false;
 
+
     public CombatComponent(Character owner, int baseDamage, float baseCooldown) {
         this.owner = owner;
         this.baseDamage = baseDamage;
-        damage = calculateDamage();
         this.baseCooldown = baseCooldown;
         cooldown = calculateCooldown();
         projectileSpeed = 300.0f;
@@ -42,7 +45,6 @@ public class CombatComponent {
     public CombatComponent(Character owner, int baseDamage, float baseCooldown, String playerType) {
         this.owner = owner;
         this.baseDamage = baseDamage;
-        damage = calculateDamage();
         this.baseCooldown = baseCooldown;
         cooldown = calculateCooldown();
         projectileSpeed = 300.0f;
@@ -72,7 +74,7 @@ public class CombatComponent {
 
         if (owner instanceof Player) {
             if (playerType.equals("melee")) {
-                meleePlayerAttack(inputHandler, entityManager);;
+                meleePlayerAttack(inputHandler, entityManager, deltaTime);
             } else if (playerType.equals("ranged")) {
                 rangedPlayerAttack(inputHandler, entityManager);
             }
@@ -82,7 +84,7 @@ public class CombatComponent {
             rangedEnemyAttack(entityManager);
         } else if (owner instanceof SupportAlly) {
             supportAllyAttack(entityManager);
-        } else if (owner instanceof DefenseAlly){
+        } else if (owner instanceof DefenseAlly) {
             defenseAllyAttack(entityManager);
         } else if (owner instanceof OffenseAlly) {
             offenseAllyAttack(entityManager);
@@ -91,6 +93,7 @@ public class CombatComponent {
         }
     }
 
+    /*
     public void meleePlayerAttack(InputHandler inputHandler, EntityManager entityManager) {
         if (!inputHandler.isKeyPressed(KeyEvent.VK_X) || cooldown > 0) return;
         justAttacked = true;
@@ -98,10 +101,53 @@ public class CombatComponent {
 
         for (Enemy e : entityManager.getEnemies()) {
             if (hitbox.intersects(e.getBounds())) {
-                e.getHealthComponent().takeDamage(damage);
+                e.getHealthComponent().takeDamage(calculateDamage());
             }
         }
         cooldown = calculateCooldown();
+    }
+     */
+
+    public void meleePlayerAttack(InputHandler inputHandler, EntityManager entityManager, float deltaTime) {
+        if (attackPhase == AttackPhase.NONE && inputHandler.isKeyPressed(KeyEvent.VK_X) && cooldown <= 0) {
+            attackPhase = AttackPhase.STARTUP;
+            attackTimer = startupTime;
+            cooldown = calculateCooldown();
+            justAttacked = true;
+            return;
+        }
+
+        if (attackPhase != AttackPhase.NONE) {
+            attackTimer -= deltaTime;
+            switch (attackPhase) {
+                case STARTUP:
+                    if (attackTimer <= 0) {
+                        attackTimer = activeTime;
+                        attackPhase = AttackPhase.ACTIVE;
+                    }
+                    break;
+                case ACTIVE:
+                    if (attackTimer <= 0) {
+                        attackPhase = AttackPhase.RECOVERY;
+                        attackTimer = recoveryTime;
+                        hitbox = null;
+                    } else {
+                        createMeleeHitbox();
+                        for (Enemy e : entityManager.getEnemies()) {
+                            if (hitbox.intersects(e.getBounds())) {
+                                e.getHealthComponent().takeDamage(calculateDamage());
+                            }
+                        }
+                    }
+                    break;
+                case RECOVERY:
+                    if (attackTimer <= 0) {
+                        attackPhase = AttackPhase.NONE;
+                        justAttacked = false;
+                    }
+                    break;
+            }
+        }
     }
 
     public void rangedPlayerAttack(InputHandler inputHandler, EntityManager entityManager) {
@@ -109,7 +155,7 @@ public class CombatComponent {
         justAttacked = true;
         //AudioManager.getInstance().playSfx("shoot");
         Vector2 dir = owner.getMovementComponent().getLastDirection();
-        Projectile proj = new Projectile(new Vector2(owner.getPosition().getX() + dir.getX()*10, owner.getPosition().getY()), new Vector2(-5, -5), 10, 10, dir.multiply(projectileSpeed), damage, owner, entityManager);
+        Projectile proj = new Projectile(new Vector2(owner.getPosition().getX() + dir.getX() * 10, owner.getPosition().getY()), new Vector2(-5, -5), 10, 10, dir.multiply(projectileSpeed), calculateDamage(), owner, entityManager);
         entityManager.addEntity(proj);
         cooldown = calculateCooldown();
     }
@@ -118,7 +164,7 @@ public class CombatComponent {
         if (cooldown > 0) return;
         Player p = entityManager.getPlayer();
         if (owner.getBounds().intersects(p.getBounds())) {
-            p.getHealthComponent().takeDamage(damage);
+            p.getHealthComponent().takeDamage(calculateDamage());
             cooldown = calculateCooldown();
         }
     }
@@ -127,7 +173,7 @@ public class CombatComponent {
         if (cooldown > 0 || owner.getMovementComponent().getVelocity().getX() > 0) return;
         Player p = entityManager.getPlayer();
         Vector2 dir = owner.getPosition().subtract(p.getPosition()).normalize();
-        Projectile proj = new Projectile(new Vector2(owner.getPosition().getX() + dir.getX()*10, owner.getPosition().getY()), new Vector2(-5, -5), 10, 10, dir.multiply(projectileSpeed), damage, owner, entityManager);
+        Projectile proj = new Projectile(new Vector2(owner.getPosition().getX() + dir.getX() * 10, owner.getPosition().getY()), new Vector2(-5, -5), 10, 10, dir.multiply(projectileSpeed), calculateDamage(), owner, entityManager);
         entityManager.addEntity(proj);
         cooldown = calculateCooldown();
     }
@@ -139,12 +185,12 @@ public class CombatComponent {
         createMeleeHitbox();
 
         if (hitbox.intersects(p.getBounds())) {
-            p.getHealthComponent().heal(damage);
+            p.getHealthComponent().heal(calculateDamage());
         }
 
         for (Enemy e : entityManager.getEnemies()) {
             if (hitbox.intersects(e.getBounds())) {
-                e.getHealthComponent().takeDamage(damage);
+                e.getHealthComponent().takeDamage(calculateDamage());
             }
         }
         cooldown = calculateCooldown();
@@ -157,7 +203,7 @@ public class CombatComponent {
         createMeleeHitbox();
         for (Enemy e : entityManager.getEnemies()) {
             if (hitbox.intersects(e.getBounds())) {
-                e.getHealthComponent().takeDamage(damage);
+                e.getHealthComponent().takeDamage(calculateDamage());
                 Vector2 knockbackDir = owner.getMovementComponent().getLastDirection();
                 e.getMovementComponent().push(knockbackDir.multiply(350.0f), 0.25f);
             }
@@ -171,7 +217,7 @@ public class CombatComponent {
         createMeleeHitbox();
         for (Enemy e : entityManager.getEnemies()) {
             if (hitbox.intersects(e.getBounds())) {
-                e.getHealthComponent().takeDamage(damage);
+                e.getHealthComponent().takeDamage(calculateDamage());
             }
         }
         cooldown = calculateCooldown();
@@ -182,10 +228,19 @@ public class CombatComponent {
         float px = owner.getPosition().getX();
         float py = owner.getPosition().getY();
         int w = 64, h = 64;
-        int halfW = 32/2;
-        int x = (int)(px + (dir.getX() < 0 ? -halfW - w :  halfW));
-        int y = (int)(py + 64/2 - 64);
+        int halfW = 32 / 2;
+        int x = (int) (px + (dir.getX() < 0 ? -halfW - w : halfW));
+        int y = (int) (py + 64 / 2 - 64);
 
         hitbox = new Rectangle(x, y, w, h);
     }
+
+    public Rectangle getHitbox() { return hitbox; }
+
+    public void initPhaseTimes(float frameDuration) {
+        startupTime = 1 * frameDuration;
+        activeTime = 3 * frameDuration;
+        recoveryTime = 1 * frameDuration;
+    }
+
 }
