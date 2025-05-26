@@ -18,6 +18,8 @@ public class ItemPanel {
     private int selectedIndex;
     private Player player;
     private Font font;
+    private Font labelFont;
+    private float timer = 0f;
 
     public ItemPanel(Player player) {
         this.visible = false;
@@ -25,6 +27,7 @@ public class ItemPanel {
         this.selectedIndex = 0;
         this.player = player;
         this.font = new Font("Martian Mono", Font.BOLD, 32);
+        this.labelFont = new Font("Martian Mono", Font.PLAIN, 24);
     }
 
     public void showItems(List<Item> itemSet) {
@@ -32,10 +35,12 @@ public class ItemPanel {
         items.addAll(itemSet);
         selectedIndex = 0;
         visible = true;
+        timer = 0f;
     }
 
-    public void update(InputHandler inputHandler) {
+    public void update(InputHandler inputHandler, float deltaTime) {
         if (!visible) return;
+        timer += deltaTime;
 
         if (inputHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
             System.out.println("selected left item");
@@ -43,14 +48,13 @@ public class ItemPanel {
         } else if (inputHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
             System.out.println("selected right item");
             selectedIndex = (selectedIndex + 1) % items.size();
-        } else if (inputHandler.isKeyPressed(KeyEvent.VK_X)) {
+        } else if (inputHandler.isKeyPressed(KeyEvent.VK_X) && timer > 1.5f) {
             Item selectedItem = items.get(selectedIndex);
             selectedItem.applyStats(player);
             visible = false;
         }
         inputHandler.clearKeysPressed();
     }
-
 
     public void render(Graphics2D g) {
         if (!visible) return;
@@ -72,16 +76,34 @@ public class ItemPanel {
             g.setColor(Color.RED);
             g.fillRect(x, y, 64, 64);
         }
-
+        
         Item selectedItem = items.get(selectedIndex);
-        g.setColor(Color.WHITE);
-        drawCenteredString(g, selectedItem.getName(), 400, 220, font);
-        drawCenteredString(g, selectedItem.getRarity(), 400, 260, font);
-        HashSet<String> statLabels = selectedItem.getStatLabels();
+        String rarity = selectedItem.getRarity();
+        switch (rarity) {
+            case "Common":
+                g.setColor(Color.WHITE);
+                break;
+            case "Rare":
+                g.setColor(Color.BLUE);
+                break;
+            case "Epic":
+                g.setColor(Color.MAGENTA);
+                break;
+            case "Legendary":
+                g.setColor(Color.ORANGE);
+                break;
+            case "Mythic":
+                g.setColor(Color.CYAN);
+                break;
+        }
+        drawCenteredString(g, selectedItem.getName(), 400, 240, font);
+        drawCenteredString(g, selectedItem.getRarity(), 400, 280, font);
+        List<String> statLabels = selectedItem.getStatLabels();
         Iterator<String> it = statLabels.iterator();
-        int y = 300;
+        int y = 320;
+        g.setColor(Color.WHITE);
         while (it.hasNext()) {
-            drawCenteredString(g, it.next(), 400, y, font);
+            drawCenteredString(g, it.next(), 400, y, labelFont);
             y += 40;
         }
     }

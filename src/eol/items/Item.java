@@ -1,7 +1,9 @@
 package eol.items;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import eol.components.StatsComponent;
 import eol.entities.Player;
@@ -11,7 +13,6 @@ public class Item {
     private String Id;
     private String Name;
     private String Rarity;
-
 
     public Item(String Id, String Name, String Rarity, HashMap<String, Integer> statModifiers) {
         this.Id = Id;
@@ -33,10 +34,15 @@ public class Item {
         stats.setStrength(Math.max(1, stats.getStrength() + statModifiers.getOrDefault("strength", 0)));
         stats.setDexterity(Math.max(1, stats.getDexterity() + statModifiers.getOrDefault("dexterity", 0)));
         player.getHealthComponent().calculateMaxHealth();
+
+        //trigger effect based on item
+        if (Id.equals("1")) {
+            player.getHealthComponent().heal((int)(player.getHealthComponent().getMaxHealth() * 0.25));
+        }
     }
 
-    public HashSet<String> getStatLabels() {
-        HashSet<String> statLabels = new HashSet<>();
+    public List<String> getStatLabels() {
+        List<String> statLabels = new ArrayList<>();
         String text;
         int stat;
 
@@ -60,6 +66,24 @@ public class Item {
             text = (stat < 0) ? ("Dexterity: " + stat) : ("Dexterity: " + "+" + stat);
             statLabels.add(text);
         }
+        if (Id.equals("1")) {
+            text = "Heals 25% of max HP";
+            statLabels.add(text);
+        }
+        if (Id.equals("2")) {
+            text = "Heals 50% of max HP over time";
+            statLabels.add(text);
+        }
+        if (Id.equals("6")) {
+            text = "Chance for legendary items to";
+            statLabels.add(text);
+            text = "appear increases by 15%";
+            statLabels.add(text);
+        }
+        if (Id.equals("11")) {
+            text = "Increases every stat by 10 for 10 seconds";
+            statLabels.add(text);
+        }
         return statLabels;
     }
 
@@ -75,6 +99,4 @@ public class Item {
         return Rarity;
     }
 
-
 }
-
