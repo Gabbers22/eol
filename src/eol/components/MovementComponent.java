@@ -1,5 +1,6 @@
 package eol.components;
 
+import eol.audio.AudioManager;
 import eol.entities.Boss;
 import eol.entities.Character;
 import eol.utils.Vector2;
@@ -69,6 +70,7 @@ public class MovementComponent {
 
     public void jump() {
         if (grounded) {
+            AudioManager.getInstance().playSound("jump");
             velocity = new Vector2(velocity.getX(), -jumpForce);
             grounded = false;
         }

@@ -10,19 +10,21 @@ import eol.components.AnimationComponent;
 import eol.components.CombatComponent;
 import eol.components.HealthComponent;
 import eol.utils.Vector2;
+import eol.weapons.Weapon;
 
 public class Player extends Character {
     private enum State {IDLE, WALK, JUMP, ATTACK}
-
     private State state;
     private AnimationComponent anims;
     private String playerType;
+    private Weapon weapon;
 
-    public Player(Vector2 position, Vector2 offset, int width, int height, StatsComponent stats, String playerType) {
+    public Player(Vector2 position, Vector2 offset, int width, int height, StatsComponent stats, String playerType, Weapon weapon) {
         super(position, offset, width, height, stats);
         this.playerType = playerType;
         anims = new AnimationComponent();
         state = State.IDLE;
+        this.weapon = weapon;
 
         BufferedImage[] idleFrames = new BufferedImage[3];
         for (int i = 0; i < 3; i++) {
@@ -46,8 +48,8 @@ public class Player extends Character {
         anims.addAnimation("jump", new Animator(jumpFrames, 0.2f));
         anims.addAnimation("attack", new Animator(attackFrames, 0.05f));
 
-        this.combat = new CombatComponent(this, 10, 0.1f, playerType);
-        combat.initPhaseTimes(anims.get("attack").getFrameDuration());
+        this.combat = new CombatComponent(this, 10, 0.1f, playerType, weapon);
+        //combat.initPhaseTimes(anims.get("attack").getFrameDuration());
 
     }
 
@@ -79,5 +81,18 @@ public class Player extends Character {
 
     public AnimationComponent getAnimationComponent() {
         return anims;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
+        combat.setWeapon(weapon);
+    }
+
+    public String getType() {
+        return playerType;
     }
 }

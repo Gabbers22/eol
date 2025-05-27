@@ -61,6 +61,14 @@ public class SpriteManager {
         for (int i = 0; i < 6; i++) {
             loadSprite("projectile_" + i, "projectile_" + i + ".png");
         }
+
+        /* Loading items:
+         * Name the file item_id.png
+        for (int i = 0; i < # of items; i++) {
+            loadSprite("item_" + i, "item_" + i + ".png");
+        }
+        */
+
         // Add more as needed
     }
 

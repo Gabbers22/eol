@@ -68,7 +68,7 @@ public class ItemPanel {
             int y = 100;
 
             if (i == selectedIndex) {
-                g.setColor(Color.YELLOW);
+                g.setColor(Color.WHITE);
                 g.drawRect(x - 5, y - 5, 74, 74);
             }
 

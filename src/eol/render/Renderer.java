@@ -3,6 +3,9 @@ package eol.render;
 import eol.components.HealthComponent;
 import eol.engine.EntityManager;
 import eol.utils.Vector2;
+import eol.weapons.BeamSpell;
+import eol.weapons.StarterSword;
+import eol.weapons.Weapon;
 import eol.entities.*;
 import eol.entities.Character;
 import eol.logic.WaveManager;
@@ -103,8 +106,16 @@ public class Renderer {
                 Rectangle hb = new Rectangle(x, y, w, h);
                 g.fill(hb);
 
-                if (e instanceof Player && character.getCombatComponent().getHitbox() != null) {
-                    g.fill(character.getCombatComponent().getHitbox());
+                if (e instanceof Player) {
+                    Player p = (Player)e;
+                    Weapon weapon = p.getWeapon();
+                    if (weapon instanceof StarterSword) {
+                        StarterSword sword = (StarterSword)weapon;
+                        if (sword.getHitbox() != null) g.fill(sword.getHitbox());
+                    } else if (weapon instanceof BeamSpell) {
+                        BeamSpell beam = (BeamSpell)weapon;
+                        if (beam.getBeam() != null)g.draw(beam.getBeam());
+                    }
                 }
 
                 g.setColor(playerDebugColor);

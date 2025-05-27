@@ -106,19 +106,18 @@ public class GameLoop implements Runnable {
             itemPanelShown = false;
         }
 
-
-        if (waveManager.hasWaveEnded() && !itemPanelShown) {
-            itemPanel.showItems(lootManager.chooseItems());
-            itemPanelShown = true;
-            return;
-        }
-
-
         if (itemPanel.isVisible()) {
             return;
         }
 
         waveManager.update(deltaTime);
+
+        if (waveManager.hasWaveEnded() && !itemPanelShown) {
+            System.out.println("wave ended");
+            itemPanel.showItems(lootManager.chooseItems());
+            itemPanelShown = true;
+            return;
+        }
 
         Vector2 direction = inputHandler.getDirectionalInput();
         player.getMovementComponent().move(direction);

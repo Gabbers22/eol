@@ -1,9 +1,13 @@
 package eol.entities;
 
 import eol.utils.Vector2;
+import eol.weapons.StormSpell;
 
 import java.awt.image.BufferedImage;
+import java.util.HashSet;
+import java.util.Set;
 
+import eol.audio.AudioManager;
 import eol.components.AnimationComponent;
 import eol.engine.EntityManager;
 import eol.render.Animator;
@@ -18,6 +22,7 @@ public class Projectile extends GameEntity {
     private Player player;
     private float lifeSpan;
     private boolean alive;
+    private Set<Enemy> enemiesHit = new HashSet<>();
 
     public Projectile(Vector2 position, Vector2 offset, int width, int height, Vector2 velocity, int damage, Character owner, EntityManager entityManager) {
         super(position, offset, width, height);
@@ -59,16 +64,19 @@ public class Projectile extends GameEntity {
 
         if (owner instanceof Enemy && getBounds().intersects(player.getBounds())) {
             player.getHealthComponent().takeDamage(damage);
+            AudioManager.getInstance().playSound("hit");
             alive = false;
             return;
         }
 
         if (owner instanceof Player) {
+            Player p = (Player)owner;
             for (Enemy e : entityManager.getEnemies()) {
-                if (getBounds().intersects(e.getBounds())) {
-                    System.out.println("intersected enemy");
+                if (!enemiesHit.contains(e) && getBounds().intersects(e.getBounds())) {
                     e.getHealthComponent().takeDamage(damage);
-                    alive = false;
+                    AudioManager.getInstance().playSound("hit");
+                    enemiesHit.add(e);
+                    if(!(p.getWeapon() instanceof StormSpell)) alive = false;
                     return;
                 }
             }

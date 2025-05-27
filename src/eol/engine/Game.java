@@ -15,6 +15,9 @@ import eol.logic.GameState;
 import eol.logic.LootManager;
 import eol.logic.WaveManager;
 import eol.utils.Vector2;
+import eol.weapons.StarterSpell;
+import eol.weapons.StarterSword;
+import eol.weapons.Weapon;
 
 public class Game {
     private JFrame frame;
@@ -34,6 +37,7 @@ public class Game {
     private Ground ground;
     private GameLoop gameLoop;
     private String playerType;
+    private Weapon playerWeapon;
 
     public Game(String playerType) {
         this.playerType = playerType;
@@ -46,8 +50,14 @@ public class Game {
         spriteManager.loadAllSprites();
         inputHandler = new InputHandler();
         AudioManager.getInstance().stopMusic();
+        AudioManager.getInstance().playMusic("songOne");
 
-        player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 5, 5, 5), playerType);
+        if (playerType.equals("melee")) {
+            playerWeapon = (Weapon)new StarterSword();
+        } else {
+            playerWeapon = (Weapon)new StarterSpell();
+        }
+        player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 5, 20, 5), playerType, playerWeapon);
         entityManager.forceAddEntity(player);
 
         ground = new Ground(new Vector2(0, 500), new Vector2(0, 0), 800, 100);

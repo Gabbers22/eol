@@ -58,6 +58,19 @@ public class EntityManager {
         return null;
     }
 
+    public boolean enemyCheck() {
+        if (!enemies.isEmpty()) {
+            return false;
+        }
+        
+        for (GameEntity e : pendingAdd) {
+            if (e instanceof Enemy) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void updateAll(float deltaTime) {
         if (!pendingAdd.isEmpty()) {
             for (GameEntity e : pendingAdd) {
