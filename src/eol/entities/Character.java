@@ -1,22 +1,29 @@
 package eol.entities;
 
 import eol.utils.Vector2;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import eol.components.CombatComponent;
 import eol.components.HealthComponent;
 import eol.components.MovementComponent;
 import eol.components.StatsComponent;
+import eol.effects.Effect;
 
 public abstract class Character extends GameEntity {
     protected final MovementComponent movement;
     protected final StatsComponent stats;
     protected final HealthComponent health;
     protected CombatComponent combat;
+    protected Set<Effect> effects;
 
     public Character(Vector2 position, Vector2 offset, int width, int height, StatsComponent stats) {
         super(position, offset, width, height);
         this.movement = new MovementComponent(this);
         this.stats = stats;
         this.health = new HealthComponent(this);
+        effects = new HashSet<>();
     }
 
     public MovementComponent getMovementComponent() {
@@ -33,6 +40,14 @@ public abstract class Character extends GameEntity {
 
     public CombatComponent getCombatComponent() {
         return combat;
+    }
+
+    public void addEffect(Effect e) {
+        effects.add(e);
+    }
+
+    public void removeEffect(Effect e) {
+        effects.remove(e);
     }
 
     public abstract void update(float deltaTime);
