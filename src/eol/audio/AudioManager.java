@@ -44,6 +44,7 @@ public class AudioManager {
         Clip clip = createClip("/assets/music/" + file);
         if (clip != null) {
             music.put(id, clip);
+            System.out.println("Loaded music: " + id);
         }
     }
 
@@ -76,6 +77,7 @@ public class AudioManager {
         }
         if (!pool.isEmpty()) {
             sfx.put(id, pool);
+            System.out.println("Loaded sound: " + id);
         }
     }
 
@@ -84,7 +86,6 @@ public class AudioManager {
     public void playSound(String id) {
         List<Clip> pool = sfx.get(id);
         if (pool == null) return;
-        System.out.println("playing sfx");
         for (Clip clip : pool) {
             if (!clip.isRunning()) {
                 clip.setFramePosition(0);
@@ -103,7 +104,7 @@ public class AudioManager {
         try {
             URL url = getClass().getResource(path);
             if (url == null) {
-                System.err.println("Audio resource not found: " + path);
+                System.out.println("Audio resource not found: " + path);
                 return null;
             }
             try (AudioInputStream ais = AudioSystem.getAudioInputStream(url)) {
@@ -120,6 +121,9 @@ public class AudioManager {
     public void loadAll() {
         loadMusic("menu", "menu.wav");
         loadMusic("songOne", "songOne.wav");
+        loadMusic("songTwo", "songTwo.wav");
+        loadMusic("songThree", "songThree.wav");
+        loadMusic("boss", "boss.wav");
 
         loadSound("hit", "hitSound.wav", 10);
         loadSound("jump", "jumpSound.wav", 10);

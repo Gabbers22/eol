@@ -87,6 +87,7 @@ public class MainMenu {
         mainMenuPanel.add(gameTitle);
 
         mainMenuFrame = new JFrame("Echoes of Lazarus");
+        mainMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainMenuFrame.setSize(new Dimension(1000, 768));
         mainMenuFrame.setResizable(true);
         mainMenuFrame.add(mainMenuPanel);

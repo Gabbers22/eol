@@ -14,14 +14,14 @@ import eol.utils.Vector2;
 
 public class BeamSpell implements Weapon {
     private Line2D beam;
-    private float duration = 2.0f;
-    private float range = 200.0f;
+    private float duration = 0.5f;
+    private float range = 300.0f;
     private float remaining = 0.0f;
     private Set<Enemy> enemiesHit = new HashSet<>();
 
     @Override
     public void fire(CombatComponent combatComponent, InputHandler inputHandler, EntityManager entityManager, float deltaTime) {
-        if (inputHandler.isKeyPressed(KeyEvent.VK_X) || combatComponent.getCooldown() <= 0 && remaining <= 0) {
+        if (inputHandler.isKeyPressed(KeyEvent.VK_X) && combatComponent.getCooldown() <= 0 && remaining <= 0) {
             remaining = duration;
             enemiesHit.clear();
             combatComponent.setCooldown(combatComponent.calculateCooldown());
@@ -41,7 +41,7 @@ public class BeamSpell implements Weapon {
         Vector2 dir = combatComponent.getOwner().getMovementComponent().getLastDirection();
         Vector2 to = from.add(dir.multiply(range));
 
-        beam = new Line2D.Float(from.getX(), from.getY(), to.getX(), to.getX());
+        beam = new Line2D.Float(from.getX(), from.getY(), to.getX(), to.getY());
 
         for (Enemy e : entityManager.getEnemies()) {
             if (!enemiesHit.contains(e) && beam.intersects(e.getBounds())) {

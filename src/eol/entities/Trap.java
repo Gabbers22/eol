@@ -15,11 +15,13 @@ public class Trap extends GameEntity {
     private Enemy enemyTrapped;
     private boolean alive = true;
     private EntityManager entityManager;
+    private DefenseAlly owner;
 
-    public Trap(Vector2 startPosition, Vector2 offset, int width, int height, EntityManager entityManager, Vector2 targetPosition) {
+    public Trap(Vector2 startPosition, Vector2 offset, int width, int height, EntityManager entityManager, Vector2 targetPosition, DefenseAlly owner) {
         super(startPosition, offset, width, height);
         this.targetPosition = targetPosition;
         this.entityManager = entityManager;
+        this.owner = owner;
 
         float flightTime = 0.7f;
         float vx = (targetPosition.getX() - startPosition.getX()) / flightTime;
@@ -44,6 +46,7 @@ public class Trap extends GameEntity {
             timer -= deltaTime;
             if (timer <= 0) {
                 alive = false;
+                owner.setTrapDown(false);
             }
         }
 

@@ -28,6 +28,7 @@ public class Renderer {
     private static final Color attackDebugColor = new Color(255, 0, 255, 128);
     private static final Color groundDebugolor = new Color(0, 0, 0, 128);
     private static final Color defaultDebugColor = new Color(255, 0, 00, 128);
+    private static final Color bossDebugColor = new Color(255, 0, 00, 64);
 
     public Renderer(EntityManager entityManager, SpriteManager spriteManager, WaveManager waveManager) {
         this.entityManager = entityManager;
@@ -121,6 +122,8 @@ public class Renderer {
                 g.setColor(playerDebugColor);
             } else if (e instanceof Ground) {
                 g.setColor(groundDebugolor);
+            } else if (e instanceof Boss) {
+                g.setColor(bossDebugColor);
             } else {
                 g.setColor(defaultDebugColor);
             }

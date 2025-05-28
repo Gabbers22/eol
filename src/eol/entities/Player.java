@@ -48,7 +48,7 @@ public class Player extends Character {
         anims.addAnimation("jump", new Animator(jumpFrames, 0.2f));
         anims.addAnimation("attack", new Animator(attackFrames, 0.05f));
 
-        this.combat = new CombatComponent(this, 10, 0.1f, playerType, weapon);
+        this.combat = new CombatComponent(this, 10, 1.5f, playerType, weapon);
         //combat.initPhaseTimes(anims.get("attack").getFrameDuration());
 
     }

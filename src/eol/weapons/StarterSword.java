@@ -17,7 +17,7 @@ import eol.utils.Vector2;
 public class StarterSword implements Weapon {
     private enum AttackPhase { NONE, STARTUP, ACTIVE, RECOVERY }
     private AttackPhase attackPhase = AttackPhase.NONE;
-    private float attackTimer, startupTime = 0.1f, activeTime = 0.2f, recoveryTime = 0.1f;
+    private float attackTimer, startupTime = 0.05f, activeTime = 0.15f, recoveryTime = 0.05f;
     private final Set<Enemy> enemiesHit = new HashSet<>();
     private Rectangle hitbox;
 
@@ -28,7 +28,6 @@ public class StarterSword implements Weapon {
          && input.isKeyPressed(KeyEvent.VK_X)
          && ctx.getCooldown() <= 0)
         {
-            System.out.println("attack fired");
             attackPhase = AttackPhase.STARTUP;
             attackTimer = startupTime;
             ctx.setCooldown(ctx.calculateCooldown());
@@ -44,7 +43,6 @@ public class StarterSword implements Weapon {
         attackTimer -= dt;
         switch (attackPhase) {
             case STARTUP:
-            System.out.println("startup");
                 if (attackTimer <= 0) {
                     attackPhase = AttackPhase.ACTIVE;
                     attackTimer = activeTime;
@@ -53,7 +51,6 @@ public class StarterSword implements Weapon {
                 break;
 
             case ACTIVE:
-            System.out.println("active");
                 if (attackTimer <= 0) {
                     attackPhase = AttackPhase.RECOVERY;
                     attackTimer = recoveryTime;
@@ -64,7 +61,6 @@ public class StarterSword implements Weapon {
                         if (!enemiesHit.contains(e)
                          && hitbox.intersects(e.getBounds()))
                         {
-                            System.out.println("hit");
                             e.getHealthComponent()
                              .takeDamage(ctx.calculateDamage());
                             AudioManager.getInstance().playSound("hit");
@@ -75,7 +71,6 @@ public class StarterSword implements Weapon {
                 break;
 
             case RECOVERY:
-            System.out.println("recovery");
                 if (attackTimer <= 0) {
                     attackPhase = AttackPhase.NONE;
                     enemiesHit.clear();

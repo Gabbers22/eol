@@ -28,6 +28,7 @@ public class GameOver {
         frame.setResizable(true);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JButton btnStartOver = new JButton("Start Over");
         btnStartOver.addActionListener(new ActionListener() {
