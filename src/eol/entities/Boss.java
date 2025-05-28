@@ -50,7 +50,7 @@ public class Boss extends Enemy {
             stun(deltaTime);
             return;
         }
-        phaseInterval -= deltaTime;
+        if (introFinished) phaseInterval -= deltaTime;
         if (phaseInterval <= 0 && phase != Phase.dead) {
             stun = true;
             stunInterval = 7.0f;
@@ -80,7 +80,8 @@ public class Boss extends Enemy {
     }
 
     private void introAnimation(float deltaTime) {
-        movement.update(deltaTime);
+        position = position.add(new Vector2(0f, 0.37f));
+        //movement.update(deltaTime);
         if (position.getY() > 150) introFinished = true;
     }
 
@@ -178,7 +179,9 @@ public class Boss extends Enemy {
         }
 
         if (rising) {
-            position = position.add(new Vector2(0f, -3.0f));
+            Vector2 dir = new Vector2(380, 150).subtract(position).normalize();
+            position = position.add(dir.multiply(-3.0f));
+            //position = position.add(new Vector2(0f, -3.0f));
             if (position.getY() <= 150f) {
                 stun = false;
                 phaseInterval = 15.0f;

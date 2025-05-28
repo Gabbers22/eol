@@ -52,6 +52,7 @@ public class LootManager {
      * 996–1000: mythic (0.5%)
      */
 
+     /*
     public void rollRarity() {
         int roll = random.nextInt(1000) + 1; // 1–1000
         if (roll <= 775) {
@@ -66,21 +67,22 @@ public class LootManager {
             rarity = MYTHIC;
         }
     }
+    */
 
-    /*
+    
     public void rollRarity() {
         int roll = random.nextInt(1000) + 1; // 1–1000
-        if (roll <= 1) {
+        if (roll <= 250) {
             rarity = COMMON;
-        } else if (roll <= 3) {
+        } else if (roll <= 500) {
             rarity = RARE;
-        } else if (roll <= 300) {
+        } else if (roll <= 750) {
             rarity = EPIC;
-        } else if (roll <= 600) {
+        } else if (roll <= 950) {
             rarity = LEGENDARY;
         } else {
             rarity = MYTHIC;
         }
     }
-    */
+    
 }

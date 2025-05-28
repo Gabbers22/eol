@@ -2,6 +2,7 @@ package eol.ui;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -11,6 +12,7 @@ import java.util.Set;
 import eol.engine.InputHandler;
 import eol.entities.Player;
 import eol.items.Item;
+import eol.render.SpriteManager;
 
 public class ItemPanel {
     private boolean visible;
@@ -59,22 +61,23 @@ public class ItemPanel {
     public void render(Graphics2D g) {
         if (!visible) return;
 
-        g.setColor(new Color(0, 0, 0, 200));
+        g.setColor(new Color(0, 0, 0, 150));
         g.fillRect(0, 0, 800, 600);
 
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-            int x = 150 + i * 150;
+            int x = 100 + i * 170; //
             int y = 100;
 
             if (i == selectedIndex) {
-                g.setColor(Color.YELLOW);
-                g.drawRect(x - 5, y - 5, 74, 74);
+                g.setColor(Color.WHITE);
+                g.drawRect(x - 5, y - 5, 106, 106); //74, 74
             }
 
-            //g.drawImage(item.getSprite(), x, y, 64, 64, null);
-            g.setColor(Color.RED);
-            g.fillRect(x, y, 64, 64);
+            BufferedImage sprite = SpriteManager.getInstance().getSprite("item_" + item.getId());
+            g.drawImage(sprite, x, y, 96, 96, null); //64, 64
+            //g.setColor(Color.RED);
+            //g.fillRect(x, y, 64, 64);
         }
         
         Item selectedItem = items.get(selectedIndex);
@@ -84,7 +87,7 @@ public class ItemPanel {
                 g.setColor(Color.WHITE);
                 break;
             case "Rare":
-                g.setColor(Color.BLUE);
+                g.setColor(new Color(0, 150, 255, 255));
                 break;
             case "Epic":
                 g.setColor(Color.MAGENTA);
@@ -96,11 +99,11 @@ public class ItemPanel {
                 g.setColor(Color.CYAN);
                 break;
         }
-        drawCenteredString(g, selectedItem.getName(), 400, 240, font);
-        drawCenteredString(g, selectedItem.getRarity(), 400, 280, font);
+        drawCenteredString(g, selectedItem.getName(), 400, 260, font);
+        drawCenteredString(g, selectedItem.getRarity(), 400, 300, font);
         List<String> statLabels = selectedItem.getStatLabels();
         Iterator<String> it = statLabels.iterator();
-        int y = 320;
+        int y = 340;
         g.setColor(Color.WHITE);
         while (it.hasNext()) {
             drawCenteredString(g, it.next(), 400, y, labelFont);

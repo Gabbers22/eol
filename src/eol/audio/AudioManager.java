@@ -12,6 +12,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,6 +44,7 @@ public class AudioManager {
         Clip clip = createClip("/assets/music/" + file);
         if (clip != null) {
             music.put(id, clip);
+            System.out.println("Loaded music: " + id);
         }
     }
 
@@ -63,12 +66,45 @@ public class AudioManager {
         }
     }
 
+    // loads a pool of sounds, give filename and set hashmap id
+    public void loadSound(String id, String file, int poolSize) {
+        List<Clip> pool = new ArrayList<>(poolSize);
+        for (int i = 0; i < poolSize; i++) {
+            Clip clip = createClip("/assets/sounds/" + file);
+            if (clip != null) {
+                pool.add(clip);
+            }
+        }
+        if (!pool.isEmpty()) {
+            sfx.put(id, pool);
+            System.out.println("Loaded sound: " + id);
+        }
+    }
+
+
+    // Plays sound given the id
+    public void playSound(String id) {
+        List<Clip> pool = sfx.get(id);
+        if (pool == null) return;
+        for (Clip clip : pool) {
+            if (!clip.isRunning()) {
+                clip.setFramePosition(0);
+                clip.start();
+                return;
+            }
+        }
+        Clip clip = pool.get(0);
+        if (clip.isRunning()) clip.stop();
+        clip.setFramePosition(0);
+        clip.start();
+    }
+
     // creates a clip given the file path
     public Clip createClip(String path) {
         try {
             URL url = getClass().getResource(path);
             if (url == null) {
-                System.err.println("Audio resource not found: " + path);
+                System.out.println("Audio resource not found: " + path);
                 return null;
             }
             try (AudioInputStream ais = AudioSystem.getAudioInputStream(url)) {
@@ -82,10 +118,17 @@ public class AudioManager {
         }
     }
 
-
     public void loadAll() {
         loadMusic("menu", "menu.wav");
+        loadMusic("songOne", "songOne.wav");
+        loadMusic("songTwo", "songTwo.wav");
+        loadMusic("songThree", "songThree.wav");
+        loadMusic("boss", "boss.wav");
 
+        loadSound("hit", "hitSound.wav", 10);
+        loadSound("jump", "jumpSound.wav", 10);
+        loadSound("sword", "swordSlash.wav", 10);
+    
         // load more as needed
     }
 

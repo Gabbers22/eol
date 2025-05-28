@@ -27,8 +27,9 @@ public class EntitySpawner {
 
     public void prepareWave(int waveNumber) {
         spawnQueue.clear();
-        int totalEnemies = (int) ((int) 2 + (2 % (waveNumber * (Math.floor(playerStats.getDexterity() / 3)))));
-        for (int i = 0; i <= totalEnemies; i++) {
+        //int totalEnemies = (int) ((int) 2 + (2 % (waveNumber * (Math.floor(playerStats.getDexterity() / 3)))));
+        int totalEnemies = 3;
+        for (int i = 0; i < totalEnemies; i++) {
             EnemyType type = selectType(waveNumber, i);
             StatsComponent baseStats = baseStatsForType(type);
             StatsComponent adjusted = adjustStats(baseStats);
@@ -41,7 +42,7 @@ public class EntitySpawner {
     }
 
     public boolean waveOver() {
-        return (spawnQueue.isEmpty() && entityManager.getEnemies().isEmpty());
+        return (spawnQueue.isEmpty() && entityManager.enemyCheck());
     }
 
     public void update(float deltaTime) {
@@ -52,6 +53,7 @@ public class EntitySpawner {
             EnemyConfig cfg = spawnQueue.poll();
             spawnTimer = spawnInterval;
             spawn(cfg);
+            System.out.println("spawnqueue: " + spawnQueue.size());
             System.out.println("spawned: " + cfg.type + " stats: " + cfg.stats.getHealth() + ", " + cfg.stats.getSpeed() + ", " + cfg.stats.getStrength() + ", " + cfg.stats.getDexterity());
         }
 

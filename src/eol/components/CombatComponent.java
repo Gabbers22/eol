@@ -1,10 +1,9 @@
 package eol.components;
 
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-
 
 import eol.utils.Vector2;
+import eol.weapons.Weapon;
 import eol.entities.Character;
 import eol.entities.DefenseAlly;
 import eol.entities.Enemy;
@@ -20,10 +19,7 @@ import eol.audio.AudioManager;
 import eol.engine.EntityManager;
 
 public class CombatComponent {
-    private enum AttackPhase { NONE, STARTUP, ACTIVE, RECOVERY }
-    private AttackPhase attackPhase = AttackPhase.NONE;
-    private float attackTimer = 0f;
-    private float startupTime, activeTime, recoveryTime;
+    private Weapon currentWeapon;
     private Character owner;
     private int baseDamage;
     private float baseCooldown;
@@ -42,13 +38,14 @@ public class CombatComponent {
         projectileSpeed = 300.0f;
     }
 
-    public CombatComponent(Character owner, int baseDamage, float baseCooldown, String playerType) {
+    public CombatComponent(Character owner, int baseDamage, float baseCooldown, String playerType, Weapon currentWeapon) {
         this.owner = owner;
         this.baseDamage = baseDamage;
         this.baseCooldown = baseCooldown;
         cooldown = calculateCooldown();
         projectileSpeed = 300.0f;
         this.playerType = playerType;
+        this.currentWeapon = currentWeapon;
     }
 
     public int calculateDamage() {
@@ -61,6 +58,14 @@ public class CombatComponent {
         return baseCooldown - (0.05f * dexterity);
     }
 
+    public float getCooldown() {
+        return cooldown;
+    }
+
+    public void setCooldown(float cooldown) {
+        this.cooldown = cooldown;
+    }
+
     public boolean getJustAttacked() {
         return justAttacked;
     }
@@ -69,15 +74,20 @@ public class CombatComponent {
         justAttacked = b;
     }
 
+    public float getProjectileSpeed() {
+        return projectileSpeed;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        currentWeapon = weapon;
+    }
+
     public void update(float deltaTime, InputHandler inputHandler, EntityManager entityManager) {
         cooldown = Math.max(0, cooldown - deltaTime);
 
         if (owner instanceof Player) {
-            if (playerType.equals("melee")) {
-                meleePlayerAttack(inputHandler, entityManager, deltaTime);
-            } else if (playerType.equals("ranged")) {
-                rangedPlayerAttack(inputHandler, entityManager);
-            }
+            currentWeapon.fire(this, inputHandler, entityManager, deltaTime);
+            currentWeapon.update(this, entityManager, deltaTime);
         } else if (owner instanceof MeleeEnemy) {
             meleeEnemyAttack(entityManager);
         } else if (owner instanceof RangedEnemy) {
@@ -91,73 +101,6 @@ public class CombatComponent {
         } else {
             return;
         }
-    }
-
-    /*
-    public void meleePlayerAttack(InputHandler inputHandler, EntityManager entityManager) {
-        if (!inputHandler.isKeyPressed(KeyEvent.VK_X) || cooldown > 0) return;
-        justAttacked = true;
-        createMeleeHitbox();
-
-        for (Enemy e : entityManager.getEnemies()) {
-            if (hitbox.intersects(e.getBounds())) {
-                e.getHealthComponent().takeDamage(calculateDamage());
-            }
-        }
-        cooldown = calculateCooldown();
-    }
-     */
-
-    public void meleePlayerAttack(InputHandler inputHandler, EntityManager entityManager, float deltaTime) {
-        if (attackPhase == AttackPhase.NONE && inputHandler.isKeyPressed(KeyEvent.VK_X) && cooldown <= 0) {
-            attackPhase = AttackPhase.STARTUP;
-            attackTimer = startupTime;
-            cooldown = calculateCooldown();
-            justAttacked = true;
-            return;
-        }
-
-        if (attackPhase != AttackPhase.NONE) {
-            attackTimer -= deltaTime;
-            switch (attackPhase) {
-                case STARTUP:
-                    if (attackTimer <= 0) {
-                        attackTimer = activeTime;
-                        attackPhase = AttackPhase.ACTIVE;
-                    }
-                    break;
-                case ACTIVE:
-                    if (attackTimer <= 0) {
-                        attackPhase = AttackPhase.RECOVERY;
-                        attackTimer = recoveryTime;
-                        hitbox = null;
-                    } else {
-                        createMeleeHitbox();
-                        for (Enemy e : entityManager.getEnemies()) {
-                            if (hitbox.intersects(e.getBounds())) {
-                                e.getHealthComponent().takeDamage(calculateDamage());
-                            }
-                        }
-                    }
-                    break;
-                case RECOVERY:
-                    if (attackTimer <= 0) {
-                        attackPhase = AttackPhase.NONE;
-                        justAttacked = false;
-                    }
-                    break;
-            }
-        }
-    }
-
-    public void rangedPlayerAttack(InputHandler inputHandler, EntityManager entityManager) {
-        if (!inputHandler.isKeyPressed(KeyEvent.VK_X) || cooldown > 0) return;
-        justAttacked = true;
-        //AudioManager.getInstance().playSfx("shoot");
-        Vector2 dir = owner.getMovementComponent().getLastDirection();
-        Projectile proj = new Projectile(new Vector2(owner.getPosition().getX() + dir.getX() * 10, owner.getPosition().getY()), new Vector2(-5, -5), 10, 10, dir.multiply(projectileSpeed), calculateDamage(), owner, entityManager);
-        entityManager.addEntity(proj);
-        cooldown = calculateCooldown();
     }
 
     public void meleeEnemyAttack(EntityManager entityManager) {
@@ -194,7 +137,6 @@ public class CombatComponent {
             }
         }
         cooldown = calculateCooldown();
-
     }
 
     public void defenseAllyAttack(EntityManager entityManager) {
@@ -236,11 +178,14 @@ public class CombatComponent {
     }
 
     public Rectangle getHitbox() { return hitbox; }
+    public Character getOwner() { return owner; }
 
+    /* 
     public void initPhaseTimes(float frameDuration) {
         startupTime = 1 * frameDuration;
         activeTime = 3 * frameDuration;
         recoveryTime = 1 * frameDuration;
     }
+    */
 
 }

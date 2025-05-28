@@ -1,11 +1,12 @@
 package eol.components;
 
+import eol.audio.AudioManager;
 import eol.entities.Boss;
 import eol.entities.Character;
 import eol.utils.Vector2;
 
 public class MovementComponent {
-    public static final float baseAcceleration = 60.0f;
+    public static final float baseAcceleration = 80.0f;
     public static final float baseMaxSpeed = 200.0f;
     public static final float jumpForce = 600.0f;
     public static final float gravity = 2000.0f;
@@ -54,11 +55,13 @@ public class MovementComponent {
         if (pushed) return;
         if (direction.getX() != 0.0f) setLastDirection(direction);
         float speedStat = owner.getStatsComponent().getSpeed();
-        Vector2 acceleration = direction.multiply(baseAcceleration * (speedStat / 4));
+        float speedFactor = (float)(Math.sqrt(speedStat) * 0.25);
+
+        Vector2 acceleration = direction.multiply(baseAcceleration * speedFactor);
 
         velocity = new Vector2(velocity.getX() + acceleration.getX(), velocity.getY()); // apply acceleration
 
-        float max = baseMaxSpeed * (speedStat / 4);
+        float max = baseMaxSpeed * speedFactor;
         float vx = velocity.getX();
         if (Math.abs(vx) > max) {
             vx = Math.signum(vx) * max;
@@ -69,6 +72,7 @@ public class MovementComponent {
 
     public void jump() {
         if (grounded) {
+            AudioManager.getInstance().playSound("jump");
             velocity = new Vector2(velocity.getX(), -jumpForce);
             grounded = false;
         }
