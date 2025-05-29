@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import eol.components.StatsComponent;
+import eol.effects.HealEffect;
 import eol.entities.Player;
 
 public class Item {
@@ -38,6 +39,9 @@ public class Item {
         //trigger effect based on item
         if (Id.equals("1")) {
             player.getHealthComponent().heal((int)(player.getHealthComponent().getMaxHealth() * 0.25));
+        }
+        if (Id.equals("2")) {
+            player.addEffect(new HealEffect(player, 30.0f));
         }
     }
 

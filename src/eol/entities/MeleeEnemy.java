@@ -16,6 +16,7 @@ public class MeleeEnemy extends Enemy {
     public void update(float deltaTime) {
         moveToPlayer();
         movement.update(deltaTime);
+        updateEffects(deltaTime);
     }
 
 }

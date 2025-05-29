@@ -3,6 +3,7 @@ package eol.entities;
 import eol.utils.Vector2;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import eol.components.CombatComponent;
@@ -48,6 +49,19 @@ public abstract class Character extends GameEntity {
 
     public void removeEffect(Effect e) {
         effects.remove(e);
+    }
+
+    public Set<Effect> getEffects() { return effects; }
+
+    public void updateEffects(float deltaTime) {
+        Iterator<Effect> it = effects.iterator();
+        while (it.hasNext()) {
+            Effect e = it.next();
+            boolean expired = e.update(deltaTime);
+            if (expired) {
+                it.remove();
+            }
+        }
     }
 
     public abstract void update(float deltaTime);

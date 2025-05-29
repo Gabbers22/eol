@@ -1,6 +1,7 @@
 package eol.render;
 
 import eol.components.HealthComponent;
+import eol.effects.Effect;
 import eol.engine.EntityManager;
 import eol.utils.Vector2;
 import eol.weapons.BeamSpell;
@@ -27,8 +28,8 @@ public class Renderer {
     private static final Color playerDebugColor = new Color(0, 0, 255, 128);
     private static final Color attackDebugColor = new Color(255, 0, 255, 128);
     private static final Color groundDebugolor = new Color(0, 0, 0, 128);
-    private static final Color defaultDebugColor = new Color(255, 0, 00, 128);
-    private static final Color bossDebugColor = new Color(255, 0, 00, 64);
+    private static final Color defaultDebugColor = new Color(255, 0, 0, 128);
+    private static final Color bossDebugColor = new Color(255, 0, 0, 64);
 
     public Renderer(EntityManager entityManager, SpriteManager spriteManager, WaveManager waveManager) {
         this.entityManager = entityManager;
@@ -143,6 +144,11 @@ public class Renderer {
                 Character c = (Character) e;
                 HealthComponent health = c.getHealthComponent();
                 g.drawString(health.getCurrentHealth() + "/" + health.getMaxHealth(), entityPosition.getX() - 20, entityPosition.getY() - 55);
+                int y = 65;
+                for (Effect effect : ((Character) e).getEffects()) {
+                    g.drawString(effect.getLabel(), entityPosition.getX() - 20, entityPosition.getY() - y);
+                    y += 10;
+                }
             }
         }
 
@@ -169,6 +175,8 @@ public class Renderer {
         g.drawString("strength: " + entityManager.getPlayer().getStatsComponent().getStrength(), 10, y);
         y += 15;
         g.drawString("dexterity: " + entityManager.getPlayer().getStatsComponent().getDexterity(), 10, y);
+        y += 15;
+        g.drawString("weapon: " + entityManager.getPlayer().getWeapon().getClass().getSimpleName(), 10, y);
         y += 15;
 
 

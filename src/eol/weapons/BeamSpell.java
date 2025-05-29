@@ -34,7 +34,7 @@ public class BeamSpell implements Weapon {
             beam = null;
             return;
         }
-        
+
         remaining -= deltaTime;
 
         Vector2 from = combatComponent.getOwner().getPosition();

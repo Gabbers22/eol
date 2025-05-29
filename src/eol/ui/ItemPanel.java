@@ -45,10 +45,8 @@ public class ItemPanel {
         timer += deltaTime;
 
         if (inputHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
-            System.out.println("selected left item");
             selectedIndex = (selectedIndex + items.size() - 1) % items.size();
         } else if (inputHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
-            System.out.println("selected right item");
             selectedIndex = (selectedIndex + 1) % items.size();
         } else if (inputHandler.isKeyPressed(KeyEvent.VK_X) && timer > 1.5f) {
             Item selectedItem = items.get(selectedIndex);

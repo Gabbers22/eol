@@ -10,19 +10,30 @@ public class BurnEffect extends Effect {
         super(character, duration);
         burnSpeed = 0.5f;
         timer = burnSpeed;
+        label = "Burning";
     }
 
-    public void update(float deltaTime) {
+    @Override
+    public boolean update(float deltaTime) {
         duration -= deltaTime;
-        if (duration <= 0) {
-            character.removeEffect(this);
-            return;
-        }
         timer -= deltaTime;
-        if (timer <= 0) {
+        if (duration <= 0f) {
+            return true;
+        }
+        if (timer <= 0f) {
             character.getHealthComponent().takeDamage(5);
             timer = burnSpeed;
         }
+        return false;
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        return o != null && o.getClass() == getClass();
+    }
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
 }

@@ -1,6 +1,8 @@
 package eol.entities;
 
+import eol.effects.BurnEffect;
 import eol.utils.Vector2;
+import eol.weapons.FireSpell;
 import eol.weapons.StormSpell;
 
 import java.awt.image.BufferedImage;
@@ -77,6 +79,7 @@ public class Projectile extends GameEntity {
                     AudioManager.getInstance().playSound("hit");
                     enemiesHit.add(e);
                     if(!(p.getWeapon() instanceof StormSpell)) alive = false;
+                    if (p.getWeapon() instanceof FireSpell) e.addEffect(new BurnEffect(e, 5.0f));
                     return;
                 }
             }

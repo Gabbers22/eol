@@ -41,6 +41,7 @@ public class Boss extends Enemy {
 
     public void update(float deltaTime) {
         anims.update(deltaTime);
+        updateEffects(deltaTime);
 
         if (health.getCurrentHealth() == 1) {
             phase = Phase.dead;

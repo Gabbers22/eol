@@ -57,6 +57,7 @@ public class Player extends Character {
         movement.update(deltaTime);
         handleAnimations();
         anims.update(deltaTime);
+        updateEffects(deltaTime);
     }
 
     public void handleAnimations() {

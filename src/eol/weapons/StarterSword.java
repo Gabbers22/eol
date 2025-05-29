@@ -15,7 +15,8 @@ import eol.entities.Player;
 import eol.utils.Vector2;
 
 public class StarterSword implements Weapon {
-    private enum AttackPhase { NONE, STARTUP, ACTIVE, RECOVERY }
+    private enum AttackPhase {NONE, STARTUP, ACTIVE, RECOVERY}
+
     private AttackPhase attackPhase = AttackPhase.NONE;
     private float attackTimer, startupTime = 0.05f, activeTime = 0.15f, recoveryTime = 0.05f;
     private final Set<Enemy> enemiesHit = new HashSet<>();
@@ -24,10 +25,7 @@ public class StarterSword implements Weapon {
     @Override
     public void fire(CombatComponent ctx, InputHandler input, EntityManager em, float dt) {
         // start-up
-        if (attackPhase == AttackPhase.NONE
-         && input.isKeyPressed(KeyEvent.VK_X)
-         && ctx.getCooldown() <= 0)
-        {
+        if (attackPhase == AttackPhase.NONE && input.isKeyPressed(KeyEvent.VK_X) && ctx.getCooldown() <= 0) {
             attackPhase = AttackPhase.STARTUP;
             attackTimer = startupTime;
             ctx.setCooldown(ctx.calculateCooldown());
@@ -58,11 +56,8 @@ public class StarterSword implements Weapon {
                 } else {
                     hitbox = createHitbox(ctx.getOwner());
                     for (Enemy e : em.getEnemies()) {
-                        if (!enemiesHit.contains(e)
-                         && hitbox.intersects(e.getBounds()))
-                        {
-                            e.getHealthComponent()
-                             .takeDamage(ctx.calculateDamage());
+                        if (!enemiesHit.contains(e) && hitbox.intersects(e.getBounds())) {
+                            e.getHealthComponent().takeDamage(ctx.calculateDamage());
                             AudioManager.getInstance().playSound("hit");
                             enemiesHit.add(e);
                         }
@@ -83,9 +78,9 @@ public class StarterSword implements Weapon {
     private Rectangle createHitbox(Character p) {
         Vector2 dir = p.getMovementComponent().getLastDirection();
         float px = p.getPosition().getX(), py = p.getPosition().getY();
-        int w = 64, h = 64, half = 32/2;
-        int x = (int)(px + (dir.getX() < 0 ? -half - w : half));
-        int y = (int)(py + 64/2 - 64);
+        int w = 64, h = 64, half = 32 / 2;
+        int x = (int) (px + (dir.getX() < 0 ? -half - w : half));
+        int y = (int) (py + 64 / 2 - 64);
         return new Rectangle(x, y, w, h);
     }
 
