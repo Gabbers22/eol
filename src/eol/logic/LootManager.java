@@ -20,6 +20,12 @@ public class LootManager {
     private static final List<String> LEGENDARY = List.of("9", "11");
     private static final List<String> MYTHIC = List.of("6");
 
+    private float legendaryFactor = 0.0f; // value in [0, 1], e.g. 0.10 for +10%
+
+    public void increaseLegendaryFactor(float increase) {
+        legendaryFactor = Math.min(legendaryFactor + increase, 1.0f); // clamp to 1
+    }
+
     public List<Item> chooseItems() {
         List<Item> picks = new ArrayList<>(4);
 
@@ -51,34 +57,34 @@ public class LootManager {
      * 976–995: legendary (2%)
      * 996–1000: mythic (0.5%)
      */
-
-     /*
     public void rollRarity() {
-        int roll = random.nextInt(1000) + 1; // 1–1000
-        if (roll <= 775) {
-            rarity = COMMON;
-        } else if (roll <= 925) {
-            rarity = RARE;
-        } else if (roll <= 975) {
-            rarity = EPIC;
-        } else if (roll <= 995) {
-            rarity = LEGENDARY;
-        } else {
-            rarity = MYTHIC;
-        }
-    }
-    */
+        // Base probabilities (total = 1000)
+        //int commonWeight = 775;
+        //int rareWeight = 150;
+        //int epicWeight = 50;
+        //int legendaryWeight = 20;
+        //int mythicWeight = 5;
 
-    
-    public void rollRarity() {
+        int commonWeight = 250;
+        int rareWeight = 5;
+        int epicWeight = 6;
+        int legendaryWeight = 7;
+
+
+        // Adjust weights
+        int addedLegendary = (int)(legendaryFactor * 1000);
+        legendaryWeight += addedLegendary;
+        commonWeight -= addedLegendary;
+
         int roll = random.nextInt(1000) + 1; // 1–1000
-        if (roll <= 250) {
+
+        if (roll <= commonWeight) {
             rarity = COMMON;
-        } else if (roll <= 500) {
+        } else if (roll <= commonWeight + rareWeight) {
             rarity = RARE;
-        } else if (roll <= 750) {
+        } else if (roll <= commonWeight + rareWeight + epicWeight) {
             rarity = EPIC;
-        } else if (roll <= 950) {
+        } else if (roll <= commonWeight + rareWeight + epicWeight + legendaryWeight) {
             rarity = LEGENDARY;
         } else {
             rarity = MYTHIC;

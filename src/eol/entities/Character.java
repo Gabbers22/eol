@@ -45,6 +45,7 @@ public abstract class Character extends GameEntity {
 
     public void addEffect(Effect e) {
         effects.add(e);
+        e.onStart();
     }
 
     public void removeEffect(Effect e) {

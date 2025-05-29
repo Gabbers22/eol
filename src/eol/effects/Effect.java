@@ -15,5 +15,7 @@ public abstract class Effect {
     public String getLabel() { return label; }
 
     public abstract boolean update(float deltaTime);
+
+    public void onStart() {}
     
 }

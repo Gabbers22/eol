@@ -57,7 +57,7 @@ public class Game {
         } else {
             playerWeapon = (Weapon)new StarterSpell();
         }
-        player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 20, 20, 5), playerType, playerWeapon);
+        player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 20, 5, 20), playerType, playerWeapon);
         entityManager.forceAddEntity(player);
 
         ground = new Ground(new Vector2(0, 500), new Vector2(0, 0), 800, 100);

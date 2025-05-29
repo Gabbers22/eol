@@ -99,7 +99,7 @@ public class GameLoop implements Runnable {
     }
 
     public void update(float deltaTime) {
-        itemPanel.update(inputHandler, deltaTime);
+        itemPanel.update(inputHandler, deltaTime, lootManager);
         int currentWave = waveManager.getWave();
         if (currentWave != lastWave) {
             lastWave = currentWave;

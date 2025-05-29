@@ -7,7 +7,9 @@ import java.util.List;
 
 import eol.components.StatsComponent;
 import eol.effects.HealEffect;
+import eol.effects.StatChangeEffect;
 import eol.entities.Player;
+import eol.logic.LootManager;
 
 public class Item {
     HashMap<String, Integer> statModifiers = new HashMap<>();
@@ -28,13 +30,12 @@ public class Item {
         this.Rarity = Rarity;
     }
 
-    public void applyStats(Player player) {
+    public void applyStats(Player player, LootManager lootManager) {
         StatsComponent stats = player.getStatsComponent();
         stats.setHealth(Math.max(1, stats.getHealth() + statModifiers.getOrDefault("health", 0)));
         stats.setSpeed(Math.max(1, stats.getSpeed() + statModifiers.getOrDefault("speed", 0)));
         stats.setStrength(Math.max(1, stats.getStrength() + statModifiers.getOrDefault("strength", 0)));
         stats.setDexterity(Math.max(1, stats.getDexterity() + statModifiers.getOrDefault("dexterity", 0)));
-        player.getHealthComponent().calculateMaxHealth();
 
         //trigger effect based on item
         if (Id.equals("1")) {
@@ -43,6 +44,13 @@ public class Item {
         if (Id.equals("2")) {
             player.addEffect(new HealEffect(player, 30.0f));
         }
+        if (Id.equals("6")) {
+            lootManager.increaseLegendaryFactor(0.15f);
+        }
+        if (Id.equals("11")) {
+            player.addEffect(new StatChangeEffect(player, 10.0f, 10, 10, 10, 10));
+        }
+        player.getHealthComponent().calculateMaxHealth();
     }
 
     public List<String> getStatLabels() {

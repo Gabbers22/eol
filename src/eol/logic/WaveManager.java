@@ -5,6 +5,7 @@ import java.util.Set;
 
 import eol.audio.AudioManager;
 import eol.components.StatsComponent;
+import eol.effects.StatChangeEffect;
 import eol.engine.EntityManager;
 import eol.entities.Boss;
 import eol.entities.DefenseAlly;
@@ -13,6 +14,8 @@ import eol.entities.SupportAlly;
 import eol.utils.Vector2;
 import eol.weapons.BeamSpell;
 import eol.weapons.FireSpell;
+import eol.weapons.Greatsword;
+import eol.weapons.LightCannon;
 import eol.weapons.StormSpell;
 
 public class WaveManager {
@@ -60,7 +63,7 @@ public class WaveManager {
 
                     DefenseAlly defenseAlly = new DefenseAlly(new Vector2(300, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
                     entityManager.addEntity(defenseAlly);
-                    entityManager.getPlayer().setWeapon(new FireSpell());
+                    entityManager.getPlayer().setWeapon(new LightCannon());
                     break;
                 case 3:
                     Boss boss = new Boss(new Vector2(400, -100), new Vector2(-42.5f, -47), 85, 94, entityManager, new StatsComponent(25, 1, 1, 1));
