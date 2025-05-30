@@ -18,6 +18,7 @@ public class Player extends Character {
     private AnimationComponent anims;
     private String playerType;
     private Weapon weapon;
+    private boolean autoAim;
 
     public Player(Vector2 position, Vector2 offset, int width, int height, StatsComponent stats, String playerType, Weapon weapon) {
         super(position, offset, width, height, stats);
@@ -25,6 +26,7 @@ public class Player extends Character {
         anims = new AnimationComponent();
         state = State.IDLE;
         this.weapon = weapon;
+        autoAim = false;
 
         BufferedImage[] idleFrames = new BufferedImage[3];
         for (int i = 0; i < 3; i++) {
@@ -92,6 +94,9 @@ public class Player extends Character {
         this.weapon = weapon;
         combat.setWeapon(weapon);
     }
+
+    public void setAutoAim(boolean b) { this.autoAim = b; }
+    public boolean isAutoAimEnabled() { return autoAim; }
 
     public String getType() {
         return playerType;

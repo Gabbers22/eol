@@ -44,6 +44,9 @@ public class Item {
         if (Id.equals("2")) {
             player.addEffect(new HealEffect(player, 30.0f));
         }
+        if (Id.equals("4")) {
+            player.setAutoAim(true);
+        }
         if (Id.equals("6")) {
             lootManager.increaseLegendaryFactor(0.15f);
         }
@@ -84,6 +87,10 @@ public class Item {
         }
         if (Id.equals("2")) {
             text = "Heals 50% of max HP over time";
+            statLabels.add(text);
+        }
+        if (Id.equals("4")) {
+            text = "Projectiles automatically target enemies";
             statLabels.add(text);
         }
         if (Id.equals("6")) {

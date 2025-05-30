@@ -7,20 +7,14 @@ import eol.audio.AudioManager;
 import eol.components.StatsComponent;
 import eol.effects.StatChangeEffect;
 import eol.engine.EntityManager;
-import eol.entities.Boss;
-import eol.entities.DefenseAlly;
-import eol.entities.OffenseAlly;
-import eol.entities.SupportAlly;
+import eol.entities.*;
 import eol.utils.Vector2;
-import eol.weapons.BeamSpell;
-import eol.weapons.FireSpell;
-import eol.weapons.Greatsword;
-import eol.weapons.LightCannon;
-import eol.weapons.StormSpell;
+import eol.weapons.*;
 
 public class WaveManager {
     private EntitySpawner spawner;
     private EntityManager entityManager;
+    private Player player;
     private int currentWave;
     private float countdown;
     private boolean waveEnded;
@@ -30,6 +24,7 @@ public class WaveManager {
     public WaveManager(EntitySpawner spawner, EntityManager entityManager) {
         this.spawner = spawner;
         this.entityManager = entityManager;
+        this.player = entityManager.getPlayer();
         currentWave = 1;
         countdown = 3.0f;
         waveEnded = false;
@@ -55,17 +50,46 @@ public class WaveManager {
         if (!triggeredWaves.contains(currentWave)) {
             switch (currentWave) {
                 case 2:
+                    //entityManager.getPlayer().setWeapon(new FireSpell());
+                    break;
+                case 4:
+                    if (player.getType().equals("melee")) {
+                        player.setWeapon(new Greatsword());
+                    } else {
+                        player.setWeapon(new StormSpell());
+                    }
+                    break;
+                case 5:
                     SupportAlly supportAlly = new SupportAlly(new Vector2(100, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
                     entityManager.addEntity(supportAlly);
-
+                    AudioManager.getInstance().stopMusic();
+                    AudioManager.getInstance().playMusic("songTwo");
+                    break;
+                case 8:
+                    if (player.getType().equals("melee")) {
+                        player.setWeapon(new StarterSword());
+                    } else {
+                        player.setWeapon(new FireSpell());
+                    }
+                    break;
+                case 10:
                     OffenseAlly offenseAlly = new OffenseAlly(new Vector2(200, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
                     entityManager.addEntity(offenseAlly);
-
+                    AudioManager.getInstance().stopMusic();
+                    AudioManager.getInstance().playMusic("songThree");
+                    break;
+                case 12:
+                    if (player.getType().equals("melee")) {
+                        player.setWeapon(new StarterSword());
+                    } else {
+                        player.setWeapon(new BeamSpell());
+                    }
+                    break;
+                case 15:
                     DefenseAlly defenseAlly = new DefenseAlly(new Vector2(300, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
                     entityManager.addEntity(defenseAlly);
-                    entityManager.getPlayer().setWeapon(new LightCannon());
                     break;
-                case 3:
+                case 20:
                     Boss boss = new Boss(new Vector2(400, -100), new Vector2(-42.5f, -47), 85, 94, entityManager, new StatsComponent(25, 1, 1, 1));
                     entityManager.addEntity(boss);
                     bossSpawned = true;

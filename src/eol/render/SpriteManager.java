@@ -62,6 +62,10 @@ public class SpriteManager {
             loadSprite("projectile_" + i, "projectile_" + i + ".png");
         }
 
+        for (int i = 0; i < 6; i++) {
+            loadSprite("black_flame_projectile_" + i, "black_flame_projectile_" + i + ".png");
+        }
+
 
         for (int i = 1; i <= 11; i++) {
             loadSprite("item_" + i, "item_" + i + ".png");

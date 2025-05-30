@@ -3,6 +3,7 @@ package eol.engine;
 import eol.components.HealthComponent;
 import eol.entities.*;
 import eol.entities.Character;
+import eol.utils.Vector2;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,6 +70,23 @@ public class EntityManager {
             }
         }
         return true;
+    }
+
+    public Vector2 findNearestEnemyDir(Vector2 from) {
+        float bestDistSq = Float.MAX_VALUE;
+        Vector2 bestDir = null;
+
+        for (Enemy e : enemies) {
+            //Vector2 target = e.getPosition().add(new Vector2(e.getBounds().width/2f,e.getBounds().height/2f));
+            Vector2 target = e.getPosition();
+            Vector2 delta = target.subtract(from);
+            float dsq = delta.getX()*delta.getX() + delta.getY()*delta.getY();
+            if (dsq < bestDistSq) {
+                bestDistSq = dsq;
+                bestDir = delta;
+            }
+        }
+        return bestDir != null ? bestDir.multiply(-1f).normalize() : null;
     }
 
     public void updateAll(float deltaTime) {

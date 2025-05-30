@@ -27,12 +27,12 @@ public class EntitySpawner {
 
     public void prepareWave(int waveNumber) {
         spawnQueue.clear();
-        //int totalEnemies = (int) ((int) 2 + (2 % (waveNumber * (Math.floor(playerStats.getDexterity() / 3)))));
-        int totalEnemies = 3;
+        int totalEnemies = (int) (2 + (waveNumber * (Math.floor((double) playerStats.getDexterity() / 10))));
+        //int totalEnemies = 3;
         for (int i = 0; i < totalEnemies; i++) {
             EnemyType type = selectType(waveNumber, i);
             StatsComponent baseStats = baseStatsForType(type);
-            StatsComponent adjusted = adjustStats(baseStats);
+            StatsComponent adjusted = adjustStats(baseStats, waveNumber);
             Vector2 offset = offsetForType(type);
             int w = widthForType(type);
             int h = heightForType(type);
@@ -135,11 +135,12 @@ public class EntitySpawner {
         };
     }
 
-    private StatsComponent adjustStats(StatsComponent base) {
-        int health = base.getHealth() + (int) Math.floor(0.1 * playerStats.getHealth());
-        int speed = base.getSpeed() * 1;
-        int strength = base.getStrength() + (int) Math.floor(0.1 * playerStats.getStrength());
-        int dexterity = base.getDexterity() + (int) Math.floor(0.1 * playerStats.getDexterity());
+    private StatsComponent adjustStats(StatsComponent base, int wave) {
+        float healthExponent = 1.05f;  // small exponent
+        int health = (int)(base.getHealth() * Math.pow(wave, healthExponent)) + (int) Math.floor(0.1 * playerStats.getStrength());
+        int speed = base.getSpeed() + (int) Math.floor(0.1 * playerStats.getDexterity());
+        int strength = base.getStrength() + (int) Math.floor(0.5 * playerStats.getHealth());
+        int dexterity = base.getDexterity() + (int) Math.floor(0.5 * playerStats.getHealth());
         return new StatsComponent(health, speed, strength, dexterity);
     }
 
