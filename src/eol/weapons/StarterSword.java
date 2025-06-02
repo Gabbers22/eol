@@ -14,13 +14,16 @@ import eol.entities.Character;
 import eol.entities.Player;
 import eol.utils.Vector2;
 
-public class StarterSword implements Weapon {
+public class StarterSword extends Weapon {
     private enum AttackPhase {NONE, STARTUP, ACTIVE, RECOVERY}
-
     private AttackPhase attackPhase = AttackPhase.NONE;
     private float attackTimer, startupTime = 0.05f, activeTime = 0.15f, recoveryTime = 0.05f;
     private final Set<Enemy> enemiesHit = new HashSet<>();
     private Rectangle hitbox;
+
+    public StarterSword() {
+        weaponStats = new int[] {0, 0, 0, 0};
+    }
 
     @Override
     public void fire(CombatComponent ctx, InputHandler input, EntityManager em, float dt) {

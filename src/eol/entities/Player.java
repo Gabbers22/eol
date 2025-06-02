@@ -19,6 +19,7 @@ public class Player extends Character {
     private String playerType;
     private Weapon weapon;
     private boolean autoAim;
+    private int[] weaponStats = {0, 0, 0, 0};
 
     public Player(Vector2 position, Vector2 offset, int width, int height, StatsComponent stats, String playerType, Weapon weapon) {
         super(position, offset, width, height, stats);
@@ -93,6 +94,16 @@ public class Player extends Character {
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
         combat.setWeapon(weapon);
+    }
+
+    public void setWeaponStats(int[] newStats) {
+        stats.setHealth(stats.getHealth() - weaponStats[0] + newStats[0]);
+        stats.setSpeed(stats.getSpeed() - weaponStats[1] + newStats[1]);
+        stats.setStrength(stats.getStrength() - weaponStats[2] + newStats[2]);
+        stats.setDexterity(stats.getDexterity() - weaponStats[3] + newStats[3]);
+        for (int i = 0; i < 4; i++) {
+            weaponStats[i] = newStats[i];
+        }
     }
 
     public void setAutoAim(boolean b) { this.autoAim = b; }

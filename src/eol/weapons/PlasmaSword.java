@@ -9,21 +9,19 @@ import eol.audio.AudioManager;
 import eol.components.CombatComponent;
 import eol.engine.EntityManager;
 import eol.engine.InputHandler;
-import eol.entities.Enemy;
 import eol.entities.Character;
-import eol.entities.Player;
+import eol.entities.Enemy;
 import eol.utils.Vector2;
 
-public class Greatsword extends Weapon {
+public class PlasmaSword extends Weapon {
     private enum AttackPhase {NONE, STARTUP, ACTIVE, RECOVERY}
-
     private AttackPhase attackPhase = AttackPhase.NONE;
     private float attackTimer, startupTime = 0.05f, activeTime = 0.15f, recoveryTime = 0.05f;
     private final Set<Enemy> enemiesHit = new HashSet<>();
     private Rectangle hitbox;
 
-    public Greatsword() {
-        weaponStats = new int[] {0, -1, 4, -2};
+    public PlasmaSword() {
+        weaponStats = new int[] {0, 3, -1, 0};
     }
 
     @Override
@@ -62,8 +60,6 @@ public class Greatsword extends Weapon {
                     for (Enemy e : em.getEnemies()) {
                         if (!enemiesHit.contains(e) && hitbox.intersects(e.getBounds())) {
                             e.getHealthComponent().takeDamage(ctx.calculateDamage());
-                            Vector2 knockbackDir = ctx.getOwner().getMovementComponent().getLastDirection();
-                            e.getMovementComponent().push(knockbackDir.multiply(350.0f), 0.25f);
                             AudioManager.getInstance().playSound("hit");
                             enemiesHit.add(e);
                         }

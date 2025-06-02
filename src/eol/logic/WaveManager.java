@@ -67,7 +67,7 @@ public class WaveManager {
                     break;
                 case 8:
                     if (player.getType().equals("melee")) {
-                        player.setWeapon(new StarterSword());
+                        player.setWeapon(new DaggerSword());
                     } else {
                         player.setWeapon(new FireSpell());
                     }
@@ -80,7 +80,7 @@ public class WaveManager {
                     break;
                 case 12:
                     if (player.getType().equals("melee")) {
-                        player.setWeapon(new StarterSword());
+                        player.setWeapon(new PlasmaSword());
                     } else {
                         player.setWeapon(new BeamSpell());
                     }
@@ -98,6 +98,8 @@ public class WaveManager {
                     break;
             }
             triggeredWaves.add(currentWave);
+            int[] newStats = player.getWeapon().getStats();
+            player.setWeaponStats(newStats);
         }
     }
 

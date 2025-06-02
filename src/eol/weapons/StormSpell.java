@@ -10,7 +10,11 @@ import eol.entities.Player;
 import eol.entities.Projectile;
 import eol.utils.Vector2;
 
-public class StormSpell implements Weapon {
+public class StormSpell extends Weapon {
+
+    public StormSpell() {
+        weaponStats = new int[] {0, 1, -2, 0};
+    }
 
     @Override
     public void fire(CombatComponent combatComponent, InputHandler inputHandler, EntityManager entityManager, float deltaTime) {

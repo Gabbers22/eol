@@ -9,7 +9,11 @@ import eol.entities.Player;
 import eol.entities.Projectile;
 import eol.utils.Vector2;
 
-public class StarterSpell implements Weapon {
+public class StarterSpell extends Weapon {
+
+    public StarterSpell() {
+        weaponStats = new int[] {0, 0, 0, 0};
+    }
 
     public void fire(CombatComponent combatComponent, InputHandler inputHandler, EntityManager entityManager, float deltaTime) {
         if (!inputHandler.isKeyPressed(KeyEvent.VK_X) || combatComponent.getCooldown() > 0) return;

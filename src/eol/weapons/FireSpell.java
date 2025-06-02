@@ -10,7 +10,11 @@ import eol.utils.Vector2;
 
 import java.awt.event.KeyEvent;
 
-public class FireSpell implements Weapon {
+public class FireSpell extends Weapon {
+
+    public FireSpell() {
+        weaponStats = new int[] {0, 0, 3, -1};
+    }
 
     public void fire(CombatComponent combatComponent, InputHandler inputHandler, EntityManager entityManager, float deltaTime) {
         if (!inputHandler.isKeyPressed(KeyEvent.VK_X) || combatComponent.getCooldown() > 0) return;

@@ -12,12 +12,16 @@ import eol.engine.InputHandler;
 import eol.entities.Enemy;
 import eol.utils.Vector2;
 
-public class BeamSpell implements Weapon {
+public class BeamSpell extends Weapon {
     private Line2D beam;
     private float duration = 0.5f;
     private float range = 300.0f;
     private float remaining = 0.0f;
     private Set<Enemy> enemiesHit = new HashSet<>();
+
+    public BeamSpell() {
+        weaponStats = new int[] {0, 0, 2, 0};
+    }
 
     @Override
     public void fire(CombatComponent combatComponent, InputHandler inputHandler, EntityManager entityManager, float deltaTime) {

@@ -8,8 +8,12 @@ import eol.entities.Character;
 import eol.entities.Projectile;
 import eol.utils.Vector2;
 
-public class LightCannon implements Weapon {
+public class LightCannon extends Weapon {
     private int count = 3;
+
+    public LightCannon() {
+        weaponStats = new int[] {2, 2, 2, 2};
+    }
 
     public void fire(CombatComponent combatComponent, InputHandler inputHandler, EntityManager entityManager, float deltaTime) {
         if (!inputHandler.isKeyDown(KeyEvent.VK_X) || combatComponent.getCooldown() > 0) return;
