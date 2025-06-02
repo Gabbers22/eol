@@ -14,15 +14,16 @@ import eol.entities.Character;
 import eol.entities.Player;
 import eol.utils.Vector2;
 
-public class StarterSword extends Weapon {
+public class Greatsword extends Weapon {
     private enum AttackPhase {NONE, STARTUP, ACTIVE, RECOVERY}
+
     private AttackPhase attackPhase = AttackPhase.NONE;
     private float attackTimer, startupTime = 0.05f, activeTime = 0.15f, recoveryTime = 0.05f;
     private final Set<Enemy> enemiesHit = new HashSet<>();
     private Rectangle hitbox;
 
-    public StarterSword() {
-        weaponStats = new int[] {0, 0, 0, 0};
+    public Greatsword() {
+        weaponStats = new int[] {0, -1, 4, -2};
     }
 
     @Override
@@ -61,6 +62,8 @@ public class StarterSword extends Weapon {
                     for (Enemy e : em.getEnemies()) {
                         if (!enemiesHit.contains(e) && hitbox.intersects(e.getBounds())) {
                             e.getHealthComponent().takeDamage(ctx.calculateDamage());
+                            Vector2 knockbackDir = ctx.getOwner().getMovementComponent().getLastDirection();
+                            e.getMovementComponent().push(knockbackDir.multiply(350.0f), 0.25f);
                             AudioManager.getInstance().playSound("hit");
                             enemiesHit.add(e);
                         }

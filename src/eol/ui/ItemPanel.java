@@ -12,6 +12,7 @@ import java.util.Set;
 import eol.engine.InputHandler;
 import eol.entities.Player;
 import eol.items.Item;
+import eol.logic.LootManager;
 import eol.render.SpriteManager;
 
 public class ItemPanel {
@@ -40,19 +41,17 @@ public class ItemPanel {
         timer = 0f;
     }
 
-    public void update(InputHandler inputHandler, float deltaTime) {
+    public void update(InputHandler inputHandler, float deltaTime, LootManager lootManager) {
         if (!visible) return;
         timer += deltaTime;
 
         if (inputHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
-            System.out.println("selected left item");
             selectedIndex = (selectedIndex + items.size() - 1) % items.size();
         } else if (inputHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
-            System.out.println("selected right item");
             selectedIndex = (selectedIndex + 1) % items.size();
         } else if (inputHandler.isKeyPressed(KeyEvent.VK_X) && timer > 1.5f) {
             Item selectedItem = items.get(selectedIndex);
-            selectedItem.applyStats(player);
+            selectedItem.applyStats(player, lootManager);
             visible = false;
         }
         inputHandler.clearKeysPressed();

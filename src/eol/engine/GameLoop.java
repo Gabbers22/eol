@@ -17,6 +17,15 @@ import eol.items.Item;
 import eol.logic.LootManager;
 import eol.logic.WaveManager;
 import eol.utils.Vector2;
+import eol.weapons.BeamSpell;
+import eol.weapons.DaggerSword;
+import eol.weapons.FireSpell;
+import eol.weapons.Greatsword;
+import eol.weapons.LightCannon;
+import eol.weapons.PlasmaSword;
+import eol.weapons.StarterSpell;
+import eol.weapons.StarterSword;
+import eol.weapons.StormSpell;
 
 public class GameLoop implements Runnable {
     private Game game;
@@ -37,6 +46,8 @@ public class GameLoop implements Runnable {
     private boolean running = false;
     private final int targetFps = 60;
     private final long targetTime = 1000 / targetFps; //ms per frame
+
+    private int weaponIndex = 0;
 
     public GameLoop(Game game, EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, WaveManager waveManager, LootManager lootManager, GamePanel gamePanel, ItemPanel itemPanel, Player player) {
         this.game = game;
@@ -99,7 +110,7 @@ public class GameLoop implements Runnable {
     }
 
     public void update(float deltaTime) {
-        itemPanel.update(inputHandler, deltaTime);
+        itemPanel.update(inputHandler, deltaTime, lootManager);
         int currentWave = waveManager.getWave();
         if (currentWave != lastWave) {
             lastWave = currentWave;
@@ -135,6 +146,22 @@ public class GameLoop implements Runnable {
             stop();
             game.closeGame();
             game.showMainMenu();
+        }
+
+        if (inputHandler.isKeyPressed(KeyEvent.VK_Q)) {
+            weaponIndex++;
+            if (weaponIndex > 8) weaponIndex = 0;
+            switch(weaponIndex) {
+                case 0 -> player.setWeapon(new StarterSword());
+                case 1 -> player.setWeapon(new Greatsword());
+                case 2 -> player.setWeapon(new DaggerSword());
+                case 3 -> player.setWeapon(new PlasmaSword());
+                case 4 -> player.setWeapon(new StarterSpell());
+                case 5 -> player.setWeapon(new StormSpell());
+                case 6 -> player.setWeapon(new FireSpell());
+                case 7 -> player.setWeapon(new BeamSpell());
+                case 8 -> player.setWeapon(new LightCannon());
+            }
         }
 
 

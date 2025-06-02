@@ -43,6 +43,8 @@ public class AudioManager {
     public void loadMusic(String id, String file) {
         Clip clip = createClip("/assets/music/" + file);
         if (clip != null) {
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-5.0f);
             music.put(id, clip);
             System.out.println("Loaded music: " + id);
         }
@@ -125,7 +127,7 @@ public class AudioManager {
         loadMusic("songThree", "songThree.wav");
         loadMusic("boss", "boss.wav");
 
-        loadSound("hit", "hitSound.wav", 10);
+        loadSound("hit", "hitSound.wav", 20);
         loadSound("jump", "jumpSound.wav", 10);
         loadSound("sword", "swordSlash.wav", 10);
     

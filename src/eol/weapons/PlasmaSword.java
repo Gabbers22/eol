@@ -9,20 +9,19 @@ import eol.audio.AudioManager;
 import eol.components.CombatComponent;
 import eol.engine.EntityManager;
 import eol.engine.InputHandler;
-import eol.entities.Enemy;
 import eol.entities.Character;
-import eol.entities.Player;
+import eol.entities.Enemy;
 import eol.utils.Vector2;
 
-public class StarterSword extends Weapon {
+public class PlasmaSword extends Weapon {
     private enum AttackPhase {NONE, STARTUP, ACTIVE, RECOVERY}
     private AttackPhase attackPhase = AttackPhase.NONE;
     private float attackTimer, startupTime = 0.05f, activeTime = 0.15f, recoveryTime = 0.05f;
     private final Set<Enemy> enemiesHit = new HashSet<>();
     private Rectangle hitbox;
 
-    public StarterSword() {
-        weaponStats = new int[] {0, 0, 0, 0};
+    public PlasmaSword() {
+        weaponStats = new int[] {0, 3, -1, 0};
     }
 
     @Override

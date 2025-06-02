@@ -1,6 +1,8 @@
 package eol.entities;
 
+import eol.effects.BurnEffect;
 import eol.utils.Vector2;
+import eol.weapons.FireSpell;
 import eol.weapons.StormSpell;
 
 import java.awt.image.BufferedImage;
@@ -23,6 +25,7 @@ public class Projectile extends GameEntity {
     private float lifeSpan;
     private boolean alive;
     private Set<Enemy> enemiesHit = new HashSet<>();
+    private BufferedImage[] frames;
 
     public Projectile(Vector2 position, Vector2 offset, int width, int height, Vector2 velocity, int damage, Character owner, EntityManager entityManager) {
         super(position, offset, width, height);
@@ -35,9 +38,16 @@ public class Projectile extends GameEntity {
         alive = true;
         anims = new AnimationComponent();
 
-        BufferedImage[] frames = new BufferedImage[6];
-        for (int i = 0; i < 6; i++) {
-            frames[i] = SpriteManager.getInstance().getSprite("projectile_" + i);
+        if (owner == player && player.getWeapon() instanceof FireSpell) {
+            frames = new BufferedImage[6];
+            for (int i = 0; i < 6; i++) {
+                frames[i] = SpriteManager.getInstance().getSprite("black_flame_projectile_" + i);
+            }
+        } else {
+            frames = new BufferedImage[6];
+            for (int i = 0; i < 6; i++) {
+                frames[i] = SpriteManager.getInstance().getSprite("projectile_" + i);
+            }
         }
 
         anims.addAnimation("shoot", new Animator(frames, 0.1f));
@@ -77,6 +87,7 @@ public class Projectile extends GameEntity {
                     AudioManager.getInstance().playSound("hit");
                     enemiesHit.add(e);
                     if(!(p.getWeapon() instanceof StormSpell)) alive = false;
+                    if (p.getWeapon() instanceof FireSpell) e.addEffect(new BurnEffect(e, 5.0f));
                     return;
                 }
             }

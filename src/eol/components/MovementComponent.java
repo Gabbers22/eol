@@ -123,6 +123,7 @@ public class MovementComponent {
     }
 
     public void push(Vector2 force, float duration) {
+        if (owner instanceof Boss) return;
         velocity = force;
         pushTimer = duration;
         pushed = true;

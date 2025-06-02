@@ -1,18 +1,19 @@
 package eol.weapons;
 
-import java.awt.event.KeyEvent;
 import eol.components.CombatComponent;
-import eol.engine.InputHandler;
 import eol.engine.EntityManager;
+import eol.engine.InputHandler;
 import eol.entities.Character;
 import eol.entities.Player;
 import eol.entities.Projectile;
 import eol.utils.Vector2;
 
-public class StarterSpell extends Weapon {
+import java.awt.event.KeyEvent;
 
-    public StarterSpell() {
-        weaponStats = new int[] {0, 0, 0, 0};
+public class FireSpell extends Weapon {
+
+    public FireSpell() {
+        weaponStats = new int[] {0, 0, 3, -1};
     }
 
     public void fire(CombatComponent combatComponent, InputHandler inputHandler, EntityManager entityManager, float deltaTime) {
@@ -20,8 +21,6 @@ public class StarterSpell extends Weapon {
         combatComponent.setJustAttacked(true);
         //AudioManager.getInstance().playSfx("shoot");
         Character owner = combatComponent.getOwner();
-
-
         Vector2 origin = owner.getPosition().add(owner.getMovementComponent().getLastDirection().multiply(10f));
         Vector2 dir;
         // if auto‐aim is on, find the nearest enemy

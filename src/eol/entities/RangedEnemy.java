@@ -19,6 +19,7 @@ public class RangedEnemy extends Enemy {
             movement.move(Vector2.left);
         }
         movement.update(deltaTime);
+        updateEffects(deltaTime);
     }
 
 }
