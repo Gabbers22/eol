@@ -23,6 +23,7 @@ public class AudioManager {
     private HashMap<String, Clip> music = new HashMap<>();
     private HashMap<String, List<Clip>> sfx = new HashMap<>();
     private Clip musicPlaying;
+    private boolean muted = false;
 
     // Private constructor to block other classes from creating a new audiomanager
     private AudioManager() {
@@ -53,8 +54,7 @@ public class AudioManager {
     // Plays music given the id
     public void playMusic(String id) {
         Clip clip = music.get(id);
-        if (clip == null)
-            return;
+        if (clip == null || muted) return;
         clip.setFramePosition(0);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
         clip.start();
@@ -87,7 +87,7 @@ public class AudioManager {
     // Plays sound given the id
     public void playSound(String id) {
         List<Clip> pool = sfx.get(id);
-        if (pool == null) return;
+        if (pool == null || muted) return;
         for (Clip clip : pool) {
             if (!clip.isRunning()) {
                 clip.setFramePosition(0);
@@ -132,6 +132,10 @@ public class AudioManager {
         loadSound("sword", "swordSlash.wav", 10);
     
         // load more as needed
+    }
+
+    public void toggleMuted() {
+        muted = !muted;
     }
 
 }

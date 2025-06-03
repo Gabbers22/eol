@@ -16,7 +16,7 @@ public class LightCannon extends Weapon {
     }
 
     public void fire(CombatComponent combatComponent, InputHandler inputHandler, EntityManager entityManager, float deltaTime) {
-        if (!inputHandler.isKeyDown(KeyEvent.VK_X) || combatComponent.getCooldown() > 0) return;
+        if (!inputHandler.isAttackKeyDown() || combatComponent.getCooldown() > 0) return;
         combatComponent.setJustAttacked(true);
         //AudioManager.getInstance().playSfx("shoot");
         Character owner = combatComponent.getOwner();
@@ -36,6 +36,10 @@ public class LightCannon extends Weapon {
         }
 
         combatComponent.setCooldown(combatComponent.calculateCooldown());
+    }
+
+    public String getId() {
+        return "light_cannon";
     }
 
 }

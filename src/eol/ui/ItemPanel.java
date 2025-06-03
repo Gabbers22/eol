@@ -4,10 +4,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import eol.engine.InputHandler;
 import eol.entities.Player;
@@ -65,7 +63,7 @@ public class ItemPanel {
 
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
-            int x = 100 + i * 170; //
+            int x = 100 + i * 170;
             int y = 100;
 
             if (i == selectedIndex) {
@@ -75,8 +73,6 @@ public class ItemPanel {
 
             BufferedImage sprite = SpriteManager.getInstance().getSprite("item_" + item.getId());
             g.drawImage(sprite, x, y, 96, 96, null); //64, 64
-            //g.setColor(Color.RED);
-            //g.fillRect(x, y, 64, 64);
         }
         
         Item selectedItem = items.get(selectedIndex);

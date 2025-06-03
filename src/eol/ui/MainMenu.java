@@ -3,20 +3,23 @@ package eol.ui;
 import eol.audio.AudioManager;
 import eol.engine.Game;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 
 public class MainMenu {
 
     static JFrame mainMenuFrame;
     static JPanel mainMenuPanel, instructionsPanel, characterSelectionPanel;
-    static JButton muteSound, newGame, loadGame, instructions, quit, backButton, knightButton, mageButton;
+    static JButton muteSound, newGame, newGamePlus, loadGame, instructions, quit, backButton, knightButton, mageButton;
     static JLabel instructionsLabel, gameTitle, controlsLabel, gameplayLabel;
     private String playerType;
+    private boolean beatenBefore, canLoad;
+
+    public MainMenu(boolean beatenBefore, boolean canLoad) {
+        this.beatenBefore = beatenBefore;
+        this.canLoad = canLoad;
+    }
 
     public void show() {
         AudioManager.getInstance().stopMusic();
@@ -35,6 +38,14 @@ public class MainMenu {
         gameTitle.setBounds(0, 100, 1000, 100);
         gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
 
+        newGamePlus = new JButton("NEW GAME +");
+        newGamePlus.setFont(new Font("Martian Mono", Font.BOLD, 25));
+        newGamePlus.setFocusPainted(false);
+        newGamePlus.setBounds(250, 225, 500, 60);
+        newGamePlus.setBackground(Color.WHITE);
+        newGamePlus.setForeground(new Color(32, 33, 36));
+        newGamePlus.setBorderPainted(false);
+
         newGame = new JButton("NEW GAME");
         newGame.setFont(new Font("Martian Mono", Font.BOLD, 25));
         newGame.setFocusPainted(false);
@@ -50,6 +61,11 @@ public class MainMenu {
         loadGame.setBackground(Color.WHITE);
         loadGame.setForeground(new Color(32, 33, 36));
         loadGame.setBorderPainted(false);
+        if (canLoad) {
+            loadGame.setEnabled(true);
+        } else {
+            loadGame.setEnabled(false);
+        }
 
         instructions = new JButton("INSTRUCTIONS");
         instructions.setFont(new Font("Martian Mono", Font.BOLD, 25));
@@ -85,6 +101,9 @@ public class MainMenu {
         mainMenuPanel.add(instructions);
         mainMenuPanel.add(quit);
         mainMenuPanel.add(gameTitle);
+        if (beatenBefore) {
+            mainMenuPanel.add(newGamePlus);
+        }
 
         mainMenuFrame = new JFrame("Echoes of Lazarus");
         mainMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -149,10 +168,7 @@ public class MainMenu {
                     public void actionPerformed(ActionEvent e) {
 
                         playerType = "melee";
-                        Game game = new Game(playerType);
-                        game.startGame();
-                        mainMenuFrame.setVisible(false);
-                        mainMenuFrame.dispose();
+                        startNewGame(playerType);
 
                     }
                 });
@@ -161,10 +177,7 @@ public class MainMenu {
                     public void actionPerformed(ActionEvent e) {
 
                         playerType = "ranged";
-                        Game game = new Game(playerType);
-                        game.startGame();
-                        mainMenuFrame.setVisible(false);
-                        mainMenuFrame.dispose();
+                        startNewGame(playerType);
 
                     }
                 });
@@ -175,7 +188,7 @@ public class MainMenu {
         loadGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                //load the save file.
+                startSavedGame();
 
             }
         });
@@ -252,10 +265,24 @@ public class MainMenu {
                     muteSound.setIcon(speakerIcon);
                     // unmute sound
                 }
+                AudioManager.getInstance().toggleMuted();
 
             }
         });
 
     }
 
+    public void startNewGame(String playerType) {
+        Game game = new Game();
+        game.newGame(playerType);
+        mainMenuFrame.setVisible(false);
+        mainMenuFrame.dispose();
+    }
+
+    public void startSavedGame() {
+        Game game = new Game();
+        game.loadGame();
+        mainMenuFrame.setVisible(false);
+        mainMenuFrame.dispose();
+    }
 }

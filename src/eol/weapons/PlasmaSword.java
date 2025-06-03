@@ -27,7 +27,7 @@ public class PlasmaSword extends Weapon {
     @Override
     public void fire(CombatComponent ctx, InputHandler input, EntityManager em, float dt) {
         // start-up
-        if (attackPhase == AttackPhase.NONE && input.isKeyPressed(KeyEvent.VK_X) && ctx.getCooldown() <= 0) {
+        if (attackPhase == AttackPhase.NONE && input.isAttackKeyPressed() && ctx.getCooldown() <= 0) {
             attackPhase = AttackPhase.STARTUP;
             attackTimer = startupTime;
             ctx.setCooldown(ctx.calculateCooldown());
@@ -88,5 +88,9 @@ public class PlasmaSword extends Weapon {
 
     public Rectangle getHitbox() {
         return hitbox;
+    }
+
+    public String getId() {
+        return "plasma_sword";
     }
 }

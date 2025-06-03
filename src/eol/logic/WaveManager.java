@@ -38,10 +38,17 @@ public class WaveManager {
         spawner.update(deltaTime);
         if (!spawner.waveOver()) return;
 
-        if (!waveEnded) waveEnded = true;
+        if (!waveEnded){
+            waveEnded = true;
+            if (currentWave <= 3) {
+                player.getHealthComponent().healPercent(0.15f);
+            }
+        }
+
         countdown -= deltaTime;
         if (countdown <= 0) {
             currentWave++;
+            SaveManager.saveGameState(currentWave, player);
             spawner.prepareWave(currentWave);
             waveEnded = false;
             countdown = 3.0f;
@@ -49,9 +56,6 @@ public class WaveManager {
 
         if (!triggeredWaves.contains(currentWave)) {
             switch (currentWave) {
-                case 2:
-                    //entityManager.getPlayer().setWeapon(new FireSpell());
-                    break;
                 case 4:
                     if (player.getType().equals("melee")) {
                         player.setWeapon(new Greatsword());
