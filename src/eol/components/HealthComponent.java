@@ -57,4 +57,8 @@ public class HealthComponent {
         return maxHealth;
     }
 
+    public void healPercent(float percent) {
+        int amountToHeal = (int)(maxHealth * percent);
+        heal(amountToHeal);
+    }
 }

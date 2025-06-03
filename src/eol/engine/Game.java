@@ -9,10 +9,10 @@ import eol.render.*;
 import eol.audio.AudioManager;
 import eol.components.StatsComponent;
 import eol.entities.*;
-import eol.items.ItemRegistry;
 import eol.logic.EntitySpawner;
 import eol.logic.GameState;
 import eol.logic.LootManager;
+import eol.logic.SaveManager;
 import eol.logic.WaveManager;
 import eol.utils.Vector2;
 import eol.weapons.StarterSpell;
@@ -39,18 +39,14 @@ public class Game {
     private String playerType;
     private Weapon playerWeapon;
 
-    public Game(String playerType) {
-        this.playerType = playerType;
-        initializeSystems(playerType);
+    public Game() {
+        entityManager = new EntityManager();
     }
 
-    public void initializeSystems(String playerType) {
-        entityManager = new EntityManager();
-        spriteManager = SpriteManager.getInstance();
-        spriteManager.loadAllSprites();
-        inputHandler = new InputHandler();
-        AudioManager.getInstance().stopMusic();
-        AudioManager.getInstance().playMusic("songOne");
+    public void newGame(String playerType) {
+        if (SaveManager.gameStateExists()) {
+            SaveManager.clearGameState();
+        }
 
         if (playerType.equals("melee")) {
             playerWeapon = (Weapon)new StarterSword();
@@ -59,6 +55,46 @@ public class Game {
         }
         player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 20, 5, 5), playerType, playerWeapon);
         entityManager.forceAddEntity(player);
+        SaveManager.saveGameState(1, player);
+        initializeSystems();
+        startGame();
+    }
+
+    public void loadGame() {
+        GameState gs = SaveManager.loadGameState();
+        if (gs == null) {
+            SaveManager.clearGameState();
+            return;
+        }
+
+        player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, gs.stats, gs.playerType, gs.weapon);
+        player.getHealthComponent().setCurrentHealth(gs.currentHealth);
+        entityManager.forceAddEntity(player);
+        initializeSystems();
+
+        if (gs.wave > 5) {
+            SupportAlly sup = new SupportAlly(new Vector2(100, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
+            entityManager.addEntity(sup);
+        }
+        if (gs.wave > 10) {
+            OffenseAlly off = new OffenseAlly(new Vector2(100, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
+            entityManager.addEntity(off);
+        }
+        if (gs.wave > 15) {
+            DefenseAlly def = new DefenseAlly(new Vector2(100, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
+            entityManager.addEntity(def);
+        }
+
+        waveManager.setWave(gs.wave);
+        startGame();
+    }
+
+    public void initializeSystems() {
+        spriteManager = SpriteManager.getInstance();
+        spriteManager.loadAllSprites();
+        inputHandler = new InputHandler();
+        AudioManager.getInstance().stopMusic();
+        AudioManager.getInstance().playMusic("songOne");
 
         ground = new Ground(new Vector2(0, 500), new Vector2(0, 0), 800, 100);
         entityManager.forceAddEntity(ground);
@@ -66,9 +102,7 @@ public class Game {
         lootManager = new LootManager();
         entitySpawner = new EntitySpawner(entityManager);
         waveManager = new WaveManager(entitySpawner, entityManager);
-        gameState = new GameState(waveManager, player);
-        renderer = new Renderer(entityManager, spriteManager, waveManager);
-        mainMenu = new MainMenu();
+        renderer = new Renderer(entityManager, waveManager);
         itemPanel = new ItemPanel(player);
         gamePanel = new GamePanel(renderer, itemPanel);
         gamePanel.addKeyListener(inputHandler);
@@ -100,7 +134,9 @@ public class Game {
     }
 
     public void showMainMenu() {
-        mainMenu.show();
+        boolean beatenBefore = SaveManager.loadBeatenBefore();
+        boolean canLoad = SaveManager.gameStateExists();
+        new MainMenu(beatenBefore, canLoad).show();
     }
 
 }

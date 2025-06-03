@@ -1,8 +1,9 @@
 package eol.ui;
 
-import java.awt.EventQueue;
-
 import javax.swing.*;
+
+import eol.logic.SaveManager;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -34,7 +35,9 @@ public class GameOver {
         btnStartOver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new MainMenu().show();
+                boolean beatenBefore = SaveManager.loadBeatenBefore();
+                boolean canLoad = SaveManager.gameStateExists();
+                new MainMenu(beatenBefore, canLoad).show();
             }
         });
 

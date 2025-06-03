@@ -1,8 +1,7 @@
 package eol;
 
 import eol.audio.AudioManager;
-import eol.engine.Game;
-import eol.logic.LootManager;
+import eol.logic.SaveManager;
 import eol.ui.MainMenu;
 
 public class Main {
@@ -10,7 +9,9 @@ public class Main {
     public static void main(String[] args) {
         AudioManager audioManager = AudioManager.getInstance();
         audioManager.loadAll();
-        MainMenu mainmenu = new MainMenu();
+        boolean beatenBefore = SaveManager.loadBeatenBefore();
+        boolean canLoad = SaveManager.gameStateExists();
+        MainMenu mainmenu = new MainMenu(beatenBefore, canLoad);
         mainmenu.show();
     }
 }

@@ -21,7 +21,6 @@ import java.util.List;
 
 public class Renderer {
     private EntityManager entityManager;
-    private SpriteManager spriteManager;
     private WaveManager waveManager;
 
     // Bounding box colors
@@ -31,9 +30,8 @@ public class Renderer {
     private static final Color defaultDebugColor = new Color(255, 0, 0, 128);
     private static final Color bossDebugColor = new Color(255, 0, 0, 64);
 
-    public Renderer(EntityManager entityManager, SpriteManager spriteManager, WaveManager waveManager) {
+    public Renderer(EntityManager entityManager, WaveManager waveManager) {
         this.entityManager = entityManager;
-        this.spriteManager = spriteManager;
         this.waveManager = waveManager;
     }
 
@@ -43,6 +41,8 @@ public class Renderer {
         for (GameEntity e : all) {
             renderEntity(g, e);
         }
+
+        renderHealthBar(g);
 
         // Draw debug info
         if (debugMode) {
@@ -88,6 +88,40 @@ public class Renderer {
             g2.drawImage(frame, -frame.getWidth() / 2, -frame.getHeight() / 2 + 25, null);
             g2.dispose();
         }
+    }
+
+    public void renderHealthBar(Graphics2D g) {
+        g.setColor(Color.BLACK);
+        g.drawRect(490, 30, 280, 35);
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(491, 31, 279, 34);
+        int maxHealth = entityManager.getPlayer().getHealthComponent().getMaxHealth();
+        int currentHealth = entityManager.getPlayer().getHealthComponent().getCurrentHealth();
+        float healthRatio = (float) currentHealth / maxHealth;
+        int red, green;
+
+        // Green to yellow
+        if (healthRatio > 0.66f) {
+            float t = (healthRatio - 0.66f) / (1f - 0.66f);
+            red = (int) (255 * (1 - t));
+            green = 255;
+        }
+        // Yellow to orange
+        else if (healthRatio > 0.33f) {
+            float t = (healthRatio - 0.33f) / (0.66f - 0.33f);
+            red = 255;
+            green = (int) (165 + (90 * t));
+        }
+        // Orange to red
+        else {
+            float t = healthRatio / 0.33f;
+            red = 255;
+            green = (int) (165 * t);
+        }
+
+        g.setColor(new Color(red, green, 0));
+        int barWidth = (int)(279 * healthRatio);
+        g.fillRect(491, 31, barWidth, 34);
     }
 
     public void drawDebugInfo(Graphics2D g) {

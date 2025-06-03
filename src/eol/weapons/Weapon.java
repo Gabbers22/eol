@@ -11,6 +11,8 @@ public abstract class Weapon {
 
     public void update(CombatComponent combatComponent, EntityManager entityManager, float deltaTime) { }
 
+    public abstract String getId();
+
     public int[] getStats() {
         return weaponStats;
     }

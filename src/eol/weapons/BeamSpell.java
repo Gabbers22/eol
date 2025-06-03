@@ -25,7 +25,7 @@ public class BeamSpell extends Weapon {
 
     @Override
     public void fire(CombatComponent combatComponent, InputHandler inputHandler, EntityManager entityManager, float deltaTime) {
-        if (inputHandler.isKeyPressed(KeyEvent.VK_X) && combatComponent.getCooldown() <= 0 && remaining <= 0) {
+        if (inputHandler.isAttackKeyPressed() && combatComponent.getCooldown() <= 0 && remaining <= 0) {
             remaining = duration;
             enemiesHit.clear();
             combatComponent.setCooldown(combatComponent.calculateCooldown());
@@ -58,5 +58,9 @@ public class BeamSpell extends Weapon {
 
     public Line2D getBeam() {
         return beam;
+    }
+
+    public String getId() {
+        return "beam_spell";
     }
 }

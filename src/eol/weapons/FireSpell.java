@@ -17,7 +17,7 @@ public class FireSpell extends Weapon {
     }
 
     public void fire(CombatComponent combatComponent, InputHandler inputHandler, EntityManager entityManager, float deltaTime) {
-        if (!inputHandler.isKeyPressed(KeyEvent.VK_X) || combatComponent.getCooldown() > 0) return;
+        if (!inputHandler.isAttackKeyPressed() || combatComponent.getCooldown() > 0) return;
         combatComponent.setJustAttacked(true);
         //AudioManager.getInstance().playSfx("shoot");
         Character owner = combatComponent.getOwner();
@@ -46,6 +46,10 @@ public class FireSpell extends Weapon {
         );
         entityManager.addEntity(proj);
         combatComponent.setCooldown(combatComponent.calculateCooldown());
+    }
+
+    public String getId() {
+        return "fire_spell";
     }
 
 }

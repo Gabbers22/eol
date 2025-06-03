@@ -56,13 +56,21 @@ public class InputHandler extends KeyAdapter {
     public Vector2 getDirectionalInput() {
         Vector2 direction = Vector2.zero;
 
-        if (isKeyDown(KeyEvent.VK_LEFT)) {
+        if (isKeyDown(KeyEvent.VK_LEFT) || isKeyDown(KeyEvent.VK_A)) {
             direction = direction.add(Vector2.left);
         }
-        if (isKeyDown(KeyEvent.VK_RIGHT)) {
+        if (isKeyDown(KeyEvent.VK_RIGHT) || isKeyDown(KeyEvent.VK_D)) {
             direction = direction.add(Vector2.right);
         }
         return direction;
+    }
+
+    public boolean isAttackKeyPressed() {
+        return isKeyPressed(KeyEvent.VK_X) || isKeyPressed(KeyEvent.VK_P);
+    }
+
+    public boolean isAttackKeyDown() {
+        return isKeyDown(KeyEvent.VK_X) || isKeyDown(KeyEvent.VK_P);
     }
 
 }

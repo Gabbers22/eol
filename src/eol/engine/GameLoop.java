@@ -47,7 +47,7 @@ public class GameLoop implements Runnable {
     private final int targetFps = 60;
     private final long targetTime = 1000 / targetFps; //ms per frame
 
-    private int weaponIndex = 0;
+    private int weaponIndex = 0; //testing purposes
 
     public GameLoop(Game game, EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, WaveManager waveManager, LootManager lootManager, GamePanel gamePanel, ItemPanel itemPanel, Player player) {
         this.game = game;
@@ -133,11 +133,11 @@ public class GameLoop implements Runnable {
         Vector2 direction = inputHandler.getDirectionalInput();
         player.getMovementComponent().move(direction);
 
-        if (inputHandler.isKeyPressed(KeyEvent.VK_UP)) {
+        if (inputHandler.isKeyPressed(KeyEvent.VK_UP) || inputHandler.isKeyPressed(KeyEvent.VK_W)) {
             player.getMovementComponent().jump();
         }
 
-        if (inputHandler.isKeyPressed(KeyEvent.VK_P)) {
+        if (inputHandler.isKeyPressed(KeyEvent.VK_M)) {
             debugMode = !debugMode;
             gamePanel.setDebugMode(debugMode);
         }
@@ -162,8 +162,9 @@ public class GameLoop implements Runnable {
                 case 7 -> player.setWeapon(new BeamSpell());
                 case 8 -> player.setWeapon(new LightCannon());
             }
+            int[] newStats = player.getWeapon().getStats();
+            player.setWeaponStats(newStats);
         }
-
 
         for (GameEntity e : entityManager.getEntities()) {
             if (e instanceof Character) {
