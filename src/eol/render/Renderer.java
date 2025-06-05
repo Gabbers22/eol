@@ -212,7 +212,8 @@ public class Renderer {
         y += 15;
         g.drawString("weapon: " + entityManager.getPlayer().getWeapon().getClass().getSimpleName(), 10, y);
         y += 15;
-
+        g.drawString("attack cooldown: " + entityManager.getPlayer().getCombatComponent().calculateCooldown(), 10, y);
+        y += 15;
 
     }
 

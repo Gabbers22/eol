@@ -12,6 +12,7 @@ import eol.entities.Player;
 import eol.items.Item;
 import eol.logic.LootManager;
 import eol.render.SpriteManager;
+import eol.weapons.Weapon;
 
 public class ItemPanel {
     private boolean visible;

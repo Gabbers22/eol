@@ -1,6 +1,7 @@
 package eol.render;
 
 import eol.ui.ItemPanel;
+import eol.ui.WeaponPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +11,14 @@ public class GamePanel extends JPanel {
     private static final int panelHeight = 600;
     private Renderer renderer;
     private ItemPanel itemPanel;
+    private WeaponPanel weaponPanel;
     private boolean debugMode;
 
-    public GamePanel(Renderer renderer, ItemPanel itemPanel) {
+    public GamePanel(Renderer renderer, ItemPanel itemPanel, WeaponPanel weaponPanel) {
         debugMode = false;
         this.renderer = renderer;
         this.itemPanel = itemPanel;
+        this.weaponPanel = weaponPanel;
         setPreferredSize(new Dimension(panelWidth, panelHeight));
         setFocusable(true);
         requestFocusInWindow();
@@ -34,6 +37,7 @@ public class GamePanel extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         renderer.renderAll(g2d, debugMode);
         itemPanel.render(g2d);
+        weaponPanel.render(g2d);
     }
 
     public static int getPanelWidth() {

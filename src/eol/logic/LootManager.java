@@ -60,7 +60,7 @@ public class LootManager {
     public void rollRarity() {
         //Base probabilities (total = 1000)
         int commonWeight = 775;
-        int rareWeight = 150;
+        int rareWeight = 115;
         int epicWeight = 50;
         int legendaryWeight = 20;
 

@@ -50,12 +50,12 @@ public class CombatComponent {
 
     public int calculateDamage() {
         int strength = owner.getStatsComponent().getStrength();
-        return baseDamage + (2 * strength);
+        return (int) (baseDamage * Math.pow(1.2, strength));
     }
 
     public float calculateCooldown() {
         int dexterity = owner.getStatsComponent().getDexterity();
-        return baseCooldown - (0.05f * dexterity);
+        return (float) (baseCooldown * Math.pow(0.9, dexterity));
     }
 
     public float getCooldown() {

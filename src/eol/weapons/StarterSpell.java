@@ -1,6 +1,8 @@
 package eol.weapons;
 
 import java.awt.event.KeyEvent;
+
+import eol.audio.AudioManager;
 import eol.components.CombatComponent;
 import eol.engine.InputHandler;
 import eol.engine.EntityManager;
@@ -47,10 +49,19 @@ public class StarterSpell extends Weapon {
         );
         entityManager.addEntity(proj);
         combatComponent.setCooldown(combatComponent.calculateCooldown());
+        AudioManager.getInstance().playSound("mage_shoot");
     }
 
     public String getId() {
         return "starter_spell";
+    }
+
+    public String getName() {
+        return "Starter Spell";
+    }  
+
+    public String getDescription() {
+        return "A basic magic spell";
     }
 
 }

@@ -1,7 +1,9 @@
 package eol.components;
 
+import eol.audio.AudioManager;
 import eol.entities.Boss;
 import eol.entities.Character;
+import eol.entities.Enemy;
 
 public class HealthComponent {
     private Character owner;
@@ -25,7 +27,10 @@ public class HealthComponent {
         }
 
         currentHealth = Math.max(0, currentHealth - amount);
-        if (currentHealth == 0) alive = false;
+        if (currentHealth == 0) {
+            if (owner instanceof Enemy) AudioManager.getInstance().playSound("zombie_dead");
+            alive = false;
+        }
     }
 
     public void heal(int amount) {

@@ -5,6 +5,7 @@ import javax.swing.SwingUtilities;
 
 import eol.ui.ItemPanel;
 import eol.ui.MainMenu;
+import eol.ui.WeaponPanel;
 import eol.render.*;
 import eol.audio.AudioManager;
 import eol.components.StatsComponent;
@@ -28,6 +29,7 @@ public class Game {
     private CollisionHandler collisionHandler;
     private GamePanel gamePanel;
     private ItemPanel itemPanel;
+    private WeaponPanel weaponPanel;
     private MainMenu mainMenu;
     private GameState gameState;
     private LootManager lootManager;
@@ -104,7 +106,8 @@ public class Game {
         waveManager = new WaveManager(entitySpawner, entityManager);
         renderer = new Renderer(entityManager, waveManager);
         itemPanel = new ItemPanel(player);
-        gamePanel = new GamePanel(renderer, itemPanel);
+        weaponPanel = new WeaponPanel(player);
+        gamePanel = new GamePanel(renderer, itemPanel, weaponPanel);
         gamePanel.addKeyListener(inputHandler);
         collisionHandler = new CollisionHandler(GamePanel.getPanelWidth(), GamePanel.getPanelHeight(), entityManager);
 
@@ -112,7 +115,7 @@ public class Game {
          * initialize other objects
          */
 
-        gameLoop = new GameLoop(this, entityManager, inputHandler, collisionHandler, waveManager, lootManager, gamePanel, itemPanel, player);
+        gameLoop = new GameLoop(this, entityManager, inputHandler, collisionHandler, waveManager, lootManager, gamePanel, itemPanel, weaponPanel, player);
 
         frame = new JFrame("Echoes of Lazarus");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

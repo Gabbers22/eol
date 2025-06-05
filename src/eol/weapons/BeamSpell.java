@@ -15,7 +15,7 @@ import eol.utils.Vector2;
 public class BeamSpell extends Weapon {
     private Line2D beam;
     private float duration = 0.5f;
-    private float range = 300.0f;
+    private float range = 900.0f;
     private float remaining = 0.0f;
     private Set<Enemy> enemiesHit = new HashSet<>();
 
@@ -62,5 +62,13 @@ public class BeamSpell extends Weapon {
 
     public String getId() {
         return "beam_spell";
+    }
+
+    public String getName() {
+        return "Zoltraak";
+    }
+
+    public String getDescription() {
+        return "A beam of magic energy that pierces through everything";
     }
 }

@@ -3,8 +3,10 @@ package eol.engine;
 import eol.render.GamePanel;
 import eol.ui.GameOver;
 import eol.ui.ItemPanel;
+import eol.ui.WeaponPanel;
 
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -26,6 +28,8 @@ import eol.weapons.PlasmaSword;
 import eol.weapons.StarterSpell;
 import eol.weapons.StarterSword;
 import eol.weapons.StormSpell;
+import eol.weapons.Weapon;
+import eol.weapons.WeaponRegistry;
 
 public class GameLoop implements Runnable {
     private Game game;
@@ -36,11 +40,13 @@ public class GameLoop implements Runnable {
     private LootManager lootManager;
     private GamePanel gamePanel;
     private ItemPanel itemPanel;
+    private WeaponPanel weaponPanel;
     private Player player;
     /*
      * other objects
      */
     private boolean itemPanelShown = false;
+    private boolean weaponPanelShown = false;
     private int lastWave = 0;
     private boolean debugMode = true;
     private boolean running = false;
@@ -49,7 +55,7 @@ public class GameLoop implements Runnable {
 
     private int weaponIndex = 0; //testing purposes
 
-    public GameLoop(Game game, EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, WaveManager waveManager, LootManager lootManager, GamePanel gamePanel, ItemPanel itemPanel, Player player) {
+    public GameLoop(Game game, EntityManager entityManager, InputHandler inputHandler, CollisionHandler collisionHandler, WaveManager waveManager, LootManager lootManager, GamePanel gamePanel, ItemPanel itemPanel, WeaponPanel weaponPanel, Player player) {
         this.game = game;
         this.entityManager = entityManager;
         this.inputHandler = inputHandler;
@@ -58,6 +64,7 @@ public class GameLoop implements Runnable {
         this.lootManager = lootManager;
         this.gamePanel = gamePanel;
         this.itemPanel = itemPanel;
+        this.weaponPanel = weaponPanel;
         this.player = player;
         gamePanel.setDebugMode(debugMode);
     }
@@ -111,14 +118,27 @@ public class GameLoop implements Runnable {
 
     public void update(float deltaTime) {
         itemPanel.update(inputHandler, deltaTime, lootManager);
+        weaponPanel.update(inputHandler, deltaTime);
         int currentWave = waveManager.getWave();
         if (currentWave != lastWave) {
             lastWave = currentWave;
             itemPanelShown = false;
+            weaponPanelShown = false;
         }
 
-        if (itemPanel.isVisible()) {
+        if (itemPanel.isVisible() || weaponPanel.isVisible()) {
             return;
+        }
+
+        if (!itemPanelShown) {
+            WeaponRegistry wr = WeaponRegistry.getInstance();
+            HashMap<Integer, Weapon> weapons = player.getType().equals("melee") ? wr.getKnightWeapons() : wr.getMageWeapons();
+            if (weapons.containsKey(currentWave) && !weaponPanelShown) {
+                Weapon w = weapons.get(currentWave);
+                weaponPanel.showWeapon(w);
+                weaponPanelShown = true;
+                return;
+            }
         }
 
         waveManager.update(deltaTime);
