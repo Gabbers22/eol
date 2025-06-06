@@ -15,7 +15,7 @@ import eol.utils.Vector2;
 public class BeamSpell extends Weapon {
     private Line2D beam;
     private float duration = 0.5f;
-    private float range = 300.0f;
+    private float range = 900.0f;
     private float remaining = 0.0f;
     private Set<Enemy> enemiesHit = new HashSet<>();
 
@@ -25,21 +25,26 @@ public class BeamSpell extends Weapon {
 
     @Override
     public void fire(CombatComponent combatComponent, InputHandler inputHandler, EntityManager entityManager, float deltaTime) {
-        if (inputHandler.isAttackKeyPressed() && combatComponent.getCooldown() <= 0 && remaining <= 0) {
+        if (inputHandler.isAttackKeyPressed() && combatComponent.getCooldown() <= 0 && remaining <= 0 && beam == null) {
             remaining = duration;
             enemiesHit.clear();
-            combatComponent.setCooldown(combatComponent.calculateCooldown());
         }
     }
 
     @Override
     public void update(CombatComponent combatComponent, EntityManager entityManager, float deltaTime) {
         if (remaining <= 0) {
+            // Only reset cooldown once, at the moment the beam goes from active → inactive.
+            if (beam != null) {
+                combatComponent.setCooldown(combatComponent.calculateCooldown());
+            }
             beam = null;
             return;
         }
 
         remaining -= deltaTime;
+
+        if (beam != null) return;
 
         Vector2 from = combatComponent.getOwner().getPosition();
         Vector2 dir = combatComponent.getOwner().getMovementComponent().getLastDirection();
@@ -62,5 +67,13 @@ public class BeamSpell extends Weapon {
 
     public String getId() {
         return "beam_spell";
+    }
+
+    public String getName() {
+        return "Zoltraak";
+    }
+
+    public String getDescription() {
+        return "A beam of magic energy that pierces through everything";
     }
 }

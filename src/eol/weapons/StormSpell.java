@@ -2,6 +2,7 @@ package eol.weapons;
 
 import java.awt.event.KeyEvent;
 
+import eol.audio.AudioManager;
 import eol.components.CombatComponent;
 import eol.engine.EntityManager;
 import eol.engine.InputHandler;
@@ -47,10 +48,19 @@ public class StormSpell extends Weapon {
         );
         entityManager.addEntity(proj);
         combatComponent.setCooldown(combatComponent.calculateCooldown());
+        AudioManager.getInstance().playSound("sand_storm");
     }
 
     public String getId() {
         return "storm_spell";
+    }
+
+    public String getName() {
+        return "Ashstorm";
+    }  
+
+    public String getDescription() {
+        return "Summons a choking dust storm";
     }
 
 }

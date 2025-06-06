@@ -50,12 +50,12 @@ public class CombatComponent {
 
     public int calculateDamage() {
         int strength = owner.getStatsComponent().getStrength();
-        return baseDamage + (2 * strength);
+        return (int) (baseDamage * Math.pow(1.12, strength));
     }
 
     public float calculateCooldown() {
         int dexterity = owner.getStatsComponent().getDexterity();
-        return baseCooldown - (0.05f * dexterity);
+        return (float) (baseCooldown * Math.pow(0.9, dexterity));
     }
 
     public float getCooldown() {
@@ -86,6 +86,7 @@ public class CombatComponent {
         cooldown = Math.max(0, cooldown - deltaTime);
 
         if (owner instanceof Player) {
+            System.out.println("cooldown: " + cooldown);
             currentWeapon.fire(this, inputHandler, entityManager, deltaTime);
             currentWeapon.update(this, entityManager, deltaTime);
         } else if (owner instanceof MeleeEnemy) {
@@ -128,7 +129,7 @@ public class CombatComponent {
         createMeleeHitbox();
 
         if (hitbox.intersects(p.getBounds())) {
-            p.getHealthComponent().heal(calculateDamage());
+            p.getHealthComponent().healPercent(0.05f);
         }
 
         for (Enemy e : entityManager.getEnemies()) {

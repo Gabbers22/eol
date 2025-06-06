@@ -56,25 +56,11 @@ public class WaveManager {
 
         if (!triggeredWaves.contains(currentWave)) {
             switch (currentWave) {
-                case 4:
-                    if (player.getType().equals("melee")) {
-                        player.setWeapon(new Greatsword());
-                    } else {
-                        player.setWeapon(new StormSpell());
-                    }
-                    break;
                 case 5:
                     SupportAlly supportAlly = new SupportAlly(new Vector2(100, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
                     entityManager.addEntity(supportAlly);
                     AudioManager.getInstance().stopMusic();
                     AudioManager.getInstance().playMusic("songTwo");
-                    break;
-                case 8:
-                    if (player.getType().equals("melee")) {
-                        player.setWeapon(new DaggerSword());
-                    } else {
-                        player.setWeapon(new FireSpell());
-                    }
                     break;
                 case 10:
                     OffenseAlly offenseAlly = new OffenseAlly(new Vector2(200, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
@@ -82,19 +68,14 @@ public class WaveManager {
                     AudioManager.getInstance().stopMusic();
                     AudioManager.getInstance().playMusic("songThree");
                     break;
-                case 12:
-                    if (player.getType().equals("melee")) {
-                        player.setWeapon(new PlasmaSword());
-                    } else {
-                        player.setWeapon(new BeamSpell());
-                    }
-                    break;
                 case 15:
                     DefenseAlly defenseAlly = new DefenseAlly(new Vector2(300, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
                     entityManager.addEntity(defenseAlly);
+                    AudioManager.getInstance().stopMusic();
+                    AudioManager.getInstance().playMusic("songFour");
                     break;
                 case 20:
-                    Boss boss = new Boss(new Vector2(400, -100), new Vector2(-42.5f, -47), 85, 94, entityManager, new StatsComponent(25, 1, 1, 1));
+                    Boss boss = new Boss(new Vector2(400, -100), new Vector2(-42.5f, -47), 85, 94, entityManager, new StatsComponent(100, 1, 5, 1));
                     entityManager.addEntity(boss);
                     bossSpawned = true;
                     AudioManager.getInstance().stopMusic();

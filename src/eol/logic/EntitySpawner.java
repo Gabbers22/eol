@@ -18,7 +18,7 @@ public class EntitySpawner {
     private Vector2 enemySpawn = new Vector2(850, 500);
     private final Random random = new Random();
     private float spawnTimer = 0f;
-    private float spawnInterval = 5.0f;
+    private float spawnInterval = 3.0f;
 
     public EntitySpawner(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -27,7 +27,7 @@ public class EntitySpawner {
 
     public void prepareWave(int waveNumber) {
         spawnQueue.clear();
-        int totalEnemies = (int) (2 + (waveNumber / 2));
+        int totalEnemies = (int) (2 + (waveNumber / 3));
         //int totalEnemies = 3;
         for (int i = 0; i < totalEnemies; i++) {
             EnemyType type = selectType(waveNumber, i);
@@ -136,9 +136,9 @@ public class EntitySpawner {
     }
 
     private StatsComponent adjustStats(StatsComponent base, int wave) {
-        float healthExponent = 1.01f;  // small exponent
-        int health = (int)(base.getHealth() * Math.pow(wave, healthExponent)) + (int) Math.floor(0.1 * playerStats.getStrength());
-        int speed = base.getSpeed() + (int) Math.floor(0.1 * playerStats.getDexterity());
+        float healthExponent = 1.0001f;  // small exponent
+        int health = (int) (base.getHealth() * Math.pow(wave, healthExponent)) + (int) Math.floor(0.1 * playerStats.getStrength());
+        int speed = (int) (base.getSpeed() * Math.pow(1.05, playerStats.getDexterity()));
         int strength = base.getStrength() + (int) Math.floor(0.5 * playerStats.getHealth());
         int dexterity = base.getDexterity() + (int) Math.floor(0.5 * playerStats.getHealth());
         return new StatsComponent(health, speed, strength, dexterity);

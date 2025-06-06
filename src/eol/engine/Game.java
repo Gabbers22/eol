@@ -5,6 +5,7 @@ import javax.swing.SwingUtilities;
 
 import eol.ui.ItemPanel;
 import eol.ui.MainMenu;
+import eol.ui.WeaponPanel;
 import eol.render.*;
 import eol.audio.AudioManager;
 import eol.components.StatsComponent;
@@ -28,6 +29,7 @@ public class Game {
     private CollisionHandler collisionHandler;
     private GamePanel gamePanel;
     private ItemPanel itemPanel;
+    private WeaponPanel weaponPanel;
     private MainMenu mainMenu;
     private GameState gameState;
     private LootManager lootManager;
@@ -77,11 +79,11 @@ public class Game {
             entityManager.addEntity(sup);
         }
         if (gs.wave > 10) {
-            OffenseAlly off = new OffenseAlly(new Vector2(100, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
+            OffenseAlly off = new OffenseAlly(new Vector2(200, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
             entityManager.addEntity(off);
         }
         if (gs.wave > 15) {
-            DefenseAlly def = new DefenseAlly(new Vector2(100, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
+            DefenseAlly def = new DefenseAlly(new Vector2(300, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
             entityManager.addEntity(def);
         }
 
@@ -104,7 +106,8 @@ public class Game {
         waveManager = new WaveManager(entitySpawner, entityManager);
         renderer = new Renderer(entityManager, waveManager);
         itemPanel = new ItemPanel(player);
-        gamePanel = new GamePanel(renderer, itemPanel);
+        weaponPanel = new WeaponPanel(player);
+        gamePanel = new GamePanel(renderer, itemPanel, weaponPanel);
         gamePanel.addKeyListener(inputHandler);
         collisionHandler = new CollisionHandler(GamePanel.getPanelWidth(), GamePanel.getPanelHeight(), entityManager);
 
@@ -112,7 +115,7 @@ public class Game {
          * initialize other objects
          */
 
-        gameLoop = new GameLoop(this, entityManager, inputHandler, collisionHandler, waveManager, lootManager, gamePanel, itemPanel, player);
+        gameLoop = new GameLoop(this, entityManager, inputHandler, collisionHandler, waveManager, lootManager, gamePanel, itemPanel, weaponPanel, player);
 
         frame = new JFrame("Echoes of Lazarus");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

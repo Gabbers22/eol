@@ -125,11 +125,16 @@ public class AudioManager {
         loadMusic("songOne", "songOne.wav");
         loadMusic("songTwo", "songTwo.wav");
         loadMusic("songThree", "songThree.wav");
+        loadMusic("songFour", "songFour.wav");
         loadMusic("boss", "boss.wav");
 
         loadSound("hit", "hitSound.wav", 20);
         loadSound("jump", "jumpSound.wav", 10);
         loadSound("sword", "swordSlash.wav", 10);
+        loadSound("mage_shoot", "mageShoot.wav", 6);
+        loadSound("fire_blast", "fireBlast.wav", 6);
+        loadSound("sand_storm", "sandStorm.wav", 6);
+        loadSound("zombie_dead", "zombieDead.wav", 6);
     
         // load more as needed
     }

@@ -93,4 +93,12 @@ public class DaggerSword extends Weapon {
     public String getId() {
         return "dagger";
     }
+
+    public String getName() {
+        return "Dagger";
+    }  
+
+    public String getDescription() {
+        return "Fast, low-damage melee weapon";
+    }
 }

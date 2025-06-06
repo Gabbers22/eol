@@ -1,5 +1,6 @@
 package eol.weapons;
 
+import eol.audio.AudioManager;
 import eol.components.CombatComponent;
 import eol.engine.EntityManager;
 import eol.engine.InputHandler;
@@ -46,10 +47,19 @@ public class FireSpell extends Weapon {
         );
         entityManager.addEntity(proj);
         combatComponent.setCooldown(combatComponent.calculateCooldown());
+        AudioManager.getInstance().playSound("fire_blast");
     }
 
     public String getId() {
         return "fire_spell";
+    }
+
+    public String getName() {
+        return "Blackfire Surge";
+    }  
+
+    public String getDescription() {
+        return "Unholy flames that burn enemies";
     }
 
 }

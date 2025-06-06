@@ -1,6 +1,8 @@
 package eol.weapons;
 
 import java.awt.event.KeyEvent;
+
+import eol.audio.AudioManager;
 import eol.components.CombatComponent;
 import eol.engine.InputHandler;
 import eol.engine.EntityManager;
@@ -32,14 +34,23 @@ public class LightCannon extends Weapon {
             Vector2 spawnPos = owner.getPosition().add(dir.multiply(spawnDistance));
 
             Vector2 vel = dir.multiply(combatComponent.getProjectileSpeed());
-            entityManager.addEntity(new Projectile(spawnPos, new Vector2(-5, -5), 10, 10, vel.multiply(-1), 10, combatComponent.getOwner(), entityManager));
+            entityManager.addEntity(new Projectile(spawnPos, new Vector2(-5, -5), 10, 10, vel.multiply(-1), combatComponent.calculateDamage(), combatComponent.getOwner(), entityManager));
         }
 
         combatComponent.setCooldown(combatComponent.calculateCooldown());
+        AudioManager.getInstance().playSound("mage_shoot");
     }
 
     public String getId() {
         return "light_cannon";
+    }
+
+    public String getName() {
+        return "Light Cannon";
+    }  
+
+    public String getDescription() {
+        return "wide-ranged cannon";
     }
 
 }

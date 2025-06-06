@@ -93,4 +93,12 @@ public class PlasmaSword extends Weapon {
     public String getId() {
         return "plasma_sword";
     }
+
+    public String getName() {
+        return "Arc Plasma Saber";
+    }  
+
+    public String getDescription() {
+        return "Sears through enemies";
+    }
 }

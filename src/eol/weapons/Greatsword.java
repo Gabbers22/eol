@@ -97,4 +97,13 @@ public class Greatsword extends Weapon {
     public String getId() {
         return "greatsword";
     }
+
+    public String getName() {
+        return "Greatsword";
+    }  
+
+    public String getDescription() {
+        return "Heavy two-handed melee weapon that knocks enemies back";
+    }
+    
 }

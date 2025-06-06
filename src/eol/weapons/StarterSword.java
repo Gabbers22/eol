@@ -94,4 +94,12 @@ public class StarterSword extends Weapon {
     public String getId() {
         return "starter_sword";
     }
+
+    public String getName() {
+        return "Starter Sword";
+    }  
+
+    public String getDescription() {
+        return "A basic melee weapon";
+    }
 }

@@ -13,6 +13,10 @@ public abstract class Weapon {
 
     public abstract String getId();
 
+    public abstract String getName();
+    
+    public abstract String getDescription();
+
     public int[] getStats() {
         return weaponStats;
     }
