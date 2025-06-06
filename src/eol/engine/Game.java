@@ -79,11 +79,11 @@ public class Game {
             entityManager.addEntity(sup);
         }
         if (gs.wave > 10) {
-            OffenseAlly off = new OffenseAlly(new Vector2(100, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
+            OffenseAlly off = new OffenseAlly(new Vector2(200, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
             entityManager.addEntity(off);
         }
         if (gs.wave > 15) {
-            DefenseAlly def = new DefenseAlly(new Vector2(100, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
+            DefenseAlly def = new DefenseAlly(new Vector2(300, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
             entityManager.addEntity(def);
         }
 

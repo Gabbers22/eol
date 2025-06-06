@@ -71,9 +71,11 @@ public class WaveManager {
                 case 15:
                     DefenseAlly defenseAlly = new DefenseAlly(new Vector2(300, 500), new Vector2(-16, -32), 32, 64, entityManager, new StatsComponent(1, 1, 1, 1));
                     entityManager.addEntity(defenseAlly);
+                    AudioManager.getInstance().stopMusic();
+                    AudioManager.getInstance().playMusic("songFour");
                     break;
                 case 20:
-                    Boss boss = new Boss(new Vector2(400, -100), new Vector2(-42.5f, -47), 85, 94, entityManager, new StatsComponent(25, 1, 1, 1));
+                    Boss boss = new Boss(new Vector2(400, -100), new Vector2(-42.5f, -47), 85, 94, entityManager, new StatsComponent(100, 1, 5, 1));
                     entityManager.addEntity(boss);
                     bossSpawned = true;
                     AudioManager.getInstance().stopMusic();

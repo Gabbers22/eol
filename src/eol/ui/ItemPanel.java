@@ -51,6 +51,7 @@ public class ItemPanel {
         } else if (inputHandler.isKeyPressed(KeyEvent.VK_X) && timer > 1.5f) {
             Item selectedItem = items.get(selectedIndex);
             selectedItem.applyStats(player, lootManager);
+            lootManager.updatePool(selectedItem);
             visible = false;
         }
         inputHandler.clearKeysPressed();

@@ -87,14 +87,14 @@ public class Projectile extends GameEntity {
                     AudioManager.getInstance().playSound("hit");
                     enemiesHit.add(e);
                     if(!(p.getWeapon() instanceof StormSpell)) alive = false;
-                    if (p.getWeapon() instanceof FireSpell) e.addEffect(new BurnEffect(e, 5.0f));
+                    if (p.getWeapon() instanceof FireSpell) e.addEffect(new BurnEffect(e, owner, 5.0f));
                     return;
                 }
             }
         }
 
         if (owner instanceof SupportAlly && getBounds().intersects(player.getBounds())) {
-            player.getHealthComponent().heal(damage);
+            player.getHealthComponent().healPercent(0.1f);
             alive = false;
             return;
         }

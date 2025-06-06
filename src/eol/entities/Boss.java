@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import eol.audio.AudioManager;
 import eol.components.AnimationComponent;
+import eol.components.CombatComponent;
 import eol.components.StatsComponent;
 import eol.engine.EntityManager;
 import eol.render.Animator;
@@ -30,6 +31,7 @@ public class Boss extends Enemy {
 
     public Boss(Vector2 position, Vector2 offset, int width, int height, EntityManager entityManager, StatsComponent stats) {
         super(position, offset, width, height, entityManager, stats);
+        this.combat = new CombatComponent(this, 10, 3.0f);
 
         BufferedImage[] idleFrames = new BufferedImage[8];
         for (int i = 0; i < 8; i++) {
@@ -113,7 +115,7 @@ public class Boss extends Enemy {
             Vector2 spawnPos = origin.add(dir.multiply(spawnDistance));
 
             Vector2 vel = dir.multiply(speed);
-            entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), 10, this, entityManager));
+            entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), combat.calculateDamage(), this, entityManager));
         }
     }
 
@@ -136,7 +138,7 @@ public class Boss extends Enemy {
             Vector2 spawnPos = origin.add(dir.multiply(spawnDistance));
 
             Vector2 vel = dir.multiply(speed);
-            entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), 10, this, entityManager));
+            entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), combat.calculateDamage(), this, entityManager));
         }
     }
 
@@ -153,8 +155,8 @@ public class Boss extends Enemy {
 
         Vector2 spawnPos = origin.add(dir.multiply(spawnDistance));
         Vector2 vel = dir.multiply(speed);
-        entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), 10, this, entityManager));
-        entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel, 10, this, entityManager));
+        entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), combat.calculateDamage(), this, entityManager));
+        entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel, combat.calculateDamage(), this, entityManager));
     }
 
     private void extremeSpiralShot(float deltaTime, float speed) {
@@ -169,8 +171,8 @@ public class Boss extends Enemy {
 
         Vector2 spawnPos = origin.add(dir.multiply(spawnDistance));
         Vector2 vel = dir.multiply(speed);
-        entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), 10, this, entityManager));
-        entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel, 10, this, entityManager));
+        entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), combat.calculateDamage(), this, entityManager));
+        entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel, combat.calculateDamage(), this, entityManager));
     }
 
     private void stun(float deltaTime) {

@@ -13,14 +13,22 @@ public class LootManager {
     private final Random random = new Random();
     private final ItemRegistry itemRegistry = new ItemRegistry();
     private List<String> rarity;
-
-    private static final List<String> COMMON = List.of("1", "5", "7", "10");
-    private static final List<String> RARE = List.of("2", "8");
-    private static final List<String> EPIC = List.of("3", "9");
-    private static final List<String> LEGENDARY = List.of("11", "4");
-    private static final List<String> MYTHIC = List.of("6");
-
+    private List<String> oneTimeItems = List.of("4");
     private float legendaryFactor = 0.0f; // value in [0, 1], e.g. 0.10 for +10%
+
+    private final List<String> COMMON;
+    private final List<String> RARE;
+    private final List<String> EPIC;
+    private final List<String> LEGENDARY;
+    private final List<String> MYTHIC;
+
+    public LootManager() {
+        COMMON = List.of("1", "5", "7", "10");
+        RARE = List.of("2", "8");
+        EPIC = List.of("3", "9");
+        LEGENDARY = List.of("11", "4");
+        MYTHIC = List.of("6");
+    }
 
     public void increaseLegendaryFactor(float increase) {
         legendaryFactor = Math.min(legendaryFactor + increase, 1.0f); // clamp to 1
@@ -81,6 +89,17 @@ public class LootManager {
             rarity = LEGENDARY;
         } else {
             rarity = MYTHIC;
+        }
+    }
+
+    public void updatePool(Item selectedItem) {
+        String id = selectedItem.getId();
+        if (oneTimeItems.contains(id)) {
+            COMMON.remove(id);
+            RARE.remove(id);
+            EPIC.remove(id);
+            LEGENDARY.remove(id);
+            MYTHIC.remove(id);
         }
     }
     

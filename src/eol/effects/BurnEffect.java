@@ -5,9 +5,11 @@ import eol.entities.Character;
 public class BurnEffect extends Effect {
     private float burnSpeed;
     private float timer;
+    private Character attacker;
 
-    public BurnEffect(Character character, float duration) {
+    public BurnEffect(Character character, Character attacker, float duration) {
         super(character, duration);
+        this.attacker = attacker;
         burnSpeed = 0.5f;
         timer = burnSpeed;
         label = "Burning";
@@ -21,7 +23,7 @@ public class BurnEffect extends Effect {
             return true;
         }
         if (timer <= 0f) {
-            character.getHealthComponent().takeDamage(5);
+            character.getHealthComponent().takeDamage((int) (attacker.getCombatComponent().calculateDamage() * 0.25));
             timer = burnSpeed;
         }
         return false;
