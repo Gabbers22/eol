@@ -86,7 +86,6 @@ public class CombatComponent {
         cooldown = Math.max(0, cooldown - deltaTime);
 
         if (owner instanceof Player) {
-            System.out.println("cooldown: " + cooldown);
             currentWeapon.fire(this, inputHandler, entityManager, deltaTime);
             currentWeapon.update(this, entityManager, deltaTime);
         } else if (owner instanceof MeleeEnemy) {

@@ -25,6 +25,9 @@ public class Boss extends Enemy {
     private boolean introFinished = false;
     private boolean stun = false;
     private boolean rising = false;
+    private boolean dead = false;
+    private boolean gameEnd = false;
+    private float deathTimer = 5.0f;
     private AnimationComponent anims = new AnimationComponent();
 
     private float angleStep = 0;
@@ -44,6 +47,13 @@ public class Boss extends Enemy {
     public void update(float deltaTime) {
         anims.update(deltaTime);
         updateEffects(deltaTime);
+
+        if (dead) {
+            deathTimer -= deltaTime;
+            if (deathTimer <= 0f) {
+                gameEnd = true;
+            }
+        }
 
         if (health.getCurrentHealth() == 1) {
             phase = Phase.dead;
@@ -204,12 +214,17 @@ public class Boss extends Enemy {
         extremeSpiralShot(deltaTime, 600);
 
         if (position.getY() <= -100f) {
-            health.setCurrentHealth(0);
+            //health.setCurrentHealth(0);
+            dead = true;
         }
     }
 
     public AnimationComponent getAnimationComponent() {
         return anims;
+    }
+
+    public boolean isGameOver() {
+        return gameEnd;
     }
 
 }

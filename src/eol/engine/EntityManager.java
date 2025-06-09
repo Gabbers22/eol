@@ -59,6 +59,13 @@ public class EntityManager {
         return null;
     }
 
+    public Boss getBoss() {
+        for (GameEntity e : entities) {
+            if (e instanceof Boss) return (Boss) e;
+        }
+        return null;
+    }
+
     public boolean enemyCheck() {
         if (!enemies.isEmpty()) {
             return false;

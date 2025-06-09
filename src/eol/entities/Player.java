@@ -93,6 +93,8 @@ public class Player extends Character {
 
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
+        int[] stats = weapon.getStats();
+        setWeaponStats(stats);
         combat.setWeapon(weapon);
     }
 

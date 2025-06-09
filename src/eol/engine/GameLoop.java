@@ -17,6 +17,7 @@ import eol.entities.*;
 import eol.entities.Character;
 import eol.items.Item;
 import eol.logic.LootManager;
+import eol.logic.SaveManager;
 import eol.logic.WaveManager;
 import eol.utils.Vector2;
 import eol.weapons.BeamSpell;
@@ -182,8 +183,6 @@ public class GameLoop implements Runnable {
                 case 7 -> player.setWeapon(new BeamSpell());
                 case 8 -> player.setWeapon(new LightCannon());
             }
-            int[] newStats = player.getWeapon().getStats();
-            player.setWeaponStats(newStats);
         }
 
         for (GameEntity e : entityManager.getEntities()) {
@@ -209,7 +208,21 @@ public class GameLoop implements Runnable {
             stop();
             SwingUtilities.invokeLater(() -> {
                 game.closeGame();
-                GameOver over = new GameOver();
+                SaveManager.clearGameState();
+                GameOver over = new GameOver(false);
+                over.show();
+            });
+            return;
+        }
+
+        Boss boss = entityManager.getBoss();
+        if (boss != null && boss.isGameOver()) {
+            stop();
+            SwingUtilities.invokeLater(() -> {
+                game.closeGame();
+                SaveManager.clearGameState();
+                SaveManager.saveBeatenBefore(true);
+                GameOver over = new GameOver(true);
                 over.show();
             });
             return;
