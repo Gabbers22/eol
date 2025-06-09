@@ -70,6 +70,10 @@ public class SpriteManager {
         for (int i = 1; i <= 11; i++) {
             loadSprite("item_" + i, "item_" + i + ".png");
         }
+
+        for (int i = 0; i < 5; i++) {
+            loadSprite("background_" + i, "background_" + i + ".png");
+        }
         
 
         // Add more as needed

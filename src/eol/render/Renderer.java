@@ -24,10 +24,10 @@ public class Renderer {
     private WaveManager waveManager;
 
     // Bounding box colors
-    private static final Color playerDebugColor = new Color(0, 0, 255, 128);
+    private static final Color playerDebugColor = new Color(0, 0, 255, 255);
     private static final Color attackDebugColor = new Color(255, 0, 255, 128);
-    private static final Color groundDebugolor = new Color(0, 0, 0, 128);
-    private static final Color defaultDebugColor = new Color(255, 0, 0, 128);
+    private static final Color groundDebugolor = new Color(150, 150, 150, 255);
+    private static final Color defaultDebugColor = new Color(255, 0, 0, 255);
     private static final Color bossDebugColor = new Color(255, 0, 0, 64);
 
     public Renderer(EntityManager entityManager, WaveManager waveManager) {
@@ -37,6 +37,7 @@ public class Renderer {
 
     public void renderAll(Graphics2D g, boolean debugMode) {
         // Loop over every entity and call renderEntity
+        renderBackground(g);
         List<GameEntity> all = new ArrayList<>(entityManager.getEntities());
         for (GameEntity e : all) {
             renderEntity(g, e);
@@ -122,6 +123,27 @@ public class Renderer {
         g.setColor(new Color(red, green, 0));
         int barWidth = (int)(279 * healthRatio);
         g.fillRect(491, 31, barWidth, 34);
+    }
+
+    public void renderBackground(Graphics2D g) {
+        int wave = waveManager.getWave();
+        BufferedImage background;
+        SpriteManager sm = SpriteManager.getInstance();
+        if (wave < 5) {
+            background = sm.getSprite("background_0");
+        } else if (wave < 10) {
+            background = sm.getSprite("background_1");
+        } else if (wave < 15) {
+            background = sm.getSprite("background_2");
+        } else if (wave <= 19) {
+            background = sm.getSprite("background_3");
+        } else {
+            background = sm.getSprite("background_4");
+        }
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.scale(0.345, 0.305);
+        g2.drawImage(background, 0, 0, null);
+        g2.dispose();
     }
 
     public void drawDebugInfo(Graphics2D g) {

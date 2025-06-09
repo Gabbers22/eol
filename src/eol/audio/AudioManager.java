@@ -126,6 +126,7 @@ public class AudioManager {
         loadMusic("songTwo", "songTwo.wav");
         loadMusic("songThree", "songThree.wav");
         loadMusic("songFour", "songFour.wav");
+        loadMusic("songFive", "songFive.wav");
         loadMusic("boss", "boss.wav");
 
         loadSound("hit", "hitSound.wav", 20);

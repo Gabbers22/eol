@@ -12,11 +12,17 @@ public class GameOver {
 
     private JFrame frame;
     private JPanel panel;
+    private String text;
 
     /**
      * Create the application.
      */
-    public GameOver() {
+    public GameOver(boolean won) {
+        if (won) {
+            text = "YOU WIN!";
+        } else {
+            text = "HAHAHA YOU LOSE!";
+        }
         initialize();
     }
 
@@ -63,7 +69,7 @@ public class GameOver {
         btnQuitGame.setBorderPainted(false);
 
 
-        JLabel lblNewLabel = new JLabel("HAHAHA YOU LOSE!");
+        JLabel lblNewLabel = new JLabel(text);
         lblNewLabel.setFont(new Font("Martian Mono", Font.BOLD, 50));
         lblNewLabel.setForeground(Color.WHITE);
         lblNewLabel.setBounds(0, 100, 1000, 100);

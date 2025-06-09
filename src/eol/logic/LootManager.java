@@ -16,11 +16,11 @@ public class LootManager {
     private List<String> oneTimeItems = List.of("4");
     private float legendaryFactor = 0.0f; // value in [0, 1], e.g. 0.10 for +10%
 
-    private final List<String> COMMON;
-    private final List<String> RARE;
-    private final List<String> EPIC;
-    private final List<String> LEGENDARY;
-    private final List<String> MYTHIC;
+    private List<String> COMMON;
+    private List<String> RARE;
+    private List<String> EPIC;
+    private List<String> LEGENDARY;
+    private List<String> MYTHIC;
 
     public LootManager() {
         COMMON = List.of("1", "5", "7", "10");

@@ -15,20 +15,21 @@ public class MainMenu {
     static JLabel instructionsLabel, gameTitle, controlsLabel, gameplayLabel;
     private String playerType;
     private boolean beatenBefore, canLoad;
+    private ImageIcon backIcon;
 
     public MainMenu(boolean beatenBefore, boolean canLoad) {
         this.beatenBefore = beatenBefore;
         this.canLoad = canLoad;
+        ImageIcon back = new ImageIcon(getClass().getResource("/assets/icons/back.png"));
+        backIcon = new ImageIcon(back.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
     }
 
     public void show() {
         AudioManager.getInstance().stopMusic();
         AudioManager.getInstance().playMusic("menu");
-        ImageIcon back = new ImageIcon(getClass().getResource("/assets/icons/back.png"));
         ImageIcon mute = new ImageIcon(getClass().getResource("/assets/icons/SpeakerMute.png"));
         ImageIcon speaker = new ImageIcon(getClass().getResource("/assets/icons/Speaker.png"));
 
-        ImageIcon backIcon = new ImageIcon(back.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         ImageIcon muteIcon = new ImageIcon(mute.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         ImageIcon speakerIcon = new ImageIcon(speaker.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 
@@ -113,75 +114,15 @@ public class MainMenu {
         mainMenuFrame.setVisible(true);
         mainMenuFrame.setLocationRelativeTo(null);
 
+        newGamePlus.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                showCharacterSelection(true);
+            }
+        });
+
         newGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
-                mainMenuPanel.setVisible(false);
-                mainMenuFrame.setSize(new Dimension(700, 500));
-
-                backButton = new JButton("");
-                backButton.setFont(new Font("Martian Mono", Font.BOLD, 25));
-                backButton.setFocusPainted(false);
-                backButton.setBounds(10, 10, 50, 50);
-                backButton.setBackground(Color.WHITE);
-                backButton.setForeground(new Color(32, 33, 36));
-                backButton.setBorderPainted(false);
-                backButton.setIcon(backIcon);
-
-                knightButton = new JButton("KNIGHT");
-                knightButton.setFont(new Font("Martian Mono", Font.BOLD, 25));
-                knightButton.setFocusPainted(false);
-                knightButton.setBounds(100, 350, 200, 60);
-                knightButton.setBackground(Color.WHITE);
-                knightButton.setForeground(new Color(32, 33, 36));
-                knightButton.setBorderPainted(false);
-
-                mageButton = new JButton("MAGE");
-                mageButton.setFont(new Font("Martian Mono", Font.BOLD, 25));
-                mageButton.setFocusPainted(false);
-                mageButton.setBounds(380, 350, 200, 60);
-                mageButton.setBackground(Color.WHITE);
-                mageButton.setForeground(new Color(32, 33, 36));
-                mageButton.setBorderPainted(false);
-
-                characterSelectionPanel = new JPanel();
-                characterSelectionPanel.setLayout(null);
-                characterSelectionPanel.setBackground(new Color(32, 33, 36));
-                characterSelectionPanel.add(knightButton);
-                characterSelectionPanel.add(mageButton);
-                characterSelectionPanel.add(backButton);
-
-                mainMenuFrame.add(characterSelectionPanel);
-                characterSelectionPanel.setVisible(true);
-
-                backButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-
-                        characterSelectionPanel.setVisible(false);
-                        mainMenuPanel.setVisible(true);
-                        mainMenuFrame.setSize(new Dimension(1000, 768));
-
-                    }
-                });
-
-                knightButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-
-                        playerType = "melee";
-                        startNewGame(playerType);
-
-                    }
-                });
-
-                mageButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-
-                        playerType = "ranged";
-                        startNewGame(playerType);
-
-                    }
-                });
-
+                showCharacterSelection(false);
             }
         });
 
@@ -272,9 +213,77 @@ public class MainMenu {
 
     }
 
-    public void startNewGame(String playerType) {
+    public void showCharacterSelection(boolean newGamePlus) {
+                mainMenuPanel.setVisible(false);
+                mainMenuFrame.setSize(new Dimension(700, 500));
+
+                backButton = new JButton("");
+                backButton.setFont(new Font("Martian Mono", Font.BOLD, 25));
+                backButton.setFocusPainted(false);
+                backButton.setBounds(10, 10, 50, 50);
+                backButton.setBackground(Color.WHITE);
+                backButton.setForeground(new Color(32, 33, 36));
+                backButton.setBorderPainted(false);
+                backButton.setIcon(backIcon);
+
+                knightButton = new JButton("KNIGHT");
+                knightButton.setFont(new Font("Martian Mono", Font.BOLD, 25));
+                knightButton.setFocusPainted(false);
+                knightButton.setBounds(100, 350, 200, 60);
+                knightButton.setBackground(Color.WHITE);
+                knightButton.setForeground(new Color(32, 33, 36));
+                knightButton.setBorderPainted(false);
+
+                mageButton = new JButton("MAGE");
+                mageButton.setFont(new Font("Martian Mono", Font.BOLD, 25));
+                mageButton.setFocusPainted(false);
+                mageButton.setBounds(380, 350, 200, 60);
+                mageButton.setBackground(Color.WHITE);
+                mageButton.setForeground(new Color(32, 33, 36));
+                mageButton.setBorderPainted(false);
+
+                characterSelectionPanel = new JPanel();
+                characterSelectionPanel.setLayout(null);
+                characterSelectionPanel.setBackground(new Color(32, 33, 36));
+                characterSelectionPanel.add(knightButton);
+                characterSelectionPanel.add(mageButton);
+                characterSelectionPanel.add(backButton);
+
+                mainMenuFrame.add(characterSelectionPanel);
+                characterSelectionPanel.setVisible(true);
+
+                backButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+
+                        characterSelectionPanel.setVisible(false);
+                        mainMenuPanel.setVisible(true);
+                        mainMenuFrame.setSize(new Dimension(1000, 768));
+
+                    }
+                });
+
+                knightButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+
+                        playerType = "melee";
+                        startNewGame(playerType, newGamePlus);
+
+                    }
+                });
+
+                mageButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+
+                        playerType = "ranged";
+                        startNewGame(playerType, newGamePlus);
+
+                    }
+                });
+    }
+
+    public void startNewGame(String playerType, boolean newGamePlus) {
         Game game = new Game();
-        game.newGame(playerType);
+        game.newGame(playerType, newGamePlus);
         mainMenuFrame.setVisible(false);
         mainMenuFrame.dispose();
     }

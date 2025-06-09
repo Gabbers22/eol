@@ -19,6 +19,7 @@ import eol.utils.Vector2;
 import eol.weapons.StarterSpell;
 import eol.weapons.StarterSword;
 import eol.weapons.Weapon;
+import eol.weapons.WeaponRegistry;
 
 public class Game {
     private JFrame frame;
@@ -45,15 +46,17 @@ public class Game {
         entityManager = new EntityManager();
     }
 
-    public void newGame(String playerType) {
+    public void newGame(String playerType, boolean newGamePlus) {
         if (SaveManager.gameStateExists()) {
             SaveManager.clearGameState();
         }
 
-        if (playerType.equals("melee")) {
-            playerWeapon = (Weapon)new StarterSword();
+        if (newGamePlus) {
+            playerWeapon = WeaponRegistry.getInstance().getWeaponById("light_cannon");
+        } else if (playerType.equals("melee")) {
+            playerWeapon = WeaponRegistry.getInstance().getWeaponById("starter_sword");
         } else {
-            playerWeapon = (Weapon)new StarterSpell();
+            playerWeapon = WeaponRegistry.getInstance().getWeaponById("starter_spell");
         }
         player = new Player(new Vector2(400, 468), new Vector2(-16, -32), 32, 64, new StatsComponent(5, 20, 5, 5), playerType, playerWeapon);
         entityManager.forceAddEntity(player);

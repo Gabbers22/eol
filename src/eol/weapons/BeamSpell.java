@@ -34,7 +34,6 @@ public class BeamSpell extends Weapon {
     @Override
     public void update(CombatComponent combatComponent, EntityManager entityManager, float deltaTime) {
         if (remaining <= 0) {
-            // Only reset cooldown once, at the moment the beam goes from active → inactive.
             if (beam != null) {
                 combatComponent.setCooldown(combatComponent.calculateCooldown());
             }
