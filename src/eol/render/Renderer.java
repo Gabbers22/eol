@@ -24,7 +24,7 @@ public class Renderer {
     private WaveManager waveManager;
 
     // Bounding box colors
-    private static final Color playerDebugColor = new Color(0, 0, 255, 255);
+    private static final Color playerDebugColor = new Color(0, 0, 255, 128);
     private static final Color attackDebugColor = new Color(255, 0, 255, 128);
     private static final Color groundDebugolor = new Color(150, 150, 150, 255);
     private static final Color defaultDebugColor = new Color(255, 0, 0, 255);
@@ -43,6 +43,7 @@ public class Renderer {
             renderEntity(g, e);
         }
 
+        renderGround(g);
         renderHealthBar(g);
 
         // Draw debug info
@@ -89,6 +90,43 @@ public class Renderer {
             g2.drawImage(frame, -frame.getWidth() / 2, -frame.getHeight() / 2 + 25, null);
             g2.dispose();
         }
+
+        if (e instanceof SupportAlly) {
+            SupportAlly ally = (SupportAlly) e;
+            BufferedImage sprite = SpriteManager.getInstance().getSprite("healer_ally");
+            Rectangle bounds = ally.getBounds();
+            Graphics2D g2 = (Graphics2D) g.create();
+            int cx = bounds.x + bounds.width / 2;
+            int cy = bounds.y + bounds.height / 2;
+            g2.translate(cx - 55, cy - 67);
+            g2.scale(0.05, 0.05);
+            g2.drawImage(sprite, (int) bounds.getX(), (int) bounds.getY(), null);
+        }
+
+        if (e instanceof OffenseAlly) {
+            OffenseAlly ally = (OffenseAlly) e;
+            BufferedImage sprite = SpriteManager.getInstance().getSprite("offense_ally");
+            Rectangle bounds = ally.getBounds();
+            Graphics2D g2 = (Graphics2D) g.create();
+            int cx = bounds.x + bounds.width / 2;
+            int cy = bounds.y + bounds.height / 2;
+            g2.translate(cx - 35, cy - 67);
+            g2.scale(0.05, 0.05);
+            g2.drawImage(sprite, (int) bounds.getX(), (int) bounds.getY(), null);
+        }
+
+        if (e instanceof DefenseAlly) {
+            DefenseAlly ally = (DefenseAlly) e;
+            BufferedImage sprite = SpriteManager.getInstance().getSprite("defense_ally");
+            Rectangle bounds = ally.getBounds();
+            Graphics2D g2 = (Graphics2D) g.create();
+            int cx = bounds.x + bounds.width / 2;
+            int cy = bounds.y + bounds.height / 2;
+            g2.translate(cx - 35, cy - 68);
+            g2.scale(0.045, 0.045);
+            g2.drawImage(sprite, (int) bounds.getX(), (int) bounds.getY(), null);
+        }
+
     }
 
     public void renderHealthBar(Graphics2D g) {
@@ -146,6 +184,12 @@ public class Renderer {
         g2.dispose();
     }
 
+    public void renderGround(Graphics2D g) {
+        g.setColor(groundDebugolor);
+        Ground ground = entityManager.getGround();
+        g.fill(ground.getBounds());
+    }
+
     public void drawDebugInfo(Graphics2D g) {
         List<GameEntity> all = new ArrayList<>(entityManager.getEntities());
         for (GameEntity e : all) {
@@ -193,16 +237,16 @@ public class Renderer {
             if (e instanceof Ground) continue;
             String name = e.getClass().getSimpleName();
             g.setColor(Color.BLACK);
-            g.setFont(new Font("Monospaced", Font.PLAIN, 12));
-            g.drawString(name, entityPosition.getX() - 20, entityPosition.getY() - 40);
+            g.setFont(new Font("Monospaced", Font.PLAIN, 16));
+            drawBorderString(name, entityPosition.getX() - 20, entityPosition.getY() - 40, Color.WHITE, Color.BLACK, g);
 
             if (e instanceof Character) {
                 Character c = (Character) e;
                 HealthComponent health = c.getHealthComponent();
-                g.drawString(health.getCurrentHealth() + "/" + health.getMaxHealth(), entityPosition.getX() - 20, entityPosition.getY() - 55);
+                drawBorderString(health.getCurrentHealth() + "/" + health.getMaxHealth(), entityPosition.getX() - 20, entityPosition.getY() - 55, Color.WHITE, Color.BLACK, g);
                 int y = 65;
                 for (Effect effect : ((Character) e).getEffects()) {
-                    g.drawString(effect.getLabel(), entityPosition.getX() - 20, entityPosition.getY() - y);
+                    drawBorderString(effect.getLabel(), entityPosition.getX() - 20, entityPosition.getY() - y, Color.WHITE, Color.BLACK, g);
                     y += 10;
                 }
             }
@@ -212,32 +256,43 @@ public class Renderer {
         g.setFont(new Font("Monospaced", Font.PLAIN, 16));
 
         int y = 15;
-        g.drawString("x: " + Math.floor(entityManager.getPlayer().getPosition().getX()) + " y: " + Math.floor(entityManager.getPlayer().getPosition().getY()), 10, y);
+        drawBorderString("x: " + Math.floor(entityManager.getPlayer().getPosition().getX()) + " y: " + Math.floor(entityManager.getPlayer().getPosition().getY()), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("x-velocity: " + Math.abs(entityManager.getPlayer().getMovementComponent().getVelocity().getX()), 10, y);
+        drawBorderString("x-velocity: " + Math.abs(entityManager.getPlayer().getMovementComponent().getVelocity().getX()), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("y-velocity: " + Math.abs(entityManager.getPlayer().getMovementComponent().getVelocity().getY()), 10, y);
+        drawBorderString("y-velocity: " + Math.abs(entityManager.getPlayer().getMovementComponent().getVelocity().getY()), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("grounded: " + entityManager.getPlayer().getMovementComponent().isGrounded(), 10, y);
+        drawBorderString("grounded: " + entityManager.getPlayer().getMovementComponent().isGrounded(), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("enemies: " + entityManager.getEnemies().size(), 10, y);
+        drawBorderString("enemies: " + entityManager.getEnemies().size(), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("wave: " + waveManager.getWave(), 10, y);
+        drawBorderString("wave: " + waveManager.getWave(), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("health: " + entityManager.getPlayer().getStatsComponent().getHealth(), 10, y);
+        drawBorderString("health: " + entityManager.getPlayer().getStatsComponent().getHealth(), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("speed: " + entityManager.getPlayer().getStatsComponent().getSpeed(), 10, y);
+        drawBorderString("speed: " + entityManager.getPlayer().getStatsComponent().getSpeed(), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("strength: " + entityManager.getPlayer().getStatsComponent().getStrength(), 10, y);
+        drawBorderString("strength: " + entityManager.getPlayer().getStatsComponent().getStrength(), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("dexterity: " + entityManager.getPlayer().getStatsComponent().getDexterity(), 10, y);
+        drawBorderString("dexterity: " + entityManager.getPlayer().getStatsComponent().getDexterity(), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("weapon: " + entityManager.getPlayer().getWeapon().getClass().getSimpleName(), 10, y);
+        drawBorderString("weapon: " + entityManager.getPlayer().getWeapon().getClass().getSimpleName(), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("attack cooldown: " + entityManager.getPlayer().getCombatComponent().calculateCooldown(), 10, y);
+        drawBorderString("attack cooldown: " + entityManager.getPlayer().getCombatComponent().calculateCooldown(), 10, y, Color.WHITE, Color.BLACK, g);
         y += 15;
-        g.drawString("attack damage: " + entityManager.getPlayer().getCombatComponent().calculateDamage(), 10, y);
+        drawBorderString("attack damage: " + entityManager.getPlayer().getCombatComponent().calculateDamage(), 10, y, Color.WHITE, Color.BLACK, g);
 
+    }
+
+    private void drawBorderString(String text, float x, float y, Color borderColor, Color textColor, Graphics2D g) {
+        g.setColor(borderColor);
+        g.drawString(text, x - 1, y - 1);
+        g.drawString(text, x - 1, y + 1);
+        g.drawString(text, x + 1, y - 1);
+        g.drawString(text, x + 1, y + 1);
+
+        g.setColor(textColor);
+        g.drawString(text, x, y);
     }
 
 }

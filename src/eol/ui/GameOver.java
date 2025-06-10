@@ -23,13 +23,13 @@ public class GameOver {
         } else {
             text = "HAHAHA YOU LOSE!";
         }
-        initialize();
+        initialize(won);
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize() {
+    private void initialize(boolean won) {
         frame = new JFrame("Echoes of Lazarus");
         frame.setSize(new Dimension(1000, 768));
         frame.setResizable(true);
@@ -75,10 +75,20 @@ public class GameOver {
         lblNewLabel.setBounds(0, 100, 1000, 100);
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+        JLabel unlockLabel = new JLabel("NEW GAME+ UNLOCKED");
+        unlockLabel.setFont(new Font("Martian Mono", Font.BOLD, 50));
+        unlockLabel.setForeground(Color.WHITE);
+        unlockLabel.setBounds(0, 200, 1000, 100);
+        unlockLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+
         panel = new JPanel();
         panel.setLayout(null);
         panel.setBackground(new Color(32, 33, 36));
         panel.add(lblNewLabel);
+        if (won) {
+            panel.add(unlockLabel);
+        }
         panel.add(btnStartOver);
         panel.add(btnQuitGame);
         frame.add(panel);

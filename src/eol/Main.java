@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         AudioManager audioManager = AudioManager.getInstance();
-        audioManager.loadAll();
+        //audioManager.loadAll(); // Comment this out to make the game load quicker
         boolean beatenBefore = SaveManager.loadBeatenBefore();
         boolean canLoad = SaveManager.gameStateExists();
         MainMenu mainmenu = new MainMenu(beatenBefore, canLoad);
