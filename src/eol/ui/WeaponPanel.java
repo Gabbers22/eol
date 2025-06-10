@@ -85,6 +85,7 @@ public class WeaponPanel {
         g.setFont(descFont);
         g.setColor(Color.WHITE);
         drawCenteredString(g, desc, 400, boxY + 150, descFont);
+        drawCenteredString(g, "PRESS X TO CONFIRM", 400, 575, titleFont);
 
         // Draw options
         int optY = boxY + boxH - 60;

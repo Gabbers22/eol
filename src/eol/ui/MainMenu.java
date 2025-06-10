@@ -4,6 +4,8 @@ import eol.audio.AudioManager;
 import eol.engine.Game;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -12,56 +14,72 @@ public class MainMenu {
     static JFrame mainMenuFrame;
     static JPanel mainMenuPanel, instructionsPanel, characterSelectionPanel;
     static JButton muteSound, newGame, newGamePlus, loadGame, instructions, quit, backButton, knightButton, mageButton;
-    static JLabel instructionsLabel, gameTitle, controlsLabel, gameplayLabel;
+    static JLabel instructionsLabel, gameTitle, controlsLabel, gameplayLabel, knightLabel, mageLabel, titleScreenBackgroundLabel, characterSelectionLabel;
     private String playerType;
     private boolean beatenBefore, canLoad;
-    private ImageIcon backIcon;
+    private ImageIcon backIcon, knightIcon, mageIcon;
 
     public MainMenu(boolean beatenBefore, boolean canLoad) {
         this.beatenBefore = beatenBefore;
         this.canLoad = canLoad;
         ImageIcon back = new ImageIcon(getClass().getResource("/assets/icons/back.png"));
+        ImageIcon knight = new ImageIcon(getClass().getResource("/assets/icons/knight.png"));
+        ImageIcon mage = new ImageIcon(getClass().getResource("/assets/icons/mage.png"));
         backIcon = new ImageIcon(back.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        knightIcon = new ImageIcon(knight.getImage().getScaledInstance(170, 300, Image.SCALE_SMOOTH));
+        mageIcon = new ImageIcon(mage.getImage().getScaledInstance(170, 300, Image.SCALE_SMOOTH));
     }
 
     public void show() {
         AudioManager.getInstance().stopMusic();
         AudioManager.getInstance().playMusic("menu");
+        ImageIcon titleScreenBackground = new ImageIcon(getClass().getResource("/assets/sprites/TitleBackground.png"));
+        ImageIcon logo = new ImageIcon(getClass().getResource("/assets/icons/logo.png"));
         ImageIcon mute = new ImageIcon(getClass().getResource("/assets/icons/SpeakerMute.png"));
         ImageIcon speaker = new ImageIcon(getClass().getResource("/assets/icons/Speaker.png"));
 
+        ImageIcon titleScreenBackgrondIcon = new ImageIcon(titleScreenBackground.getImage().getScaledInstance(1000, 768, Image.SCALE_SMOOTH));
+        ImageIcon logoIcon = new ImageIcon(logo.getImage().getScaledInstance(450, 450, Image.SCALE_SMOOTH));
         ImageIcon muteIcon = new ImageIcon(mute.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         ImageIcon speakerIcon = new ImageIcon(speaker.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 
-        gameTitle = new JLabel("Echoes of Lazarus");
-        gameTitle.setFont(new Font("Martian Mono", Font.BOLD, 50));
-        gameTitle.setForeground(Color.WHITE);
-        gameTitle.setBounds(0, 100, 1000, 100);
-        gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        titleScreenBackgroundLabel = new JLabel(titleScreenBackgrondIcon);
+        titleScreenBackgroundLabel.setBounds(0, 0, 1000, 768);
+
+        gameTitle = new JLabel(logoIcon);
+        gameTitle.setBackground(new Color(32, 33, 36));
+        gameTitle.setBounds(275, 0, 450, 450);
 
         newGamePlus = new JButton("NEW GAME +");
         newGamePlus.setFont(new Font("Martian Mono", Font.BOLD, 25));
         newGamePlus.setFocusPainted(false);
-        newGamePlus.setBounds(250, 225, 500, 60);
-        newGamePlus.setBackground(Color.WHITE);
-        newGamePlus.setForeground(new Color(32, 33, 36));
-        newGamePlus.setBorderPainted(false);
+        newGamePlus.setBounds(250, 690, 500, 60);
+        newGamePlus.setForeground(Color.WHITE);
+        newGamePlus.setOpaque(false);
+        newGamePlus.setContentAreaFilled(false);
+        newGamePlus.setBorderPainted(true);
+        newGamePlus.setBorder(new LineBorder(Color.WHITE, 5));
 
         newGame = new JButton("NEW GAME");
         newGame.setFont(new Font("Martian Mono", Font.BOLD, 25));
         newGame.setFocusPainted(false);
-        newGame.setBounds(250, 300, 500, 60);
-        newGame.setBackground(Color.WHITE);
-        newGame.setForeground(new Color(32, 33, 36));
-        newGame.setBorderPainted(false);
+        newGame.setBounds(250, 390, 500, 60);
+        newGame.setForeground(Color.WHITE);
+        newGame.setOpaque(false);
+        newGame.setContentAreaFilled(false);
+        newGame.setBorderPainted(true);
+        newGame.setBorder(new LineBorder(Color.WHITE, 5));
 
         loadGame = new JButton("LOAD GAME");
         loadGame.setFont(new Font("Martian Mono", Font.BOLD, 25));
         loadGame.setFocusPainted(false);
-        loadGame.setBounds(250, 375, 500, 60);
-        loadGame.setBackground(Color.WHITE);
-        loadGame.setForeground(new Color(32, 33, 36));
-        loadGame.setBorderPainted(false);
+        loadGame.setBounds(250, 465, 500, 60);
+        loadGame.setForeground(Color.WHITE);
+        loadGame.setOpaque(false);
+        loadGame.setContentAreaFilled(false);
+        loadGame.setBorderPainted(true);
+        loadGame.setBorder(new LineBorder(Color.WHITE, 5));
+
         if (canLoad) {
             loadGame.setEnabled(true);
         } else {
@@ -71,25 +89,31 @@ public class MainMenu {
         instructions = new JButton("INSTRUCTIONS");
         instructions.setFont(new Font("Martian Mono", Font.BOLD, 25));
         instructions.setFocusPainted(false);
-        instructions.setBounds(250, 450, 500, 60);
+        instructions.setBounds(250, 540, 500, 60);
         instructions.setBackground(Color.WHITE);
-        instructions.setForeground(new Color(32, 33, 36));
-        instructions.setBorderPainted(false);
+        instructions.setForeground(Color.WHITE);
+        instructions.setOpaque(false);
+        instructions.setContentAreaFilled(false);
+        instructions.setBorderPainted(true);
+        instructions.setBorder(new LineBorder(Color.WHITE, 5));
 
         quit = new JButton("QUIT GAME");
         quit.setFont(new Font("Martian Mono", Font.BOLD, 25));
         quit.setFocusPainted(false);
-        quit.setBounds(250, 525, 500, 60);
+        quit.setBounds(250, 615, 500, 60);
         quit.setBackground(Color.WHITE);
-        quit.setForeground(new Color(32, 33, 36));
-        quit.setBorderPainted(false);
+        quit.setForeground(Color.WHITE);
+        quit.setOpaque(false);
+        quit.setContentAreaFilled(false);
+        quit.setBorderPainted(true);
+        quit.setBorder(new LineBorder(Color.WHITE, 5));
 
         muteSound = new JButton("");
         muteSound.setFont(new Font("Martian Mono", Font.BOLD, 25));
         muteSound.setFocusPainted(false);
-        muteSound.setBounds(925, 670, 50, 50);
-        muteSound.setBackground(Color.WHITE);
-        muteSound.setForeground(new Color(32, 33, 36));
+        muteSound.setBounds(915, 665, 50, 50);
+        muteSound.setOpaque(false);
+        muteSound.setContentAreaFilled(false);
         muteSound.setBorderPainted(false);
         muteSound.setIcon(speakerIcon);
 
@@ -102,6 +126,7 @@ public class MainMenu {
         mainMenuPanel.add(instructions);
         mainMenuPanel.add(quit);
         mainMenuPanel.add(gameTitle);
+        mainMenuPanel.add(titleScreenBackgroundLabel);
         if (beatenBefore) {
             mainMenuPanel.add(newGamePlus);
         }
@@ -145,12 +170,12 @@ public class MainMenu {
                 instructionsLabel.setBounds(0, 10, 1000, 100);
                 instructionsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-                controlsLabel = new JLabel("<html>Controls:<br>Use the arrow keys to move,or W A S D.<br>Press X to perform an attack.</html>");
+                controlsLabel = new JLabel("<html>Controls:<br>Use the arrow keys to move,or W A S D.<br>Press X or P to perform an attack.</html>");
                 controlsLabel.setFont(new Font("Martian Mono", Font.BOLD, 25));
                 controlsLabel.setForeground(Color.WHITE);
                 controlsLabel.setBounds(10, 100, 900, 300);
 
-                gameplayLabel = new JLabel("<html>Gameplay:<br>1. Select either Knight or Mage at the beginning to continue. The classses affect the weapon choices later in the game.<br>2. Defeat waves of enemies to progress through the game.<br>3. Choose items that make you stronger by changing your stats (based on the descrption) permanently or temporarily.<br>4. Get weapons or spells and equip them if it matches your playstyle.<html>");
+                gameplayLabel = new JLabel("<html>Gameplay:<br>1. Select either Knight or Mage at the beginning to continue. The classes affect the weapon choices later in the game.<br>2. Defeat waves of enemies to progress through the game.<br>3. Choose items that make you stronger by changing your stats (based on the descrption) permanently or temporarily.<br>4. Get weapons or spells and equip them if it matches your playstyle.<br>5. Defeat the boss at wave 20 to win<html>");
                 gameplayLabel.setFont(new Font("Martian Mono", Font.BOLD, 25));
                 gameplayLabel.setForeground(Color.WHITE);
                 gameplayLabel.setBounds(10, 300, 900, 400);
@@ -159,10 +184,11 @@ public class MainMenu {
                 backButton.setFont(new Font("Martian Mono", Font.BOLD, 25));
                 backButton.setFocusPainted(false);
                 backButton.setBounds(10, 10, 50, 50);
-                backButton.setBackground(Color.WHITE);
-                backButton.setForeground(new Color(32, 33, 36));
                 backButton.setBorderPainted(false);
                 backButton.setIcon(backIcon);
+                backButton.setOpaque(false);
+                backButton.setContentAreaFilled(false);
+
                 instructionsPanel = new JPanel();
                 instructionsPanel.setLayout(null);
                 instructionsPanel.setBackground(new Color(32, 33, 36));
@@ -170,6 +196,7 @@ public class MainMenu {
                 instructionsPanel.add(instructionsLabel);
                 instructionsPanel.add(controlsLabel);
                 instructionsPanel.add(gameplayLabel);
+                instructionsPanel.add(titleScreenBackgroundLabel);
 
                 mainMenuFrame.add(instructionsPanel);
                 instructionsPanel.setVisible(true);
@@ -215,41 +242,63 @@ public class MainMenu {
 
     public void showCharacterSelection(boolean newGamePlus) {
                 mainMenuPanel.setVisible(false);
-                mainMenuFrame.setSize(new Dimension(700, 500));
+                mainMenuFrame.setSize(new Dimension(700, 600));
+
+                knightLabel = new JLabel(knightIcon);
+                knightLabel.setBackground(new Color(32, 33, 36));
+                knightLabel.setBounds(105, 120, 170, 350);
+
+                mageLabel = new JLabel(mageIcon);
+                mageLabel.setBackground(new Color(32, 33, 36));
+                mageLabel.setBounds(385, 120, 170, 350);
+
+                characterSelectionLabel = new JLabel("Select Your Character");
+                characterSelectionLabel.setFont(new Font("Martian Mono", Font.BOLD, 40));
+                characterSelectionLabel.setForeground(Color.WHITE);
+                characterSelectionLabel.setBounds(0, 0, 700, 100);
+                characterSelectionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
                 backButton = new JButton("");
                 backButton.setFont(new Font("Martian Mono", Font.BOLD, 25));
                 backButton.setFocusPainted(false);
                 backButton.setBounds(10, 10, 50, 50);
-                backButton.setBackground(Color.WHITE);
-                backButton.setForeground(new Color(32, 33, 36));
+                backButton.setOpaque(false);
+                backButton.setContentAreaFilled(false);
                 backButton.setBorderPainted(false);
                 backButton.setIcon(backIcon);
 
                 knightButton = new JButton("KNIGHT");
                 knightButton.setFont(new Font("Martian Mono", Font.BOLD, 25));
                 knightButton.setFocusPainted(false);
-                knightButton.setBounds(100, 350, 200, 60);
-                knightButton.setBackground(Color.WHITE);
-                knightButton.setForeground(new Color(32, 33, 36));
-                knightButton.setBorderPainted(false);
+                knightButton.setBounds(100, 480, 200, 60);
+                knightButton.setForeground(Color.WHITE);
+                knightButton.setBorderPainted(true);
+                knightButton.setBorder(new LineBorder(Color.WHITE, 5));
+                knightButton.setOpaque(false);
+                knightButton.setContentAreaFilled(false);
 
                 mageButton = new JButton("MAGE");
                 mageButton.setFont(new Font("Martian Mono", Font.BOLD, 25));
                 mageButton.setFocusPainted(false);
-                mageButton.setBounds(380, 350, 200, 60);
-                mageButton.setBackground(Color.WHITE);
-                mageButton.setForeground(new Color(32, 33, 36));
-                mageButton.setBorderPainted(false);
+                mageButton.setBounds(380, 480, 200, 60);
+                mageButton.setForeground(Color.WHITE);
+                mageButton.setBorderPainted(true);
+                mageButton.setBorder(new LineBorder(Color.WHITE, 5));
+                mageButton.setOpaque(false);
+                mageButton.setContentAreaFilled(false);
 
                 characterSelectionPanel = new JPanel();
                 characterSelectionPanel.setLayout(null);
-                characterSelectionPanel.setBackground(new Color(32, 33, 36));
+                characterSelectionPanel.add(characterSelectionLabel);
                 characterSelectionPanel.add(knightButton);
                 characterSelectionPanel.add(mageButton);
                 characterSelectionPanel.add(backButton);
+                characterSelectionPanel.add(knightLabel);
+                characterSelectionPanel.add(mageLabel);
+                characterSelectionPanel.add(titleScreenBackgroundLabel);
 
                 mainMenuFrame.add(characterSelectionPanel);
+                mainMenuFrame.setLocationRelativeTo(null);
                 characterSelectionPanel.setVisible(true);
 
                 backButton.addActionListener(new ActionListener() {

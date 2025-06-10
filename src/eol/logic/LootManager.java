@@ -23,11 +23,11 @@ public class LootManager {
     private List<String> MYTHIC;
 
     public LootManager() {
-        COMMON = List.of("1", "5", "7", "10");
-        RARE = List.of("2", "8");
-        EPIC = List.of("3", "9");
-        LEGENDARY = List.of("11", "4");
-        MYTHIC = List.of("6");
+        COMMON = new ArrayList<>(List.of("1", "5", "7", "10"));
+        RARE = new ArrayList<>(List.of("2", "8"));
+        EPIC = new ArrayList<>(List.of("3", "9"));
+        LEGENDARY = new ArrayList<>(List.of("11", "4"));
+        MYTHIC = new ArrayList<>(List.of("6"));
     }
 
     public void increaseLegendaryFactor(float increase) {
@@ -67,8 +67,8 @@ public class LootManager {
      */
     public void rollRarity() {
         //Base probabilities (total = 1000)
-        int commonWeight = 775;
-        int rareWeight = 115;
+        int commonWeight = 675;
+        int rareWeight = 250;
         int epicWeight = 50;
         int legendaryWeight = 20;
 

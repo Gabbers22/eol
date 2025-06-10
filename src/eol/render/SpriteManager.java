@@ -74,6 +74,10 @@ public class SpriteManager {
         for (int i = 0; i < 5; i++) {
             loadSprite("background_" + i, "background_" + i + ".png");
         }
+
+        loadSprite("healer_ally", "healer_ally.png");
+        loadSprite("offense_ally", "offense_ally.png");
+        loadSprite("defense_ally", "defense_ally.png");
         
 
         // Add more as needed

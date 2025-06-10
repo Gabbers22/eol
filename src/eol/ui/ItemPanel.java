@@ -106,6 +106,7 @@ public class ItemPanel {
             drawCenteredString(g, it.next(), 400, y, labelFont);
             y += 40;
         }
+        drawCenteredString(g, "PRESS X TO CONFIRM", 400, 575, font);
     }
 
     public boolean isVisible() {
