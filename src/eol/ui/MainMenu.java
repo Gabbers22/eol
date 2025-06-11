@@ -126,10 +126,10 @@ public class MainMenu {
         mainMenuPanel.add(instructions);
         mainMenuPanel.add(quit);
         mainMenuPanel.add(gameTitle);
-        mainMenuPanel.add(titleScreenBackgroundLabel);
         if (beatenBefore) {
             mainMenuPanel.add(newGamePlus);
         }
+        mainMenuPanel.add(titleScreenBackgroundLabel);
 
         mainMenuFrame = new JFrame("Echoes of Lazarus");
         mainMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -141,19 +141,21 @@ public class MainMenu {
 
         newGamePlus.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                AudioManager.getInstance().playSound("menuSound");
                 showCharacterSelection(true);
             }
         });
 
         newGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                AudioManager.getInstance().playSound("menuSound");
                 showCharacterSelection(false);
             }
         });
 
         loadGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                AudioManager.getInstance().playSound("menuSound");
                 startSavedGame();
 
             }
@@ -161,6 +163,7 @@ public class MainMenu {
 
         instructions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                AudioManager.getInstance().playSound("menuSound");
 
                 mainMenuPanel.setVisible(false);
 
@@ -203,9 +206,13 @@ public class MainMenu {
 
                 backButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+                        AudioManager.getInstance().playSound("menuSound");
 
                         instructionsPanel.setVisible(false);
+                        mainMenuPanel.add(titleScreenBackgroundLabel);
                         mainMenuPanel.setVisible(true);
+                        mainMenuFrame.setSize(new Dimension(1000, 768));
+                        mainMenuFrame.setLocationRelativeTo(null);
 
                     }
                 });
@@ -215,6 +222,7 @@ public class MainMenu {
 
         quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                AudioManager.getInstance().playSound("menuSound");
 
                 mainMenuFrame.dispose();
                 System.exit(0);
@@ -228,12 +236,15 @@ public class MainMenu {
 
                 if (muteSound.getIcon().equals(speakerIcon)) {
                     muteSound.setIcon(muteIcon);
+                    AudioManager.getInstance().toggleMuted();
+                    AudioManager.getInstance().stopMusic();
                     // mute sound
                 } else {
                     muteSound.setIcon(speakerIcon);
+                    AudioManager.getInstance().toggleMuted();
+                    AudioManager.getInstance().playMusic("menu");
                     // unmute sound
                 }
-                AudioManager.getInstance().toggleMuted();
 
             }
         });
@@ -303,16 +314,20 @@ public class MainMenu {
 
                 backButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+                        AudioManager.getInstance().playSound("menuSound");
 
                         characterSelectionPanel.setVisible(false);
+                        mainMenuPanel.add(titleScreenBackgroundLabel);
                         mainMenuPanel.setVisible(true);
                         mainMenuFrame.setSize(new Dimension(1000, 768));
+                        mainMenuFrame.setLocationRelativeTo(null);
 
                     }
                 });
 
                 knightButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+                        AudioManager.getInstance().playSound("menuSound");
 
                         playerType = "melee";
                         startNewGame(playerType, newGamePlus);
@@ -322,6 +337,7 @@ public class MainMenu {
 
                 mageButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+                        AudioManager.getInstance().playSound("menuSound");
 
                         playerType = "ranged";
                         startNewGame(playerType, newGamePlus);

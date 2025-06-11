@@ -29,27 +29,15 @@ public class Player extends Character {
         this.weapon = weapon;
         autoAim = false;
 
-        BufferedImage[] idleFrames = new BufferedImage[3];
-        for (int i = 0; i < 3; i++) {
-            idleFrames[i] = SpriteManager.getInstance().getSprite("player_idle_" + i);
-        }
-        BufferedImage[] walkFrames = new BufferedImage[3];
-        for (int i = 0; i < 3; i++) {
-            walkFrames[i] = SpriteManager.getInstance().getSprite("player_walk_" + i);
-        }
-        BufferedImage[] jumpFrames = new BufferedImage[3];
-        for (int i = 0; i < 3; i++) {
-            jumpFrames[i] = SpriteManager.getInstance().getSprite("player_jump_" + i);
-        }
-        BufferedImage[] attackFrames = new BufferedImage[3];
-        for (int i = 0; i < 3; i++) {
-            attackFrames[i] = SpriteManager.getInstance().getSprite("player_attack_" + i);
-        }
+        BufferedImage[] idleFrames = SpriteManager.getInstance().getPlayerIdle(playerType, weapon.getId());
+        BufferedImage[] walkFrames = SpriteManager.getInstance().getPlayerWalk(playerType, weapon.getId());
+        BufferedImage[] jumpFrames = SpriteManager.getInstance().getPlayerJump(playerType, weapon.getId());
+        BufferedImage[] attackFrames = SpriteManager.getInstance().getPlayerAttack(playerType, weapon.getId());
 
         anims.addAnimation("idle", new Animator(idleFrames, 0.2f));
         anims.addAnimation("walk", new Animator(walkFrames, 0.2f));
         anims.addAnimation("jump", new Animator(jumpFrames, 0.2f));
-        anims.addAnimation("attack", new Animator(attackFrames, 0.05f));
+        anims.addAnimation("attack", new Animator(attackFrames, 0.03f));
 
         this.combat = new CombatComponent(this, 10, 1.5f, playerType, weapon);
         //combat.initPhaseTimes(anims.get("attack").getFrameDuration());
@@ -113,5 +101,9 @@ public class Player extends Character {
 
     public String getType() {
         return playerType;
+    }
+
+    public void setAnimations() {
+        
     }
 }

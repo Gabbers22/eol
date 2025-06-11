@@ -17,7 +17,6 @@ public class HealEffect extends Effect {
     @Override
     public boolean update(float deltaTime) {
         duration -= deltaTime;
-        System.out.println("duration: " + duration);
         float healAmountThisFrame = healPerSecond * deltaTime;
         if (accumulatedHealAmount < 1) {
             accumulatedHealAmount += healAmountThisFrame;

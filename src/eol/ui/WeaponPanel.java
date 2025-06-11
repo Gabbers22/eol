@@ -6,6 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
+import eol.audio.AudioManager;
 import eol.engine.InputHandler;
 import eol.entities.Player;
 import eol.weapons.Weapon;
@@ -46,12 +47,15 @@ public class WeaponPanel {
         timer += deltaTime;
 
         if (input.isKeyPressed(KeyEvent.VK_LEFT) || input.isKeyPressed(KeyEvent.VK_A)) {
+            if (choiceIndex != 0) AudioManager.getInstance().playSound("menuSound");
             choiceIndex = 0;
         } else if (input.isKeyPressed(KeyEvent.VK_RIGHT) || input.isKeyPressed(KeyEvent.VK_D)) {
+            if (choiceIndex != 1) AudioManager.getInstance().playSound("menuSound");
             choiceIndex = 1;
         }
 
         if (input.isKeyPressed(KeyEvent.VK_X) && timer > 0.5f) {
+            AudioManager.getInstance().playSound("menuSound");
             if (choiceIndex == 1) {
                 player.setWeapon(offeredWeapon);
             }

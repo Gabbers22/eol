@@ -127,15 +127,21 @@ public class AudioManager {
         loadMusic("songThree", "songThree.wav");
         loadMusic("songFour", "songFour.wav");
         loadMusic("songFive", "songFive.wav");
-        loadMusic("boss", "boss.wav");
 
-        loadSound("hit", "hitSound.wav", 20);
-        loadSound("jump", "jumpSound.wav", 10);
-        loadSound("sword", "swordSlash.wav", 10);
-        loadSound("mage_shoot", "mageShoot.wav", 6);
+        loadSound("menuSound", "menuSound.wav", 3);
+        loadSound("hit", "hitSound.wav", 6);
+        loadSound("jump", "jumpSound.wav", 3);
+        loadSound("sword", "swordSlash.wav", 6);
+        loadSound("greatsword", "greatswordSlash.wav", 6);
+        loadSound("dagger", "daggerSlash.wav", 6);
+        loadSound("plasmaSword", "plasmaSlash.wav", 0);
+        loadSound("mage_shoot", "mageShoot.wav", 20);
         loadSound("fire_blast", "fireBlast.wav", 6);
         loadSound("sand_storm", "sandStorm.wav", 6);
         loadSound("zombie_dead", "zombieDead.wav", 6);
+        loadSound("newWave", "newWave.wav", 1);
+        loadSound("burnTick", "burnTick.wav", 6);
+        loadSound("beamShoot", "beamShoot.wav", 3);
     
         // load more as needed
     }

@@ -49,6 +49,7 @@ public class Greatsword extends Weapon {
                     attackPhase = AttackPhase.ACTIVE;
                     attackTimer = activeTime;
                     enemiesHit.clear();
+                    AudioManager.getInstance().playSound("greatsword");
                 }
                 break;
 
