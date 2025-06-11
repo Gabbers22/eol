@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import eol.audio.AudioManager;
 import eol.engine.InputHandler;
 import eol.entities.Player;
 import eol.items.Item;
@@ -44,11 +45,14 @@ public class ItemPanel {
         if (!visible) return;
         timer += deltaTime;
 
-        if (inputHandler.isKeyPressed(KeyEvent.VK_LEFT)) {
+        if (inputHandler.isKeyPressed(KeyEvent.VK_LEFT) || inputHandler.isKeyPressed(KeyEvent.VK_A)) {
+            AudioManager.getInstance().playSound("menuSound");
             selectedIndex = (selectedIndex + items.size() - 1) % items.size();
-        } else if (inputHandler.isKeyPressed(KeyEvent.VK_RIGHT)) {
+        } else if (inputHandler.isKeyPressed(KeyEvent.VK_RIGHT) || inputHandler.isKeyPressed(KeyEvent.VK_D)) {
+            AudioManager.getInstance().playSound("menuSound");
             selectedIndex = (selectedIndex + 1) % items.size();
         } else if (inputHandler.isKeyPressed(KeyEvent.VK_X) && timer > 1.5f) {
+            AudioManager.getInstance().playSound("menuSound");
             Item selectedItem = items.get(selectedIndex);
             selectedItem.applyStats(player, lootManager);
             lootManager.updatePool(selectedItem);

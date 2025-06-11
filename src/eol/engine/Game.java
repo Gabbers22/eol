@@ -62,6 +62,8 @@ public class Game {
         entityManager.forceAddEntity(player);
         SaveManager.saveGameState(1, player);
         initializeSystems();
+        AudioManager.getInstance().stopMusic();
+        AudioManager.getInstance().playMusic("songOne");
         startGame();
     }
 
@@ -90,13 +92,24 @@ public class Game {
             entityManager.addEntity(def);
         }
 
+        AudioManager.getInstance().stopMusic();
+        if (gs.wave >= 20) {
+            AudioManager.getInstance().playMusic("songFive");
+        } else if (gs.wave >= 15) {
+            AudioManager.getInstance().playMusic("songFour");
+        } else if (gs.wave >= 10) {
+            AudioManager.getInstance().playMusic("songThree");
+        } else if (gs.wave >= 5) {
+            AudioManager.getInstance().playMusic("songTwo");
+        } else {
+            AudioManager.getInstance().playMusic("songOne");
+        }
+
         waveManager.setWave(gs.wave);
         startGame();
     }
 
     public void initializeSystems() {
-        spriteManager = SpriteManager.getInstance();
-        spriteManager.loadAllSprites();
         inputHandler = new InputHandler();
         AudioManager.getInstance().stopMusic();
         AudioManager.getInstance().playMusic("songOne");

@@ -127,6 +127,7 @@ public class Boss extends Enemy {
             Vector2 vel = dir.multiply(speed);
             entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), combat.calculateDamage(), this, entityManager));
         }
+        AudioManager.getInstance().playSound("mage_shoot");
     }
 
     private void circleShot(float dt, int count, float speed) {
@@ -150,6 +151,7 @@ public class Boss extends Enemy {
             Vector2 vel = dir.multiply(speed);
             entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), combat.calculateDamage(), this, entityManager));
         }
+        AudioManager.getInstance().playSound("mage_shoot");
     }
 
     private void spiralShot(float deltaTime, float speed) {
@@ -167,6 +169,7 @@ public class Boss extends Enemy {
         Vector2 vel = dir.multiply(speed);
         entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), combat.calculateDamage(), this, entityManager));
         entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel, combat.calculateDamage(), this, entityManager));
+        AudioManager.getInstance().playSound("mage_shoot");
     }
 
     private void extremeSpiralShot(float deltaTime, float speed) {
@@ -183,6 +186,7 @@ public class Boss extends Enemy {
         Vector2 vel = dir.multiply(speed);
         entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel.multiply(-1), combat.calculateDamage(), this, entityManager));
         entityManager.addEntity(new Projectile(spawnPos, offset, 10, 10, vel, combat.calculateDamage(), this, entityManager));
+        AudioManager.getInstance().playSound("mage_shoot");
     }
 
     private void stun(float deltaTime) {

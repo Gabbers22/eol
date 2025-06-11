@@ -50,6 +50,7 @@ public class BeamSpell extends Weapon {
         Vector2 to = from.add(dir.multiply(range));
 
         beam = new Line2D.Float(from.getX(), from.getY(), to.getX(), to.getY());
+        AudioManager.getInstance().playSound("beamShoot");
 
         for (Enemy e : entityManager.getEnemies()) {
             if (!enemiesHit.contains(e) && beam.intersects(e.getBounds())) {

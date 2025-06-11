@@ -79,7 +79,7 @@ public class WaveManager {
                     entityManager.addEntity(boss);
                     bossSpawned = true;
                     AudioManager.getInstance().stopMusic();
-                    AudioManager.getInstance().playMusic("boss");
+                    AudioManager.getInstance().playMusic("songFive");
                     break;
             }
             triggeredWaves.add(currentWave);

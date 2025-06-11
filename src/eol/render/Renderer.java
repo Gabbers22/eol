@@ -3,6 +3,7 @@ package eol.render;
 import eol.components.HealthComponent;
 import eol.effects.Effect;
 import eol.engine.EntityManager;
+import eol.engine.InputHandler;
 import eol.utils.Vector2;
 import eol.weapons.BeamSpell;
 import eol.weapons.StarterSword;
@@ -22,12 +23,13 @@ import java.util.List;
 public class Renderer {
     private EntityManager entityManager;
     private WaveManager waveManager;
+    private Font waveFont = new Font("Martian Mono", Font.BOLD, 32);
 
     // Bounding box colors
-    private static final Color playerDebugColor = new Color(0, 0, 255, 128);
-    private static final Color attackDebugColor = new Color(255, 0, 255, 128);
+    private static final Color playerDebugColor = new Color(0, 0, 255, 64);
+    private static final Color attackDebugColor = new Color(255, 0, 255, 64);
     private static final Color groundDebugolor = new Color(150, 150, 150, 255);
-    private static final Color defaultDebugColor = new Color(255, 0, 0, 255);
+    private static final Color defaultDebugColor = new Color(255, 0, 0, 64);
     private static final Color bossDebugColor = new Color(255, 0, 0, 64);
 
     public Renderer(EntityManager entityManager, WaveManager waveManager) {
@@ -45,6 +47,8 @@ public class Renderer {
 
         renderGround(g);
         renderHealthBar(g);
+        g.setFont(waveFont);
+        drawBorderString("WAVE: " + waveManager.getWave(), 510, 100, Color.WHITE, Color.BLACK, g);
 
         // Draw debug info
         if (debugMode) {
@@ -61,10 +65,34 @@ public class Renderer {
         }
 
         if (e instanceof Player) {
-            Player player = (Player) e;
+            Player player = (Player)e;
             BufferedImage frame = player.getAnimationComponent().getActive().getCurrentFrame();
             Rectangle bounds = player.getBounds();
-            g.drawImage(frame, (int) bounds.getX(), (int) bounds.getY(), null);
+          
+            double sx = 0.045;
+            double sy = 0.045;
+
+            Graphics2D g2 = (Graphics2D) g.create();
+            int cx = bounds.x + bounds.width  / 2;
+            int cy = bounds.y + bounds.height / 2;
+            
+            Vector2 input = player.getMovementComponent().getLastDirection();
+            int offset;
+            if (input.getX()<0) {
+                offset = -14;
+            } else {
+                offset = 20;
+            }
+            g2.translate(cx + offset, cy - 10);
+            if (input.getX()<0) {
+                g2.scale(-sx, sy);
+            } else {
+                g2.scale(sx, sy);
+            }
+            
+            g2.drawImage(frame, -frame.getWidth()  / 2, -frame.getHeight() / 2 + 25, null);
+            
+            g2.dispose();
         }
 
         if (e instanceof Projectile) {
@@ -127,6 +155,55 @@ public class Renderer {
             g2.drawImage(sprite, (int) bounds.getX(), (int) bounds.getY(), null);
         }
 
+        if (e instanceof MeleeEnemy) {
+            MeleeEnemy enemy = (MeleeEnemy)e;
+            BufferedImage frame = SpriteManager.getInstance().getSprite("zombie_basic");
+            Rectangle bounds = enemy.getBounds();
+          
+            double sx = 0.045;
+            double sy = 0.045;
+
+            Graphics2D g2 = (Graphics2D) g.create();
+            int cx = bounds.x + bounds.width  / 2;
+            int cy = bounds.y + bounds.height / 2;
+            
+            Vector2 input = enemy.getMovementComponent().getLastDirection();
+            g2.translate(cx, cy - 3);
+            if (input.getX()<0) {
+                g2.scale(-sx, sy);
+            } else {
+                g2.scale(sx, sy);
+            }
+            
+            g2.drawImage(frame, -frame.getWidth()  / 2, -frame.getHeight() / 2 + 25, null);
+            
+            g2.dispose();
+        }
+
+        if (e instanceof RangedEnemy) {
+            RangedEnemy enemy = (RangedEnemy)e;
+            BufferedImage frame = SpriteManager.getInstance().getSprite("zombie_ranged");
+            Rectangle bounds = enemy.getBounds();
+          
+            double sx = 0.045;
+            double sy = 0.045;
+
+            Graphics2D g2 = (Graphics2D) g.create();
+            int cx = bounds.x + bounds.width  / 2;
+            int cy = bounds.y + bounds.height / 2;
+            
+            Vector2 input = enemy.getMovementComponent().getLastDirection();
+            g2.translate(cx, cy - 3);
+            if (input.getX()<0) {
+                g2.scale(-sx, sy);
+            } else {
+                g2.scale(sx, sy);
+            }
+            
+            g2.drawImage(frame, -frame.getWidth()  / 2, -frame.getHeight() / 2 + 25, null);
+            
+            g2.dispose();
+        }
     }
 
     public void renderHealthBar(Graphics2D g) {

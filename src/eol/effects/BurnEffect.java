@@ -1,5 +1,6 @@
 package eol.effects;
 
+import eol.audio.AudioManager;
 import eol.entities.Character;
 
 public class BurnEffect extends Effect {
@@ -24,6 +25,7 @@ public class BurnEffect extends Effect {
         }
         if (timer <= 0f) {
             character.getHealthComponent().takeDamage((int) (attacker.getCombatComponent().calculateDamage() * 0.25));
+            AudioManager.getInstance().playSound("burnTick");
             timer = burnSpeed;
         }
         return false;

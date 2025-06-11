@@ -47,6 +47,7 @@ public class PlasmaSword extends Weapon {
                     attackPhase = AttackPhase.ACTIVE;
                     attackTimer = activeTime;
                     enemiesHit.clear();
+                    AudioManager.getInstance().playSound("plasmaSword");
                 }
                 break;
 

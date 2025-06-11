@@ -49,7 +49,7 @@ public class GameLoop implements Runnable {
     private boolean itemPanelShown = false;
     private boolean weaponPanelShown = false;
     private int lastWave = 0;
-    private boolean debugMode = true;
+    private boolean debugMode = false;
     private boolean running = false;
     private final int targetFps = 60;
     private final long targetTime = 1000 / targetFps; //ms per frame

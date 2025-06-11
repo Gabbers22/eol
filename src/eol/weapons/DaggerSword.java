@@ -47,6 +47,7 @@ public class DaggerSword extends Weapon {
                     attackPhase = AttackPhase.ACTIVE;
                     attackTimer = activeTime;
                     enemiesHit.clear();
+                    AudioManager.getInstance().playSound("dagger");
                 }
                 break;
 

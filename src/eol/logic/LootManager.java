@@ -59,11 +59,11 @@ public class LootManager {
     }
 
     /**
-     * 1–775: common (77.5%)
-     * 776–925: rare (15%)
-     * 926–975: epic (5%)
-     * 976–995: legendary (2%)
-     * 996–1000: mythic (0.5%)
+     * common (67.5%)
+     * rare (25%)
+     * epic (5%)
+     * legendary (2%)
+     * mythic (0.5%)
      */
     public void rollRarity() {
         //Base probabilities (total = 1000)

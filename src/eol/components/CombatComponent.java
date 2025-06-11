@@ -128,7 +128,7 @@ public class CombatComponent {
         createMeleeHitbox();
 
         if (hitbox.intersects(p.getBounds())) {
-            p.getHealthComponent().healPercent(0.05f);
+            p.getHealthComponent().healPercent(0.02f);
         }
 
         for (Enemy e : entityManager.getEnemies()) {
